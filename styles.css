@@ -892,3 +892,457 @@ td {
     grid-template-columns: 1fr;
   }
 }
+
+body {
+  min-width: 1180px;
+  min-height: 100vh;
+  background: #f8f8f8;
+  color: #000000;
+  overflow: auto;
+}
+
+.app-shell {
+  position: relative;
+  width: 1440px;
+  min-height: 900px;
+  background: #f8f8f8;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 240px;
+  padding: 20px;
+  background: #f8f8f8;
+  z-index: 5;
+}
+
+.app-logo {
+  display: block;
+  width: 112px;
+  height: 17px;
+}
+
+.app-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+}
+
+.menu-item {
+  width: 200px;
+  min-height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: #828282;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.menu-item.is-active {
+  background: #f1f1f1;
+  color: #000000;
+}
+
+.menu-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: currentColor;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+  content: "";
+  position: absolute;
+  border: 1.4px solid currentColor;
+}
+
+.menu-icon--home::before { inset: 7px 4px 3px; border-radius: 3px; }
+.menu-icon--home::after { width: 11px; height: 11px; left: 6px; top: 3px; border-right: 0; border-bottom: 0; transform: rotate(45deg); }
+.menu-icon--focus::before { inset: 4px; border-radius: 7px; }
+.menu-icon--focus::after { inset: 9px; border-radius: 50%; }
+.menu-icon--file::before,
+.menu-icon--journal::before { inset: 3px 5px; border-radius: 3px; }
+.menu-icon--file::after,
+.menu-icon--journal::after { width: 8px; height: 1px; left: 8px; top: 12px; border-width: 1px 0 0; }
+.menu-icon--calendar::before { inset: 4px 3px; border-radius: 4px; }
+.menu-icon--calendar::after { width: 10px; height: 5px; left: 7px; top: 10px; border-width: 0 0 1.4px 1.4px; transform: rotate(-45deg); }
+.menu-icon--tool::before { width: 18px; height: 5px; left: 3px; top: 10px; border-radius: 8px; transform: rotate(-45deg); }
+.menu-icon--tool::after { width: 7px; height: 7px; right: 3px; top: 3px; border-radius: 50%; }
+.menu-icon--climate::before { width: 6px; height: 16px; left: 6px; top: 2px; border-radius: 8px; }
+.menu-icon--climate::after { width: 5px; height: 5px; left: 13px; top: 6px; border-radius: 50%; }
+.menu-icon--sun::before { width: 14px; height: 7px; left: 5px; top: 10px; border-width: 1.4px 0 0; border-radius: 14px 14px 0 0; }
+.menu-icon--sun::after { width: 18px; height: 1px; left: 3px; top: 18px; border-width: 1.4px 0 0; }
+.menu-icon--irrigation::before { width: 15px; height: 9px; left: 4px; top: 5px; border-radius: 3px; transform: rotate(-10deg); }
+.menu-icon--irrigation::after { width: 1px; height: 8px; right: 5px; bottom: 3px; border-width: 0 1.4px 0 0; }
+.menu-icon--table::before,
+.menu-icon--grid::before { inset: 3px; border-radius: 4px; }
+.menu-icon--table::after,
+.menu-icon--grid::after {
+  inset: 3px;
+  border-width: 0;
+  background:
+    linear-gradient(currentColor, currentColor) 50% 0 / 1.4px 100% no-repeat,
+    linear-gradient(currentColor, currentColor) 0 50% / 100% 1.4px no-repeat;
+}
+.menu-icon--chart::before { inset: 4px 3px; border-radius: 4px; }
+.menu-icon--chart::after { width: 11px; height: 6px; left: 7px; top: 10px; border-width: 0 0 1.4px 1.4px; transform: skewX(-20deg); }
+.menu-icon--percent::before { inset: 3px; border-radius: 5px; }
+.menu-icon--percent::after { width: 11px; height: 1px; left: 6px; top: 11px; border-width: 1.4px 0 0; transform: rotate(-45deg); }
+
+.app-main {
+  padding: 18px 40px 0 240px;
+}
+
+.monitor-card {
+  position: relative;
+  width: 1160px;
+  min-height: 1368px;
+  border: 1px solid #dcdcdc;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  background: #fdfdfd;
+  overflow: hidden;
+}
+
+.monitor-header {
+  position: absolute;
+  left: 39px;
+  top: 39px;
+  width: 1080px;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.monitor-header h1 {
+  margin: 0;
+  color: #000000;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.monitor-card .controls-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.monitor-card .select-label {
+  position: relative;
+  height: auto;
+  display: block;
+  color: #000000;
+  font-size: 14px;
+}
+
+.monitor-card .select-label span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.monitor-card select {
+  width: 98px;
+  height: 34px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  color: #000000;
+  padding: 8px 34px 8px 12px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: normal;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #000000 50%),
+    linear-gradient(135deg, #000000 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) 15px,
+    calc(100% - 12px) 15px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.monitor-card .store-switcher {
+  position: absolute;
+  left: 39px;
+  top: 105px;
+  width: 912px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.monitor-card .store-button {
+  width: 72px;
+  height: 72px;
+  border: 1px solid #dcdcdc;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.monitor-card .store-button:hover,
+.monitor-card .store-button.is-active {
+  border: 3px solid #000000;
+  box-shadow: none;
+  transform: none;
+}
+
+.store-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.store-logo img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.store-logo--wide img { width: 46px; height: auto; }
+.store-logo--perekrestok img { width: 60px; height: 60px; object-fit: cover; }
+.store-logo--auchan img { width: 32px; height: 27px; object-fit: contain; }
+.store-logo--magnit img { width: 42px; height: 42px; object-fit: cover; object-position: center; }
+
+.monitor-card .chart-panel {
+  position: absolute;
+  left: 39px;
+  top: 201px;
+  width: 1080px;
+  min-height: 402px;
+  margin: 0;
+  border: 0;
+}
+
+#priceChart {
+  width: 1080px;
+  height: 402px;
+  display: block;
+  overflow: visible;
+}
+
+.grid-line,
+.grid-line-vertical {
+  stroke: #f1f1f1;
+  stroke-width: 1;
+}
+
+.axis-text {
+  fill: #828282;
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.chart-path {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-dot {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.chart-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 42px;
+  color: #000000;
+  text-align: center;
+  pointer-events: none;
+}
+
+.chart-empty strong {
+  margin: 0 0 18px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.chart-empty span {
+  margin: 0;
+  color: #323232;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.monitor-card .catalog {
+  position: absolute;
+  left: 39px;
+  top: 627px;
+  width: 624px;
+}
+
+.monitor-card .catalog-toolbar {
+  display: grid;
+  grid-template-columns: 338px 211px;
+  align-items: center;
+  column-gap: 32px;
+  margin: 0 0 20px;
+}
+
+.monitor-card input[type="search"] {
+  width: 338px;
+  height: 34px;
+  border: 1px solid #828282;
+  border-radius: 8px;
+  background: #fdfdfd;
+  color: #000000;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.monitor-card input[type="search"]::placeholder {
+  color: #828282;
+}
+
+.monitor-card .catalog-toolbar p {
+  width: 211px;
+  max-width: none;
+  margin: 0;
+  color: #828282;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.monitor-card .category-row {
+  display: none;
+}
+
+.monitor-card .table-wrap {
+  width: 624px;
+  max-height: 616px;
+  overflow: auto;
+  border: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #dcdcdc transparent;
+}
+
+.monitor-card .table-wrap::-webkit-scrollbar { width: 2px; }
+.monitor-card .table-wrap::-webkit-scrollbar-thumb { border-radius: 24px; background: #dcdcdc; }
+
+.monitor-card table {
+  width: 610px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.monitor-card th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 38px;
+  border-bottom: 1px solid #dcdcdc;
+  background: #fdfdfd;
+  color: #828282;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.monitor-card th.check-col { width: 34px; padding: 0; }
+.monitor-card th.dot-col { width: 28px; padding: 0; }
+.monitor-card th:nth-child(3) { width: 450px; }
+.monitor-card th:nth-child(4) { width: 98px; }
+
+.monitor-card td {
+  height: 34px;
+  border-bottom: 1px solid #dcdcdc;
+  color: #000000;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+.monitor-card td:nth-child(1) { width: 34px; padding: 5px; }
+.monitor-card td:nth-child(2) { width: 28px; padding: 8px; }
+.monitor-card td:nth-child(3) { width: 450px; }
+.monitor-card td:nth-child(4) { width: 98px; }
+
+.monitor-card .product-check {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1px solid #828282;
+  border-radius: 4px;
+  accent-color: #000000;
+}
+
+.monitor-card .product-dot {
+  width: 12px;
+  height: 12px;
+  display: block;
+  border-radius: 50%;
+}
+
+.monitor-card .price-cell {
+  width: 98px;
+  white-space: nowrap;
+}
+
+.monitor-card .empty-row td,
+.monitor-card .loading-row td {
+  height: 68px;
+  color: #828282;
+  text-align: center;
+}
+
+.monitor-card .selection-toast {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

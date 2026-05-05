@@ -7,76 +7,75 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="topbar">
-      <a class="brand" href="#" aria-label="Gros.farm">
-        <span class="brand-mark">Gf</span>
-        <span>Gros.farm</span>
-      </a>
-      <nav class="nav" aria-label="Основная навигация">
-        <a href="#company">О компании</a>
-        <a href="#features">Функции</a>
-        <a href="#prices">Цены</a>
-        <a href="#resources">Ресурсы</a>
-        <a href="#download">Скачать</a>
-      </nav>
-      <div class="top-actions">
-        <button class="link-button" type="button">Войти</button>
-        <button class="gf-button gf-button--small gf-button--primary-black" type="button">
-          <span class="gf-button__label">Начать бесплатно</span>
-        </button>
-      </div>
-    </header>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Навигация GrossFarm">
+        <a class="app-logo" href="#" aria-label="Gros.farm">
+          <img src="./assets/figma/grosfarm-logo.svg" alt="Gros.farm" />
+        </a>
 
-    <main>
-      <section class="hero" aria-labelledby="page-title">
-        <h1 id="page-title">Мониторинг цен</h1>
-        <p>
-          Следите за динамикой цен на овощи, фрукты и грибы в крупнейших торговых
-          сетях. Выберите город, сеть и товары, чтобы посмотреть изменения цен
-          за выбранный период.
-        </p>
-      </section>
+        <nav class="main-menu">
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--home"></span><span>Главная</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--focus"></span><span>Показатели</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--file"></span><span>Техкарты</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--calendar"></span><span>Таск-трекер</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--tool"></span><span>Оборудование</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--climate"></span><span>Климат</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--sun"></span><span>Освещение</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--irrigation"></span><span>Ирригация</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--table"></span><span>Таблица мониторинга</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--journal"></span><span>Журнал СЗР</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--grid"></span><span>Реестр объекта</span></a>
+          <a class="menu-item" href="#"><span class="menu-icon menu-icon--chart"></span><span>Аналитика</span></a>
+          <a class="menu-item is-active" href="#" aria-current="page">
+            <span class="menu-icon menu-icon--percent"></span>
+            <span>Мониторинг цен</span>
+          </a>
+        </nav>
+      </aside>
 
-      <section class="workspace" aria-label="Рабочая область мониторинга цен">
-        <div class="controls-row">
-          <label class="select-label">
-            <span>Город</span>
-            <select id="citySelect">
-              <option>Москва</option>
-              <option>Санкт-Петербург</option>
-              <option>Казань</option>
-            </select>
-          </label>
+      <main class="app-main">
+        <section class="monitor-card" aria-label="Мониторинг цен">
+          <header class="monitor-header">
+            <h1>Мониторинг цен</h1>
+            <div class="controls-row">
+              <label class="select-label">
+                <span>Город</span>
+                <select id="citySelect">
+                  <option>Москва</option>
+                  <option>Санкт-Петербург</option>
+                  <option>Казань</option>
+                </select>
+              </label>
 
-          <label class="select-label">
-            <span>Период</span>
-            <select id="periodSelect">
-              <option value="week">Неделя</option>
-              <option value="month">Месяц</option>
-              <option value="quarter">Квартал</option>
-            </select>
-          </label>
-        </div>
+              <label class="select-label">
+                <span>Период</span>
+                <select id="periodSelect">
+                  <option value="week">Неделя</option>
+                  <option value="month">Месяц</option>
+                  <option value="quarter">Квартал</option>
+                </select>
+              </label>
+            </div>
+          </header>
 
-        <div class="store-switcher" id="storeSwitcher" aria-label="Выбор магазина"></div>
+          <div class="store-switcher" id="storeSwitcher" aria-label="Выбор магазина"></div>
 
-        <section class="chart-panel" aria-label="График цен">
-          <svg id="priceChart" viewBox="0 0 980 300" role="img" aria-label="График динамики цен"></svg>
-          <div class="chart-empty" id="chartEmpty">
-            <strong>Выберите нужный город, сеть и товары</strong>
-            <span>Отметьте товары в таблице ниже, чтобы увидеть динамику цен.</span>
-            <span>Список товаров привязан к выбранной сети.</span>
-          </div>
-        </section>
+          <section class="chart-panel" aria-label="График цен">
+            <svg id="priceChart" viewBox="0 0 1080 402" role="img" aria-label="График динамики цен"></svg>
+            <div class="chart-empty" id="chartEmpty">
+              <strong>Выберите нужный город, сеть и товары</strong>
+              <span>Отметьте товары в таблице ниже, чтобы увидеть динамику цен.</span>
+              <span>Список товаров привязан к выбранной сети.</span>
+            </div>
+          </section>
 
-        <div class="catalog-layout">
           <section class="catalog" aria-label="Каталог товаров">
             <div class="catalog-toolbar">
               <label class="search">
                 <span class="visually-hidden">Поиск товара</span>
                 <input id="searchInput" type="search" placeholder="Найти товар" autocomplete="off" />
               </label>
-              <p id="averageNote">Приблизительная закупочная цена</p>
+              <p id="averageNote">Приблизительная закупочная цена<br />~ на 30% ниже розничной</p>
             </div>
 
             <div class="category-row" id="categoryRow" aria-label="Категории товаров"></div>
@@ -96,58 +95,10 @@
             </div>
           </section>
 
-          <aside class="insight-card">
-            <p>
-              Gros.farm — это система, объединяющая ассортимент, цены и историю
-              изменений в едином рабочем экране мониторинга.
-            </p>
-            <button class="gf-button gf-button--small gf-button--secondary-lightblue" type="button">
-              <span class="gf-button__label">Зарегистрироваться</span>
-            </button>
-          </aside>
-        </div>
-
-        <div class="selection-toast" id="selectionToast">Выбрано 0 из 0</div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-grid">
-        <div>
-          <h2>Функции</h2>
-          <a href="#">Выбор торговой сети</a>
-          <a href="#">Поиск по ассортименту</a>
-          <a href="#">Отслеживание цен</a>
-          <a href="#">График динамики</a>
-          <a href="#">История изменений</a>
-        </div>
-        <div>
-          <h2>Категории</h2>
-          <a href="#">Фрукты</a>
-          <a href="#">Овощи</a>
-          <a href="#">Ягоды</a>
-          <a href="#">Зелень</a>
-          <a href="#">Грибы</a>
-        </div>
-        <div>
-          <h2>Сети</h2>
-          <a href="#">Пятерочка</a>
-          <a href="#">Перекресток</a>
-          <a href="#">Дикси</a>
-        </div>
-        <div>
-          <h2>Поддержка</h2>
-          <a href="#">Написать в поддержку</a>
-          <a href="#">Сообщество</a>
-          <a href="#">Связаться с нами</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>Политика в отношении обработки персональных данных</span>
-        <span>Карта сайта</span>
-        <span>Сделано командой Gros.farm © 2026 Gros.farm</span>
-      </div>
-    </footer>
+          <div class="selection-toast" id="selectionToast">Выбрано 0 из 0</div>
+        </section>
+      </main>
+    </div>
 
     <script src="./app.js"></script>
   </body>

@@ -1,7 +1,8 @@
 const stores = [
-  { id: "pyaterochka", name: "Пятерочка", short: "5", color: "#f52618" },
-  { id: "perekrestok", name: "Перекресток", short: "X", color: "#00a85a" },
-  { id: "dixy", name: "Дикси", short: "Д", color: "#f47b20" },
+  { id: "auchan", name: "Ашан", logo: "./assets/figma/logo-auchan.png", color: "#ffffff", logoClass: "store-logo--auchan" },
+  { id: "lenta", name: "Лента", logo: "./assets/figma/logo-lenta.svg", color: "#003b95" },
+  { id: "metro", name: "Metro", short: "M", color: "#014171" },
+  { id: "azbuka", name: "Азбука вкуса", logo: "./assets/figma/logo-azbuka.svg", color: "#134525" },
 ];
 
 const categories = [
@@ -20,12 +21,26 @@ const categoryColors = {
   Грибы: "#8f6f4d",
 };
 
+const productColors = [
+  "#007aff",
+  "#92bbe9",
+  "#007aff",
+  "#db9494",
+  "#e61414",
+  "#8b3d3d",
+  "#40b34a",
+  "#285fcc",
+  "#8dad2d",
+  "#e0caca",
+  "#680b75",
+];
+
 const baseCatalog = [
-  ["Яблоки Голден, 1 кг", "Фрукты", 156],
-  ["Груши Конференция, 1 кг", "Фрукты", 219],
-  ["Бананы спелые, 1 кг", "Фрукты", 129],
-  ["Апельсины Навелин, 1 кг", "Фрукты", 169],
-  ["Мандарины Надоркотт, 1 кг", "Фрукты", 250],
+  ["Томаты красные Скэрлетт 450 г", "Овощи", 300],
+  ["Томаты черри красные на ветке, 500 г", "Овощи", 189],
+  ["Огурцы сорт Святогор 600 г", "Овощи", 290],
+  ["Среднеплодные огурцы для салатов и консервации", "Овощи", 150],
+  ["Банан, шт", "Фрукты", 35],
   ["Лимоны, 500 г", "Фрукты", 130],
   ["Киви зеленые, 600 г", "Фрукты", 210],
   ["Авокадо Хасс, 600 г", "Фрукты", 300],
@@ -131,17 +146,33 @@ const baseCatalog = [
 const storeFactors = {
   pyaterochka: 0.92,
   perekrestok: 1.04,
+  auchan: 0.9,
+  magnit: 0.95,
+  vkusvill: 1.1,
+  lenta: 0.98,
   dixy: 0.97,
+  metro: 1.02,
+  azbuka: 1.18,
+  samokat: 1.08,
+  lavka: 1.06,
 };
 
 const storeNameAdditions = {
   pyaterochka: ["Красная цена", "Свежий ряд", "Домашняя корзина"],
   perekrestok: ["Market Collection", "Зеленая линия", "Фермерский выбор"],
+  auchan: ["Каждый день", "Фермерский прилавок", "Свежий выбор"],
+  magnit: ["Моя цена", "Магнит fresh", "Семейный выбор"],
+  vkusvill: ["ВкусВилл", "Свежая полка", "Фермерская линия"],
+  lenta: ["Лента", "365 дней", "Большой выбор"],
   dixy: ["Дикси fresh", "Первым делом", "Каждый день"],
+  metro: ["Metro Chef", "Fine Life", "Metro Premium"],
+  azbuka: ["Азбука Вкуса", "Почти готово", "Наша ферма"],
+  samokat: ["Самокат", "Свежее сегодня", "Без очереди"],
+  lavka: ["Лавка", "Из лавки", "Быстрая доставка"],
 };
 
 const state = {
-  storeId: "pyaterochka",
+  storeId: "auchan",
   query: "",
   categories: new Set(categories),
   selectedIds: new Set(),
@@ -163,13 +194,16 @@ const elements = {
 
 const catalog = stores.flatMap((store) =>
   baseCatalog.map(([name, category, basePrice], index) => {
-    const price = Math.round(basePrice * storeFactors[store.id] + ((index % 5) - 2) * 7);
+    const price = store.id === "auchan"
+      ? basePrice
+      : Math.round(basePrice * storeFactors[store.id] + ((index % 5) - 2) * 7);
     return {
       id: `${store.id}-${index}`,
       storeId: store.id,
       name: withStoreFlavor(name, store.id, index),
       category,
       price,
+      color: productColors[index % productColors.length],
       history: makeHistory(price, index, store.id),
     };
   }),
@@ -183,6 +217,7 @@ const storeDataSources = {
 };
 
 function withStoreFlavor(name, storeId, index) {
+  if (storeId === "auchan") return name;
   const addition = storeNameAdditions[storeId][index % storeNameAdditions[storeId].length];
   if (index % 4 === 0) return `${name} ${addition}`;
   return name;
@@ -201,9 +236,13 @@ function renderStores() {
   elements.storeSwitcher.innerHTML = stores
     .map((store) => {
       const active = store.id === state.storeId ? " is-active" : "";
+      const logo = store.logo
+        ? `<img src="${store.logo}" alt="" />`
+        : `<span>${store.short}</span>`;
+      const logoClass = store.logoClass ? ` ${store.logoClass}` : "";
       return `
         <button class="store-button${active}" type="button" data-store="${store.id}" aria-label="${store.name}">
-          <span class="store-logo" style="background:${store.color}">${store.short}</span>
+          <span class="store-logo${logoClass}" style="background:${store.color}">${logo}</span>
         </button>
       `;
     })
@@ -235,7 +274,7 @@ function currentCatalog() {
 
 function renderRows() {
   if (state.loadingStoreId === state.storeId) {
-    elements.averageNote.textContent = "Загружаем ассортимент и цены...";
+    elements.averageNote.innerHTML = "Загружаем ассортимент<br />и цены...";
     elements.rows.innerHTML = `
       <tr class="loading-row">
         <td colspan="4">
@@ -249,8 +288,7 @@ function renderRows() {
   }
 
   const products = filteredProducts();
-  const currentStore = stores.find((store) => store.id === state.storeId);
-  elements.averageNote.textContent = state.dataNotice || externalNoticeByStore[state.storeId] || `Приблизительная закупочная цена для сети ${currentStore.name}`;
+  elements.averageNote.innerHTML = state.dataNotice || externalNoticeByStore[state.storeId] || "Приблизительная закупочная цена<br />~ на 30% ниже розничной";
 
   if (state.loadError) {
     elements.rows.innerHTML = `
@@ -275,7 +313,7 @@ function renderRows() {
   elements.rows.innerHTML = products
     .map((product) => {
       const checked = state.selectedIds.has(product.id) ? "checked" : "";
-      const color = categoryColors[product.category];
+      const color = product.color || categoryColors[product.category];
       return `
         <tr>
           <td>
@@ -293,32 +331,34 @@ function renderRows() {
 
 function drawChart() {
   const selected = currentCatalog().filter((product) => state.selectedIds.has(product.id));
-  const width = 980;
-  const height = 300;
-  const padding = { top: 18, right: 24, bottom: 34, left: 42 };
+  const width = 1080;
+  const height = 402;
+  const padding = { top: 5, right: 0, bottom: 42, left: 33 };
   const values = selected.flatMap((product) => product.history);
-  const minValue = values.length ? Math.floor(Math.min(...values) / 50) * 50 : 0;
-  const maxValue = values.length ? Math.ceil(Math.max(...values) / 50) * 50 : 1000;
+  const minValue = 0;
+  const maxValue = values.length ? Math.max(1000, Math.ceil(Math.max(...values) / 100) * 100) : 1000;
   const range = Math.max(1, maxValue - minValue);
-  const dates = ["24.01", "25.01", "26.01", "27.01", "28.01", "29.01", "30.01"];
+  const dates = ["24.03", "25.03", "26.03", "27.03", "28.03", "29.03", "30.03"];
 
   const x = (index) => padding.left + (index * (width - padding.left - padding.right)) / 6;
-  const y = (value) => padding.top + ((maxValue - value) * (height - padding.top - padding.bottom)) / range;
+  const y = (value) => padding.top + ((maxValue - value) * 355) / range;
 
   let markup = "";
-  for (let i = 0; i <= 8; i += 1) {
-    const lineY = padding.top + (i * (height - padding.top - padding.bottom)) / 8;
-    const label = Math.round(maxValue - (i * range) / 8);
+  for (let i = 0; i <= 10; i += 1) {
+    const lineY = padding.top + (i * 342) / 10 + 6.5;
+    const label = Math.round(maxValue - (i * range) / 10);
     markup += `<line class="grid-line" x1="${padding.left}" y1="${lineY}" x2="${width - padding.right}" y2="${lineY}" />`;
-    markup += `<text class="axis-text" x="8" y="${lineY + 4}">${label}</text>`;
+    markup += `<text class="axis-text" text-anchor="end" x="25" y="${lineY + 4}">${label}</text>`;
   }
 
   dates.forEach((date, index) => {
-    markup += `<text class="axis-text" text-anchor="middle" x="${x(index)}" y="${height - 8}">${date}</text>`;
+    const lineX = x(index);
+    markup += `<line class="grid-line-vertical" x1="${lineX}" y1="${padding.top}" x2="${lineX}" y2="${height - 29}" />`;
+    markup += `<text class="axis-text" text-anchor="middle" x="${lineX}" y="${height - 7}">${date}</text>`;
   });
 
   selected.forEach((product, productIndex) => {
-    const color = categoryColors[product.category];
+    const color = product.color || categoryColors[product.category];
     const path = product.history
       .map((value, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(value)}`)
       .join(" ");
