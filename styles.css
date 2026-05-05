@@ -1,4 +1,77 @@
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geologica Roman";
+  src: url("./assets/fonts/GeologicaRoman-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
+  --font-family-base: "Geologica Roman", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --bg: #fdfdfd;
   --panel: #f4f4fd;
   --text: #000000;
@@ -24,7 +97,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "Geologica", "Geologica Roman", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-family-base);
   font-size: 14px;
   letter-spacing: 0;
 }
