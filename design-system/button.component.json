@@ -1,0 +1,313 @@
+{
+  "component": {
+    "name": "Button",
+    "source": {
+      "tool": "Figma",
+      "fileKey": "f1GfNg6qpVJsoARUqWJoh3",
+      "nodeId": "12:4949",
+      "url": "https://www.figma.com/design/f1GfNg6qpVJsoARUqWJoh3/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%82%D1%8B?node-id=12-4949&t=6NIxjAEhnO54oJOY-1"
+    },
+    "description": "Reusable GrossFarm button component. Extracted from the Figma component set and mapped to local design tokens.",
+    "properties": {
+      "type": ["Regular", "Subtitle"],
+      "state": ["Default", "Hover", "Loading", "Disabled"],
+      "size": ["Small", "Medium"],
+      "style": ["Fill", "Outline"],
+      "appearance": [
+        "Primary-Black",
+        "Primary-Blue",
+        "Primary-Delete",
+        "Secondary-LightBlue",
+        "Secondary-LightGray",
+        "Secondary-Outline",
+        "Secondary-Delete"
+      ],
+      "iconLeft": [true, false],
+      "iconRight": [true, false]
+    },
+    "tokens": {
+      "fontFamily": "Geologica Roman",
+      "fontWeight": 300,
+      "radius": {
+        "button": "{radius.radius.lg}",
+        "iconContainer": "{radius.radius.sm}"
+      },
+      "spacing": {
+        "gap": "{spacing.button.gap}",
+        "smallPaddingX": "{spacing.button.small.padding-x}",
+        "smallPaddingY": "{spacing.button.small.padding-y}",
+        "mediumPaddingX": "{spacing.button.medium.padding-x}",
+        "mediumPaddingY": "{spacing.button.medium.padding-y}",
+        "mediumSubtitlePaddingY": "{spacing.button.medium-subtitle.padding-y}"
+      }
+    },
+    "layout": {
+      "regular": {
+        "small": {
+          "height": 34,
+          "paddingX": 16,
+          "paddingY": 8,
+          "gap": 8,
+          "fontSize": 14,
+          "lineHeight": "normal",
+          "iconBox": 18,
+          "iconSize": 14
+        },
+        "medium": {
+          "height": 44,
+          "paddingX": 16,
+          "paddingY": 12,
+          "gap": 8,
+          "fontSize": 16,
+          "lineHeight": 1.2,
+          "iconBox": 18,
+          "iconSize": 14
+        }
+      },
+      "subtitle": {
+        "medium": {
+          "height": 44,
+          "paddingX": 16,
+          "paddingY": 5,
+          "gap": 1,
+          "titleFontSize": 16,
+          "subtitleFontSize": 12,
+          "lineHeight": 1.2,
+          "icons": false
+        }
+      },
+      "loading": {
+        "dotSize": 6,
+        "dotGap": 6,
+        "smallWidth": 78,
+        "mediumRegularWidth": 86,
+        "mediumSubtitleWidth": 86
+      }
+    },
+    "appearances": {
+      "Primary-Black": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.black}",
+          "text": "{color.white}",
+          "icon": "{color.white}",
+          "loader": "{color.white}"
+        },
+        "hover": {
+          "background": "{color.darkestgray}",
+          "text": "{color.white}",
+          "icon": "{color.white}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Primary-Blue": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.done}",
+          "text": "{color.white}",
+          "icon": "{color.white}",
+          "loader": "{color.white}"
+        },
+        "hover": {
+          "background": "{color.hover blue}",
+          "text": "{color.white}",
+          "icon": "{color.white}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Primary-Delete": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.alert background}",
+          "text": "{color.alert action}",
+          "icon": "{color.alert action}",
+          "loader": "{color.alert action}"
+        },
+        "hover": {
+          "background": "{color.hover lightred}",
+          "text": "{color.alert action}",
+          "icon": "{color.alert action}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Secondary-LightBlue": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.done background}",
+          "text": "{color.done}",
+          "icon": "{color.done}",
+          "loader": "{color.done}"
+        },
+        "hover": {
+          "background": "{color.hover lightblue}",
+          "text": "{color.done}",
+          "icon": "{color.done}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Secondary-LightGray": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.light gray 2}",
+          "text": "{color.black}",
+          "icon": "{color.black}",
+          "loader": "{color.darkestgray}"
+        },
+        "hover": {
+          "background": "{color.hover lightgray}",
+          "text": "{color.black}",
+          "icon": "{color.black}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Secondary-Outline": {
+        "style": "Outline",
+        "default": {
+          "background": "transparent",
+          "border": "{color.middle gray}",
+          "text": "{color.black}",
+          "icon": "{color.black}",
+          "loader": "{color.darkestgray}"
+        },
+        "hover": {
+          "background": "{color.light gray}",
+          "border": "{color.middle gray}",
+          "text": "{color.black}",
+          "icon": "{color.black}"
+        },
+        "disabled": {
+          "background": "transparent",
+          "border": "{color.middle gray}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      },
+      "Secondary-Delete": {
+        "style": "Fill",
+        "default": {
+          "background": "{color.light gray 2}",
+          "text": "{color.alert action}",
+          "icon": "{color.alert action}",
+          "loader": "{color.alert action}"
+        },
+        "hover": {
+          "background": "{color.hover lightgray}",
+          "text": "{color.alert action}",
+          "icon": "{color.alert action}"
+        },
+        "disabled": {
+          "background": "{color.light gray 2}",
+          "text": "{color.dark gray}",
+          "icon": "{color.dark gray}"
+        }
+      }
+    },
+    "variantRules": [
+      "Regular supports Small and Medium sizes.",
+      "Regular supports left and right icons.",
+      "Subtitle supports Medium size only and does not use icons.",
+      "Secondary-Outline is the only outline appearance in the Figma set.",
+      "Loading state hides text and icons and shows three 6px loader dots.",
+      "Disabled state keeps the button surface light gray and uses dark gray content."
+    ],
+    "figmaVariants": [
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Subtitle, State=Default, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Subtitle, State=Hover, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Subtitle, State=Loading, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Subtitle, State=Disabled, Size=Medium, Style=Fill, Appearance=Primary-Black",
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Subtitle, State=Default, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Subtitle, State=Hover, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Subtitle, State=Loading, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Subtitle, State=Disabled, Size=Medium, Style=Fill, Appearance=Primary-Blue",
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Subtitle, State=Default, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Subtitle, State=Hover, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Subtitle, State=Loading, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Subtitle, State=Disabled, Size=Medium, Style=Fill, Appearance=Secondary-LightBlue",
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Subtitle, State=Default, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Subtitle, State=Hover, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Subtitle, State=Loading, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Subtitle, State=Disabled, Size=Medium, Style=Fill, Appearance=Secondary-LightGray",
+      "Type=Regular, State=Default, Size=Small, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Hover, Size=Small, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Loading, Size=Small, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Disabled, Size=Small, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Default, Size=Medium, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Hover, Size=Medium, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Loading, Size=Medium, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Outline, Appearance=Secondary-Outline",
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Primary-Delete",
+      "Type=Regular, State=Default, Size=Small, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Hover, Size=Small, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Loading, Size=Small, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Disabled, Size=Small, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Default, Size=Medium, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Hover, Size=Medium, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Loading, Size=Medium, Style=Fill, Appearance=Secondary-Delete",
+      "Type=Regular, State=Disabled, Size=Medium, Style=Fill, Appearance=Secondary-Delete"
+    ],
+    "usage": {
+      "regular": "<button class=\"gf-button gf-button--medium gf-button--primary-blue\" type=\"button\"><span class=\"gf-button__icon\" aria-hidden=\"true\"></span><span class=\"gf-button__label\">Button</span></button>",
+      "subtitle": "<button class=\"gf-button gf-button--medium gf-button--subtitle gf-button--primary-black\" type=\"button\"><span class=\"gf-button__stack\"><span>Button</span><small>subtitle text</small></span></button>",
+      "loading": "<button class=\"gf-button gf-button--medium gf-button--primary-black is-loading\" type=\"button\" aria-busy=\"true\"><span class=\"gf-button__loader\" aria-hidden=\"true\"><i></i><i></i><i></i></span></button>"
+    }
+  }
+}
