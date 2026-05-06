@@ -17,6 +17,347 @@
           "usage": "Helper text, tooltip triggers, compact informational labels"
         }
       }
+    },
+    "medium": {
+      "description": "Medium GrossFarm interface icons. Project filenames preserve the design-system pattern Text_Medium.svg.",
+      "size": 18,
+      "icons": {
+        "add-photo": {
+          "name": "Add Photo Medium",
+          "file": "assets/icons/medium/Add Photo_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "add": {
+          "name": "Add Medium",
+          "file": "assets/icons/medium/Add_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "alert": {
+          "name": "Alert Medium",
+          "file": "assets/icons/medium/Alert_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "arrow-back": {
+          "name": "Arrow Back Medium",
+          "file": "assets/icons/medium/Arrow Back_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "arrow-next": {
+          "name": "Arrow Next Medium",
+          "file": "assets/icons/medium/Arrow Next_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "automat": {
+          "name": "Automat Medium",
+          "file": "assets/icons/medium/Automat_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "block": {
+          "name": "Block Medium",
+          "file": "assets/icons/medium/Block_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "calendar": {
+          "name": "Calendar Medium",
+          "file": "assets/icons/medium/Calendar_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "change": {
+          "name": "Change Medium",
+          "file": "assets/icons/medium/Change_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "chat-1": {
+          "name": "Chat 1 Medium",
+          "file": "assets/icons/medium/Chat_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "chat": {
+          "name": "Chat Medium",
+          "file": "assets/icons/medium/Chat_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "close": {
+          "name": "Close Medium",
+          "file": "assets/icons/medium/Close_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "comparison": {
+          "name": "Comparison Medium",
+          "file": "assets/icons/medium/Comparison_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "compass": {
+          "name": "Compass Medium",
+          "file": "assets/icons/medium/Compass_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "copy": {
+          "name": "Copy Medium",
+          "file": "assets/icons/medium/Copy_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "data": {
+          "name": "Data Medium",
+          "file": "assets/icons/medium/Data_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "delete": {
+          "name": "Delete Medium",
+          "file": "assets/icons/medium/Delete_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "done-1": {
+          "name": "Done 1 Medium",
+          "file": "assets/icons/medium/Done_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "done": {
+          "name": "Done Medium",
+          "file": "assets/icons/medium/Done_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "dot": {
+          "name": "Dot Medium",
+          "file": "assets/icons/medium/Dot_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "download": {
+          "name": "Download Medium",
+          "file": "assets/icons/medium/Download_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "exit": {
+          "name": "Exit Medium",
+          "file": "assets/icons/medium/Exit_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "export": {
+          "name": "Export Medium",
+          "file": "assets/icons/medium/Export_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "fail": {
+          "name": "Fail Medium",
+          "file": "assets/icons/medium/Fail_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "fenologi": {
+          "name": "Fenologi Medium",
+          "file": "assets/icons/medium/Fenologi_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "flag": {
+          "name": "Flag Medium",
+          "file": "assets/icons/medium/Flag_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "hide": {
+          "name": "Hide Medium",
+          "file": "assets/icons/medium/Hide_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "high-1": {
+          "name": "High 1 Medium",
+          "file": "assets/icons/medium/High_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "high": {
+          "name": "High Medium",
+          "file": "assets/icons/medium/High_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "history": {
+          "name": "History Medium",
+          "file": "assets/icons/medium/History_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "load": {
+          "name": "Load Medium",
+          "file": "assets/icons/medium/Load_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "lock": {
+          "name": "Lock Medium",
+          "file": "assets/icons/medium/Lock_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "low-1": {
+          "name": "Low 1 Medium",
+          "file": "assets/icons/medium/Low_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "low": {
+          "name": "Low Medium",
+          "file": "assets/icons/medium/Low_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "medium-1": {
+          "name": "Medium 1 Medium",
+          "file": "assets/icons/medium/Medium_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "medium": {
+          "name": "Medium Medium",
+          "file": "assets/icons/medium/Medium_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "minus": {
+          "name": "Minus Medium",
+          "file": "assets/icons/medium/Minus_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "note": {
+          "name": "Note Medium",
+          "file": "assets/icons/medium/Note_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "ok": {
+          "name": "Ok Medium",
+          "file": "assets/icons/medium/Ok_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "open": {
+          "name": "Open Medium",
+          "file": "assets/icons/medium/Open_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "pattern": {
+          "name": "Pattern Medium",
+          "file": "assets/icons/medium/Pattern_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "pause-1": {
+          "name": "Pause 1 Medium",
+          "file": "assets/icons/medium/Pause_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "pause": {
+          "name": "Pause Medium",
+          "file": "assets/icons/medium/Pause_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "person": {
+          "name": "Person Medium",
+          "file": "assets/icons/medium/Person_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "phone": {
+          "name": "Phone Medium",
+          "file": "assets/icons/medium/Phone_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "photo": {
+          "name": "Photo Medium",
+          "file": "assets/icons/medium/Photo_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "pin": {
+          "name": "Pin Medium",
+          "file": "assets/icons/medium/Pin_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "play-1": {
+          "name": "Play 1 Medium",
+          "file": "assets/icons/medium/Play_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "play": {
+          "name": "Play Medium",
+          "file": "assets/icons/medium/Play_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "plus": {
+          "name": "Plus Medium",
+          "file": "assets/icons/medium/Plus_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "print": {
+          "name": "Print Medium",
+          "file": "assets/icons/medium/Print_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "profile": {
+          "name": "Profile Medium",
+          "file": "assets/icons/medium/Profile_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "question-1": {
+          "name": "Question 1 Medium",
+          "file": "assets/icons/medium/Question_1_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "question": {
+          "name": "Question Medium",
+          "file": "assets/icons/medium/Question_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "recipes": {
+          "name": "Recipes Medium",
+          "file": "assets/icons/medium/Recipes_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "refresh": {
+          "name": "Refresh Medium",
+          "file": "assets/icons/medium/Refresh_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "return": {
+          "name": "Return Medium",
+          "file": "assets/icons/medium/Return_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "search": {
+          "name": "Search Medium",
+          "file": "assets/icons/medium/Search_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "select": {
+          "name": "Select Medium",
+          "file": "assets/icons/medium/Select_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "setting": {
+          "name": "Setting Medium",
+          "file": "assets/icons/medium/Setting_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "share": {
+          "name": "Share Medium",
+          "file": "assets/icons/medium/Share_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "solar": {
+          "name": "Solar Medium",
+          "file": "assets/icons/medium/Solar_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "szr": {
+          "name": "SZR Medium",
+          "file": "assets/icons/medium/SZR_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "task-day": {
+          "name": "Task Day Medium",
+          "file": "assets/icons/medium/Task Day_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "task": {
+          "name": "Task Medium",
+          "file": "assets/icons/medium/Task_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "unlink": {
+          "name": "Unlink Medium",
+          "file": "assets/icons/medium/Unlink_Medium.svg",
+          "usage": "Medium interface icon"
+        },
+        "users": {
+          "name": "Users Medium",
+          "file": "assets/icons/medium/Users_Medium.svg",
+          "usage": "Medium interface icon"
+        }
+      }
     }
   }
 }
