@@ -1,0 +1,22 @@
+{
+  "collections": {
+    "small": {
+      "description": "Small 14px GrossFarm interface icons.",
+      "size": 14,
+      "icons": {
+        "chevron": {
+          "name": "Chevron Small",
+          "file": "assets/icons/small/chevron-small.svg",
+          "sourceFile": "Chevron_Small.svg",
+          "usage": "Select controls, dropdown triggers, compact disclosure controls"
+        },
+        "info": {
+          "name": "Info Small",
+          "file": "assets/icons/small/info-small.svg",
+          "sourceFile": "Info_Small.svg",
+          "usage": "Helper text, tooltip triggers, compact informational labels"
+        }
+      }
+    }
+  }
+}
