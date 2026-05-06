@@ -358,6 +358,122 @@
           "usage": "Medium interface icon"
         }
       }
+    },
+    "bigStroke": {
+      "description": "BigStroke 24px GrossFarm interface icons. Project filenames preserve the design-system pattern Text_Big.svg.",
+      "size": 24,
+      "icons": {
+        "add": {
+          "name": "Add Big",
+          "file": "assets/icons/big-stroke/Add_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "analytic": {
+          "name": "Analytic Big",
+          "file": "assets/icons/big-stroke/Analytic_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "automatic": {
+          "name": "Automatic Big",
+          "file": "assets/icons/big-stroke/Automatic_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "country": {
+          "name": "Country Big",
+          "file": "assets/icons/big-stroke/Country_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "data": {
+          "name": "Data Big",
+          "file": "assets/icons/big-stroke/Data_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "edit": {
+          "name": "Edit Big",
+          "file": "assets/icons/big-stroke/Edit_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "equipment": {
+          "name": "Equipment Big",
+          "file": "assets/icons/big-stroke/Equipment_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "fenologi": {
+          "name": "Fenologi Big",
+          "file": "assets/icons/big-stroke/Fenologi_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "group": {
+          "name": "Group Big",
+          "file": "assets/icons/big-stroke/Group_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "home": {
+          "name": "Home Big",
+          "file": "assets/icons/big-stroke/Home_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "language": {
+          "name": "Language Big",
+          "file": "assets/icons/big-stroke/Language_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "lighting": {
+          "name": "Lighting Big",
+          "file": "assets/icons/big-stroke/Lighting_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "message": {
+          "name": "Message Big",
+          "file": "assets/icons/big-stroke/Message_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "more": {
+          "name": "More Big",
+          "file": "assets/icons/big-stroke/More_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "person": {
+          "name": "Person Big",
+          "file": "assets/icons/big-stroke/Person_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "registry": {
+          "name": "Registry Big",
+          "file": "assets/icons/big-stroke/Registry_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "setting": {
+          "name": "Setting Big",
+          "file": "assets/icons/big-stroke/Setting_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "snowflake": {
+          "name": "Snowflake Big",
+          "file": "assets/icons/big-stroke/Snowflake_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "szr": {
+          "name": "SZR Big",
+          "file": "assets/icons/big-stroke/SZR_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "task": {
+          "name": "Task Big",
+          "file": "assets/icons/big-stroke/Task_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "techmap": {
+          "name": "TechMap Big",
+          "file": "assets/icons/big-stroke/TechMap_Big.svg",
+          "usage": "BigStroke interface icon"
+        },
+        "watering": {
+          "name": "Watering Big",
+          "file": "assets/icons/big-stroke/Watering_Big.svg",
+          "usage": "BigStroke interface icon"
+        }
+      }
     }
   }
 }
