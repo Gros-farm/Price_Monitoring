@@ -474,6 +474,172 @@
           "usage": "BigStroke interface icon"
         }
       }
+    },
+    "bigFill": {
+      "description": "BigFill 24px GrossFarm filled interface icons. Project filenames preserve the design-system pattern Text_Big.svg.",
+      "size": 24,
+      "icons": {
+        "acidity": {
+          "name": "Acidity Big",
+          "file": "assets/icons/big-fill/Acidity_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "b": {
+          "name": "B Big",
+          "file": "assets/icons/big-fill/B_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "ca": {
+          "name": "Ca Big",
+          "file": "assets/icons/big-fill/Ca_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "co": {
+          "name": "Co Big",
+          "file": "assets/icons/big-fill/Co_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "co2": {
+          "name": "CO2 Big",
+          "file": "assets/icons/big-fill/CO2_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "cold": {
+          "name": "Cold Big",
+          "file": "assets/icons/big-fill/Cold_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "cu": {
+          "name": "Cu Big",
+          "file": "assets/icons/big-fill/Cu_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "dry": {
+          "name": "Dry Big",
+          "file": "assets/icons/big-fill/Dry_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "ec": {
+          "name": "EC Big",
+          "file": "assets/icons/big-fill/EC_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "fe": {
+          "name": "Fe Big",
+          "file": "assets/icons/big-fill/Fe_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "fog": {
+          "name": "Fog Big",
+          "file": "assets/icons/big-fill/Fog_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "heating": {
+          "name": "Heating Big",
+          "file": "assets/icons/big-fill/Heating_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "humidity": {
+          "name": "Humidity Big",
+          "file": "assets/icons/big-fill/Humidity_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "k": {
+          "name": "K Big",
+          "file": "assets/icons/big-fill/K_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "lamp": {
+          "name": "Lamp Big",
+          "file": "assets/icons/big-fill/Lamp_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "light": {
+          "name": "Light Big",
+          "file": "assets/icons/big-fill/Light_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "mg": {
+          "name": "Mg Big",
+          "file": "assets/icons/big-fill/Mg_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "mn": {
+          "name": "Mn Big",
+          "file": "assets/icons/big-fill/Mn_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "mo": {
+          "name": "Mo Big",
+          "file": "assets/icons/big-fill/Mo_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "n": {
+          "name": "N Big",
+          "file": "assets/icons/big-fill/N_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "p": {
+          "name": "P Big",
+          "file": "assets/icons/big-fill/P_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "plant": {
+          "name": "Plant Big",
+          "file": "assets/icons/big-fill/Plant_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "pressure": {
+          "name": "Pressure Big",
+          "file": "assets/icons/big-fill/Pressure_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "s": {
+          "name": "S Big",
+          "file": "assets/icons/big-fill/S_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "salt": {
+          "name": "Salt Big",
+          "file": "assets/icons/big-fill/Salt_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "si": {
+          "name": "Si Big",
+          "file": "assets/icons/big-fill/Si_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "solar": {
+          "name": "Solar Big",
+          "file": "assets/icons/big-fill/Solar_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "thermometer": {
+          "name": "Thermometer Big",
+          "file": "assets/icons/big-fill/Thermometer_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "watering": {
+          "name": "Watering Big",
+          "file": "assets/icons/big-fill/Watering_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "wind": {
+          "name": "Wind Big",
+          "file": "assets/icons/big-fill/Wind_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "window": {
+          "name": "Window Big",
+          "file": "assets/icons/big-fill/Window_Big.svg",
+          "usage": "BigFill interface icon"
+        },
+        "zn": {
+          "name": "Zn Big",
+          "file": "assets/icons/big-fill/Zn_Big.svg",
+          "usage": "BigFill interface icon"
+        }
+      }
     }
   }
 }
