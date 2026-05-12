@@ -959,48 +959,24 @@ body {
   width: 24px;
   height: 24px;
   flex: 0 0 24px;
-  color: currentColor;
+  background: currentColor;
+  -webkit-mask: var(--menu-icon) center / 24px 24px no-repeat;
+  mask: var(--menu-icon) center / 24px 24px no-repeat;
 }
 
-.menu-icon::before,
-.menu-icon::after {
-  content: "";
-  position: absolute;
-  border: 1.4px solid currentColor;
-}
-
-.menu-icon--home::before { inset: 7px 4px 3px; border-radius: 3px; }
-.menu-icon--home::after { width: 11px; height: 11px; left: 6px; top: 3px; border-right: 0; border-bottom: 0; transform: rotate(45deg); }
-.menu-icon--focus::before { inset: 4px; border-radius: 7px; }
-.menu-icon--focus::after { inset: 9px; border-radius: 50%; }
-.menu-icon--file::before,
-.menu-icon--journal::before { inset: 3px 5px; border-radius: 3px; }
-.menu-icon--file::after,
-.menu-icon--journal::after { width: 8px; height: 1px; left: 8px; top: 12px; border-width: 1px 0 0; }
-.menu-icon--calendar::before { inset: 4px 3px; border-radius: 4px; }
-.menu-icon--calendar::after { width: 10px; height: 5px; left: 7px; top: 10px; border-width: 0 0 1.4px 1.4px; transform: rotate(-45deg); }
-.menu-icon--tool::before { width: 18px; height: 5px; left: 3px; top: 10px; border-radius: 8px; transform: rotate(-45deg); }
-.menu-icon--tool::after { width: 7px; height: 7px; right: 3px; top: 3px; border-radius: 50%; }
-.menu-icon--climate::before { width: 6px; height: 16px; left: 6px; top: 2px; border-radius: 8px; }
-.menu-icon--climate::after { width: 5px; height: 5px; left: 13px; top: 6px; border-radius: 50%; }
-.menu-icon--sun::before { width: 14px; height: 7px; left: 5px; top: 10px; border-width: 1.4px 0 0; border-radius: 14px 14px 0 0; }
-.menu-icon--sun::after { width: 18px; height: 1px; left: 3px; top: 18px; border-width: 1.4px 0 0; }
-.menu-icon--irrigation::before { width: 15px; height: 9px; left: 4px; top: 5px; border-radius: 3px; transform: rotate(-10deg); }
-.menu-icon--irrigation::after { width: 1px; height: 8px; right: 5px; bottom: 3px; border-width: 0 1.4px 0 0; }
-.menu-icon--table::before,
-.menu-icon--grid::before { inset: 3px; border-radius: 4px; }
-.menu-icon--table::after,
-.menu-icon--grid::after {
-  inset: 3px;
-  border-width: 0;
-  background:
-    linear-gradient(currentColor, currentColor) 50% 0 / 1.4px 100% no-repeat,
-    linear-gradient(currentColor, currentColor) 0 50% / 100% 1.4px no-repeat;
-}
-.menu-icon--chart::before { inset: 4px 3px; border-radius: 4px; }
-.menu-icon--chart::after { width: 11px; height: 6px; left: 7px; top: 10px; border-width: 0 0 1.4px 1.4px; transform: skewX(-20deg); }
-.menu-icon--percent::before { inset: 3px; border-radius: 5px; }
-.menu-icon--percent::after { width: 11px; height: 1px; left: 6px; top: 11px; border-width: 1.4px 0 0; transform: rotate(-45deg); }
+.menu-icon--home { --menu-icon: url("./assets/icons/big-stroke/Home_Big.svg"); }
+.menu-icon--focus { --menu-icon: url("./assets/icons/big-stroke/Data_Big.svg"); }
+.menu-icon--file { --menu-icon: url("./assets/icons/big-stroke/TechMap_Big.svg"); }
+.menu-icon--calendar { --menu-icon: url("./assets/icons/big-stroke/Task_Big.svg"); }
+.menu-icon--tool { --menu-icon: url("./assets/icons/big-stroke/Equipment_Big.svg"); }
+.menu-icon--climate { --menu-icon: url("./assets/icons/big-stroke/Snowflake_Big.svg"); }
+.menu-icon--sun { --menu-icon: url("./assets/icons/big-stroke/Lighting_Big.svg"); }
+.menu-icon--irrigation { --menu-icon: url("./assets/icons/big-stroke/Watering_Big.svg"); }
+.menu-icon--table { --menu-icon: url("./assets/icons/big-stroke/Registry_Big.svg"); }
+.menu-icon--journal { --menu-icon: url("./assets/icons/big-stroke/SZR_Big.svg"); }
+.menu-icon--grid { --menu-icon: url("./assets/icons/big-stroke/Registry_Big.svg"); }
+.menu-icon--chart { --menu-icon: url("./assets/icons/big-stroke/Analytic_Big.svg"); }
+.menu-icon--percent { --menu-icon: url("./assets/icons/medium/Comparison_Medium.svg"); }
 
 .app-main {
   padding: 18px 40px 0 240px;
@@ -1303,12 +1279,30 @@ body {
 .monitor-card td:nth-child(4) { width: 98px; }
 
 .monitor-card .product-check {
+  appearance: none;
   width: 18px;
   height: 18px;
   margin: 0;
   border: 1px solid #828282;
   border-radius: 4px;
-  accent-color: #000000;
+  background: #fdfdfd;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.monitor-card .product-check:checked {
+  border-color: #000000;
+  background:
+    #fdfdfd
+    url("./assets/icons/medium/Ok_Medium.svg")
+    center / 14px 14px
+    no-repeat;
+}
+
+.monitor-card .product-check:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.18);
+  outline-offset: 2px;
 }
 
 .monitor-card .product-dot {
