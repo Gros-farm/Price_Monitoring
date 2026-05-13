@@ -75,8 +75,13 @@
                 <span class="visually-hidden">Поиск товара</span>
                 <input id="searchInput" type="search" placeholder="Найти товар" autocomplete="off" />
               </label>
+              <button class="refresh-button" id="refreshButton" type="button">
+                <span class="refresh-button__icon" aria-hidden="true"></span>
+                <span>Обновить</span>
+              </button>
               <p id="averageNote">Приблизительная закупочная цена<br />~ на 30% ниже розничной</p>
             </div>
+            <div class="data-status" id="dataStatus" aria-live="polite"></div>
 
             <div class="category-row" id="categoryRow" aria-label="Категории товаров"></div>
 

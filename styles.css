@@ -1188,10 +1188,10 @@ body {
 
 .monitor-card .catalog-toolbar {
   display: grid;
-  grid-template-columns: 338px 211px;
+  grid-template-columns: 338px 114px;
   align-items: center;
-  column-gap: 32px;
-  margin: 0 0 20px;
+  column-gap: 16px;
+  margin: 0 0 8px;
 }
 
 .monitor-card input[type="search"] {
@@ -1211,11 +1211,59 @@ body {
 }
 
 .monitor-card .catalog-toolbar p {
+  grid-column: 1 / -1;
   width: 211px;
   max-width: none;
-  margin: 0;
+  margin: 4px 0 0;
   color: #828282;
   font-size: 12px;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.refresh-button {
+  width: 114px;
+  height: 34px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background: #fdfdfd;
+  color: #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: #f1f1f1;
+}
+
+.refresh-button:disabled {
+  color: #828282;
+  cursor: not-allowed;
+}
+
+.refresh-button__icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  background: currentColor;
+  -webkit-mask: url("./assets/icons/medium/Refresh_Medium.svg") center / 18px 18px no-repeat;
+  mask: url("./assets/icons/medium/Refresh_Medium.svg") center / 18px 18px no-repeat;
+}
+
+.refresh-button.is-loading .refresh-button__icon {
+  animation: spin 800ms linear infinite;
+}
+
+.data-status {
+  min-height: 16px;
+  margin-bottom: 12px;
+  color: #828282;
+  font-size: 11px;
   font-weight: 300;
   line-height: 1.2;
 }

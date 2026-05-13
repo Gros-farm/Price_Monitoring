@@ -1,9 +1,9 @@
 const stores = [
   { id: "auchan", name: "Ашан", logo: "./assets/figma/logo-auchan.png", color: "#ffffff", logoClass: "store-logo--auchan" },
-  { id: "lenta", name: "Лента", logo: "./assets/figma/logo-lenta.svg", color: "#003b95" },
   { id: "metro", name: "Metro", short: "M", color: "#014171" },
-  { id: "azbuka", name: "Азбука вкуса", logo: "./assets/figma/logo-azbuka.svg", color: "#134525" },
 ];
+
+const REFRESH_INTERVAL_MS = 2 * 60 * 60 * 1000;
 
 const categories = [
   "Фрукты",
@@ -177,6 +177,7 @@ const state = {
   categories: new Set(categories),
   selectedIds: new Set(),
   loadingStoreId: null,
+  refreshingStoreId: null,
   loadError: "",
   dataNotice: "",
 };
@@ -190,6 +191,8 @@ const elements = {
   chartEmpty: document.querySelector("#chartEmpty"),
   toast: document.querySelector("#selectionToast"),
   averageNote: document.querySelector("#averageNote"),
+  refreshButton: document.querySelector("#refreshButton"),
+  dataStatus: document.querySelector("#dataStatus"),
 };
 
 const catalog = stores.flatMap((store) =>
@@ -211,9 +214,10 @@ const catalog = stores.flatMap((store) =>
 
 const externalCatalogByStore = {};
 const externalNoticeByStore = {};
+const externalUpdatedAtByStore = {};
 
 const storeDataSources = {
-  pyaterochka: "./data/pyaterochka-products.json",
+  auchan: "./data/auchan-products.json",
 };
 
 function withStoreFlavor(name, storeId, index) {
@@ -274,21 +278,23 @@ function currentCatalog() {
 
 function renderRows() {
   if (state.loadingStoreId === state.storeId) {
-    elements.averageNote.innerHTML = "Загружаем ассортимент<br />и цены...";
+    elements.averageNote.innerHTML = "Загружаем сохраненный<br />каталог и цены...";
     elements.rows.innerHTML = `
       <tr class="loading-row">
         <td colspan="4">
           <span class="loader" aria-hidden="true"></span>
-          Загружаем реальные позиции выбранной сети
+          Загружаем позиции выбранной сети
         </td>
       </tr>
     `;
+    updateRefreshUi();
     updateToast();
     return;
   }
 
   const products = filteredProducts();
   elements.averageNote.innerHTML = state.dataNotice || externalNoticeByStore[state.storeId] || "Приблизительная закупочная цена<br />~ на 30% ниже розничной";
+  updateRefreshUi();
 
   if (state.loadError) {
     elements.rows.innerHTML = `
@@ -419,12 +425,61 @@ async function loadStoreCatalog(storeId) {
     const payload = await response.json();
     externalCatalogByStore[storeId] = normalizeExternalProducts(payload.products || [], storeId);
     externalNoticeByStore[storeId] = payload.notice || `Данные загружены для сети ${stores.find((store) => store.id === storeId).name}`;
+    externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
     state.dataNotice = externalNoticeByStore[storeId];
   } catch (error) {
-    state.loadError = "Не удалось загрузить внешний каталог Пятерочки. Сейчас показ невозможен без обновленного файла данных.";
+    state.loadError = "Не удалось загрузить сохраненный каталог. Проверьте, что файл данных доступен.";
     console.error(error);
   } finally {
     state.loadingStoreId = null;
+    rerender();
+  }
+}
+
+async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
+  if (storeId !== "auchan" || state.refreshingStoreId) return;
+
+  state.loadError = "";
+  state.refreshingStoreId = storeId;
+  state.dataNotice = onlyIfStale ? "Проверяем актуальность данных Ашана..." : "Обновляем каталог Ашана...";
+  renderRows();
+
+  const endpoint = onlyIfStale
+    ? "/api/stores/auchan/refresh-if-stale"
+    : "/api/stores/auchan/refresh";
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      cache: "no-store",
+    });
+    const payload = await response.json();
+    let fallbackApplied = false;
+
+    if (!response.ok) {
+      if (payload.fallback?.products?.length) {
+        externalCatalogByStore[storeId] = normalizeExternalProducts(payload.fallback.products, storeId);
+        externalNoticeByStore[storeId] = payload.fallback.notice || "Ашан: показан последний сохраненный каталог.";
+        externalUpdatedAtByStore[storeId] = payload.fallback.updatedAt || "";
+        state.dataNotice = "Не удалось обновить каталог Ашана. Показываем последний сохраненный список.";
+        fallbackApplied = true;
+      }
+      const error = new Error(payload.details || payload.error || "Не удалось обновить каталог Ашана.");
+      error.fallbackApplied = fallbackApplied;
+      throw error;
+    }
+
+    externalCatalogByStore[storeId] = normalizeExternalProducts(payload.products || [], storeId);
+    externalNoticeByStore[storeId] = payload.notice || "Ашан: каталог обновлен.";
+    externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
+    state.dataNotice = externalNoticeByStore[storeId];
+  } catch (error) {
+    if (!error.fallbackApplied) {
+      state.loadError = "Не удалось обновить каталог Ашана. Оставили последний сохраненный список.";
+    }
+    console.error(error);
+  } finally {
+    state.refreshingStoreId = null;
     rerender();
   }
 }
@@ -444,11 +499,50 @@ function normalizeExternalProducts(products, storeId) {
         name: product.name,
         category: product.category,
         price,
+        color: productColors[index % productColors.length],
         history: Array.isArray(product.history) && product.history.length
           ? product.history.map(Number)
           : makeHistory(price, index, storeId),
       };
     });
+}
+
+function updateRefreshUi() {
+  const isAuchan = state.storeId === "auchan";
+  const isLoading = state.loadingStoreId === state.storeId || state.refreshingStoreId === state.storeId;
+  const updatedAt = externalUpdatedAtByStore[state.storeId];
+
+  elements.refreshButton.hidden = !isAuchan;
+  elements.refreshButton.disabled = !isAuchan || isLoading;
+  elements.refreshButton.classList.toggle("is-loading", state.refreshingStoreId === state.storeId);
+
+  if (!isAuchan) {
+    elements.dataStatus.textContent = "";
+    return;
+  }
+
+  if (state.refreshingStoreId === state.storeId) {
+    elements.dataStatus.textContent = "Запрашиваем свежие данные с сайта Ашана...";
+    return;
+  }
+
+  if (updatedAt) {
+    elements.dataStatus.textContent = `Последнее обновление: ${formatDateTime(updatedAt)}`;
+    return;
+  }
+
+  elements.dataStatus.textContent = "Данные будут обновляться вручную или раз в 2 часа при открытой странице.";
+}
+
+function formatDateTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "неизвестно";
+  return date.toLocaleString("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 elements.storeSwitcher.addEventListener("click", (event) => {
@@ -458,6 +552,10 @@ elements.storeSwitcher.addEventListener("click", (event) => {
   state.selectedIds.clear();
   rerender();
   loadStoreCatalog(state.storeId);
+});
+
+elements.refreshButton.addEventListener("click", () => {
+  refreshStoreCatalog(state.storeId);
 });
 
 elements.categoryRow.addEventListener("click", (event) => {
@@ -492,3 +590,15 @@ elements.rows.addEventListener("change", (event) => {
 
 rerender();
 loadStoreCatalog(state.storeId);
+
+window.setInterval(() => {
+  if (state.storeId === "auchan") {
+    refreshStoreCatalog("auchan", { onlyIfStale: true });
+  }
+}, REFRESH_INTERVAL_MS);
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && state.storeId === "auchan") {
+    refreshStoreCatalog("auchan", { onlyIfStale: true });
+  }
+});

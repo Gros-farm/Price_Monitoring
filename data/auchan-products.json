@@ -1,0 +1,93 @@
+{
+  "storeId": "auchan",
+  "source": "cached-seed",
+  "sourceUrl": "https://www.auchan.ru/",
+  "updatedAt": "2026-05-12T13:45:00.000Z",
+  "notice": "Ашан: показан последний сохраненный каталог. Нажмите «Обновить», чтобы запросить свежие цены.",
+  "products": [
+    {
+      "id": "auchan-seed-tomaty-krasnye-450",
+      "name": "Томаты красные, 450 г",
+      "category": "Овощи",
+      "price": 300,
+      "history": [312, 309, 303, 300, 297, 300, 300]
+    },
+    {
+      "id": "auchan-seed-tomaty-cherri-500",
+      "name": "Томаты черри красные на ветке, 500 г",
+      "category": "Овощи",
+      "price": 189,
+      "history": [197, 195, 191, 189, 187, 189, 189]
+    },
+    {
+      "id": "auchan-seed-ogurcy-600",
+      "name": "Огурцы свежие, 600 г",
+      "category": "Овощи",
+      "price": 290,
+      "history": [302, 299, 293, 290, 287, 290, 290]
+    },
+    {
+      "id": "auchan-seed-banany",
+      "name": "Бананы, 1 кг",
+      "category": "Фрукты",
+      "price": 135,
+      "history": [140, 139, 136, 135, 134, 135, 135]
+    },
+    {
+      "id": "auchan-seed-limony-500",
+      "name": "Лимоны, 500 г",
+      "category": "Фрукты",
+      "price": 130,
+      "history": [135, 134, 131, 130, 129, 130, 130]
+    },
+    {
+      "id": "auchan-seed-avokado-hass",
+      "name": "Авокадо Хасс, 2 шт",
+      "category": "Фрукты",
+      "price": 300,
+      "history": [312, 309, 303, 300, 297, 300, 300]
+    },
+    {
+      "id": "auchan-seed-klubnika-250",
+      "name": "Клубника свежая, 250 г",
+      "category": "Ягоды",
+      "price": 299,
+      "history": [311, 308, 302, 299, 296, 299, 299]
+    },
+    {
+      "id": "auchan-seed-golubika-125",
+      "name": "Голубика свежая, 125 г",
+      "category": "Ягоды",
+      "price": 260,
+      "history": [270, 268, 263, 260, 257, 260, 260]
+    },
+    {
+      "id": "auchan-seed-ukrop-50",
+      "name": "Укроп свежий, 50 г",
+      "category": "Зелень",
+      "price": 59,
+      "history": [61, 61, 60, 59, 58, 59, 59]
+    },
+    {
+      "id": "auchan-seed-petrushka-50",
+      "name": "Петрушка свежая, 50 г",
+      "category": "Зелень",
+      "price": 58,
+      "history": [60, 60, 59, 58, 57, 58, 58]
+    },
+    {
+      "id": "auchan-seed-shampinony-400",
+      "name": "Шампиньоны свежие, 400 г",
+      "category": "Грибы",
+      "price": 170,
+      "history": [177, 175, 172, 170, 168, 170, 170]
+    },
+    {
+      "id": "auchan-seed-veshenki-300",
+      "name": "Вешенки свежие, 300 г",
+      "category": "Грибы",
+      "price": 180,
+      "history": [187, 185, 182, 180, 178, 180, 180]
+    }
+  ]
+}
