@@ -1,1 +1,2 @@
+camoufox==0.4.11
 pyaterochka_api==0.2.2

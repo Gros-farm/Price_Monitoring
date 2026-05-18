@@ -2,11 +2,12 @@ const childProcess = require("node:child_process");
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
-const url = require("node:url");
 
 const ROOT = __dirname;
+const DATA_DIR = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(ROOT, "data");
+const SEED_DATA_DIR = path.join(ROOT, "data");
 const PORT = Number(process.env.PORT || 4173);
-const HOST = process.env.HOST || "127.0.0.1";
+const HOST = process.env.HOST || "0.0.0.0";
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
 
 const MIME_TYPES = {
@@ -20,10 +21,14 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((request, response) => {
-  const parsedUrl = url.parse(request.url, true);
+  const parsedUrl = new URL(request.url, `http://${request.headers.host || "localhost"}`);
+
+  if (parsedUrl.pathname === "/health" && request.method === "GET") {
+    return sendJson(response, 200, { status: "ok" });
+  }
 
   if (parsedUrl.pathname === "/api/stores/auchan/products" && request.method === "GET") {
-    return sendJsonFile(response, path.join(ROOT, "data", "auchan-products.json"));
+    return sendJsonFile(response, dataPath("auchan-products.json"));
   }
 
   if (parsedUrl.pathname === "/api/stores/auchan/refresh" && request.method === "POST") {
@@ -31,10 +36,10 @@ const server = http.createServer((request, response) => {
   }
 
   if (parsedUrl.pathname === "/api/stores/auchan/refresh-if-stale" && request.method === "POST") {
-    const dataPath = path.join(ROOT, "data", "auchan-products.json");
-    const stat = safeStat(dataPath);
+    const outputPath = dataPath("auchan-products.json");
+    const stat = safeStat(outputPath);
     if (stat && Date.now() - stat.mtimeMs < TWO_HOURS_MS) {
-      return sendJsonFile(response, dataPath);
+      return sendJsonFile(response, outputPath);
     }
     return refreshAuchan(response);
   }
@@ -47,13 +52,16 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Price monitor server: http://${HOST}:${PORT}/`);
+  const visibleHost = HOST === "0.0.0.0" ? "127.0.0.1" : HOST;
+  console.log(`Price monitor server: http://${visibleHost}:${PORT}/`);
 });
 
 function refreshAuchan(response) {
   const script = path.join(ROOT, "scripts", "fetch_auchan.py");
-  const output = path.join(ROOT, "data", "auchan-products.json");
-  const python = process.env.PYTHON || "python3";
+  const output = dataPath("auchan-products.json");
+  const python = findPython();
+
+  fs.mkdirSync(DATA_DIR, { recursive: true });
 
   const child = childProcess.spawn(
     python,
@@ -91,6 +99,35 @@ function refreshAuchan(response) {
       fallback: readJson(output),
     });
   });
+}
+
+function findPython() {
+  if (process.env.PYTHON) return process.env.PYTHON;
+
+  const candidates = [
+    path.join(ROOT, ".venv", "bin", "python3"),
+    path.join(ROOT, ".venv", "bin", "python"),
+    "/private/tmp/price-monitor-venv/bin/python",
+    "python3.12",
+    "python3",
+  ];
+
+  return candidates.find((candidate) => {
+    if (!candidate.startsWith("/")) return true;
+    return fs.existsSync(candidate);
+  }) || "python3";
+}
+
+function dataPath(fileName) {
+  const outputPath = path.join(DATA_DIR, fileName);
+  if (!fs.existsSync(outputPath)) {
+    const seedPath = path.join(SEED_DATA_DIR, fileName);
+    if (fs.existsSync(seedPath)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+      fs.copyFileSync(seedPath, outputPath);
+    }
+  }
+  return outputPath;
 }
 
 function sendStatic(request, response, pathname) {

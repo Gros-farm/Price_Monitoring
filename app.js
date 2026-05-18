@@ -4,6 +4,10 @@ const stores = [
 ];
 
 const REFRESH_INTERVAL_MS = 2 * 60 * 60 * 1000;
+const CHART_WIDTH = 1080;
+const CHART_HEIGHT = 402;
+const CHART_PADDING = { top: 16, right: 38, bottom: 42, left: 42 };
+const CHART_DATES = ["24.03", "25.03", "26.03", "27.03", "28.03", "29.03", "30.03"];
 
 const categories = [
   "Фрукты",
@@ -189,6 +193,8 @@ const elements = {
   rows: document.querySelector("#productRows"),
   chart: document.querySelector("#priceChart"),
   chartEmpty: document.querySelector("#chartEmpty"),
+  chartHoverHint: document.querySelector("#chartHoverHint"),
+  chartSummary: document.querySelector("#chartSummary"),
   toast: document.querySelector("#selectionToast"),
   averageNote: document.querySelector("#averageNote"),
   refreshButton: document.querySelector("#refreshButton"),
@@ -216,8 +222,20 @@ const externalCatalogByStore = {};
 const externalNoticeByStore = {};
 const externalUpdatedAtByStore = {};
 
+const hasServerApi = window.location.protocol !== "file:" && !window.location.hostname.endsWith("github.io");
+
 const storeDataSources = {
-  auchan: "./data/auchan-products.json",
+  auchan: hasServerApi ? "/api/stores/auchan/products" : "./data/auchan-products.json",
+};
+
+let chartScale = null;
+let chartHintTimer = null;
+let chartSummaryLocked = false;
+let chartIgnoreNextClick = false;
+const chartPointer = {
+  activeIndex: 0,
+  x: 0,
+  y: 0,
 };
 
 function withStoreFlavor(name, storeId, index) {
@@ -293,7 +311,7 @@ function renderRows() {
   }
 
   const products = filteredProducts();
-  elements.averageNote.innerHTML = state.dataNotice || externalNoticeByStore[state.storeId] || "Приблизительная закупочная цена<br />~ на 30% ниже розничной";
+  elements.averageNote.innerHTML = "Приблизительная закупочная цена<br />~ на 30% ниже розничной";
   updateRefreshUi();
 
   if (state.loadError) {
@@ -336,47 +354,222 @@ function renderRows() {
 }
 
 function drawChart() {
-  const selected = currentCatalog().filter((product) => state.selectedIds.has(product.id));
-  const width = 1080;
-  const height = 402;
-  const padding = { top: 5, right: 0, bottom: 42, left: 33 };
+  const selected = selectedProducts();
+  const width = CHART_WIDTH;
+  const height = CHART_HEIGHT;
+  const padding = CHART_PADDING;
   const values = selected.flatMap((product) => product.history);
-  const minValue = 0;
-  const maxValue = values.length ? Math.max(1000, Math.ceil(Math.max(...values) / 100) * 100) : 1000;
+  const domain = getChartDomain(values);
+  const minValue = domain.min;
+  const maxValue = domain.max;
   const range = Math.max(1, maxValue - minValue);
-  const dates = ["24.03", "25.03", "26.03", "27.03", "28.03", "29.03", "30.03"];
+  const dates = CHART_DATES;
 
-  const x = (index) => padding.left + (index * (width - padding.left - padding.right)) / 6;
-  const y = (value) => padding.top + ((maxValue - value) * 355) / range;
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const x = (index) => padding.left + (index * plotWidth) / (dates.length - 1);
+  const y = (value) => padding.top + ((maxValue - value) * plotHeight) / range;
+  chartScale = { x, y, plotWidth, plotHeight, minValue, maxValue };
 
   let markup = "";
-  for (let i = 0; i <= 10; i += 1) {
-    const lineY = padding.top + (i * 342) / 10 + 6.5;
-    const label = Math.round(maxValue - (i * range) / 10);
+  for (let i = 0; i <= 8; i += 1) {
+    const lineY = padding.top + (i * plotHeight) / 8;
+    const label = maxValue - (i * range) / 8;
     markup += `<line class="grid-line" x1="${padding.left}" y1="${lineY}" x2="${width - padding.right}" y2="${lineY}" />`;
-    markup += `<text class="axis-text" text-anchor="end" x="25" y="${lineY + 4}">${label}</text>`;
+    markup += `<text class="axis-text" text-anchor="end" x="${padding.left - 12}" y="${lineY + 4}">${formatAxisValue(label)}</text>`;
   }
 
   dates.forEach((date, index) => {
     const lineX = x(index);
-    markup += `<line class="grid-line-vertical" x1="${lineX}" y1="${padding.top}" x2="${lineX}" y2="${height - 29}" />`;
-    markup += `<text class="axis-text" text-anchor="middle" x="${lineX}" y="${height - 7}">${date}</text>`;
+    markup += `<line class="grid-line-vertical" x1="${lineX}" y1="${padding.top}" x2="${lineX}" y2="${height - padding.bottom}" />`;
+    markup += `<text class="axis-text axis-text--x" text-anchor="middle" x="${lineX}" y="${height - 13}">${date}</text>`;
   });
 
-  selected.forEach((product, productIndex) => {
+  selected.forEach((product) => {
     const color = product.color || categoryColors[product.category];
-    const path = product.history
-      .map((value, index) => `${index === 0 ? "M" : "L"} ${x(index)} ${y(value)}`)
-      .join(" ");
+    const points = product.history.map((value, index) => ({ x: x(index), y: y(value) }));
+    const path = buildSmoothPath(points);
     markup += `<path class="chart-path" d="${path}" stroke="${color}" />`;
-    product.history.forEach((value, index) => {
-      markup += `<circle class="chart-dot" cx="${x(index)}" cy="${y(value)}" r="4" fill="${color}" />`;
-    });
-    markup += `<text class="axis-text" x="${width - padding.right - 220}" y="${26 + productIndex * 18}" fill="${color}">${product.name.slice(0, 34)}</text>`;
   });
+
+  markup += `
+    <g class="chart-target" id="chartTarget" aria-hidden="true">
+      <line class="chart-target-line" data-target="x" x1="${padding.left}" y1="${padding.top}" x2="${padding.left}" y2="${height - padding.bottom}" />
+      <line class="chart-target-line" data-target="y" x1="${padding.left}" y1="${padding.top}" x2="${width - padding.right}" y2="${padding.top}" />
+      <circle class="chart-target-ring" cx="${padding.left}" cy="${padding.top}" r="10" />
+      <circle class="chart-target-dot" cx="${padding.left}" cy="${padding.top}" r="4" />
+      <g class="chart-target-label chart-target-label--y">
+        <rect x="${padding.left - 42}" y="${padding.top - 10}" width="34" height="20" rx="6" />
+        <text x="${padding.left - 25}" y="${padding.top + 4}" text-anchor="middle">0</text>
+      </g>
+      <g class="chart-target-label chart-target-label--x">
+        <rect x="${padding.left - 17}" y="${height - padding.bottom + 11}" width="34" height="20" rx="6" />
+        <text x="${padding.left}" y="${height - padding.bottom + 25}" text-anchor="middle">${dates[0]}</text>
+      </g>
+    </g>
+  `;
 
   elements.chart.innerHTML = markup;
   elements.chartEmpty.style.display = selected.length ? "none" : "flex";
+  resetChartInteraction();
+}
+
+function selectedProducts() {
+  return currentCatalog().filter((product) => state.selectedIds.has(product.id));
+}
+
+function getChartDomain(values) {
+  if (!values.length) {
+    return { min: 0, max: 1000 };
+  }
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const padding = Math.max(10, (max - min) * 0.16);
+  const roundedMin = Math.max(0, Math.floor((min - padding) / 10) * 10);
+  const roundedMax = Math.ceil((max + padding) / 10) * 10;
+
+  if (roundedMax === roundedMin) {
+    return { min: Math.max(0, roundedMin - 10), max: roundedMax + 10 };
+  }
+
+  return { min: roundedMin, max: roundedMax };
+}
+
+function formatAxisValue(value) {
+  const rounded = Math.round(value);
+  return rounded >= 1000 ? `${(rounded / 1000).toLocaleString("ru-RU", { maximumFractionDigits: 1 })}k` : String(rounded);
+}
+
+function buildSmoothPath(points) {
+  if (!points.length) return "";
+  if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
+
+  return points.reduce((path, point, index) => {
+    if (index === 0) return `M ${point.x} ${point.y}`;
+
+    const previous = points[index - 1];
+    const controlX = previous.x + (point.x - previous.x) / 2;
+    return `${path} C ${controlX} ${previous.y}, ${controlX} ${point.y}, ${point.x} ${point.y}`;
+  }, "");
+}
+
+function resetChartInteraction() {
+  window.clearTimeout(chartHintTimer);
+  chartSummaryLocked = false;
+  chartIgnoreNextClick = false;
+  elements.chartHoverHint.classList.remove("is-visible");
+  elements.chartSummary.hidden = true;
+  const target = elements.chart.querySelector("#chartTarget");
+  if (target) target.classList.remove("is-visible");
+}
+
+function closeChartSummary() {
+  chartSummaryLocked = false;
+  chartIgnoreNextClick = false;
+  elements.chartSummary.hidden = true;
+  elements.chartHoverHint.classList.remove("is-visible");
+  const target = elements.chart.querySelector("#chartTarget");
+  if (target) target.classList.remove("is-visible");
+}
+
+function getChartPointer(event) {
+  const rect = elements.chart.getBoundingClientRect();
+  const rawX = ((event.clientX - rect.left) * CHART_WIDTH) / rect.width;
+  const rawY = ((event.clientY - rect.top) * CHART_HEIGHT) / rect.height;
+  const plotLeft = CHART_PADDING.left;
+  const plotRight = CHART_WIDTH - CHART_PADDING.right;
+  const plotTop = CHART_PADDING.top;
+  const plotBottom = CHART_HEIGHT - CHART_PADDING.bottom;
+  const x = Math.min(plotRight, Math.max(plotLeft, rawX));
+  const y = Math.min(plotBottom, Math.max(plotTop, rawY));
+  const value = chartScale
+    ? chartScale.maxValue - ((y - plotTop) / (plotBottom - plotTop)) * (chartScale.maxValue - chartScale.minValue)
+    : 0;
+  const activeIndex = Math.min(
+    CHART_DATES.length - 1,
+    Math.max(0, Math.round(((x - plotLeft) / (plotRight - plotLeft)) * (CHART_DATES.length - 1))),
+  );
+
+  return { x, y, value, activeIndex };
+}
+
+function moveChartTarget(point) {
+  const target = elements.chart.querySelector("#chartTarget");
+  if (!target) return;
+
+  target.classList.add("is-visible");
+  target.querySelector('[data-target="x"]').setAttribute("x1", point.x);
+  target.querySelector('[data-target="x"]').setAttribute("x2", point.x);
+  target.querySelector('[data-target="y"]').setAttribute("y1", point.y);
+  target.querySelector('[data-target="y"]').setAttribute("y2", point.y);
+  target.querySelector(".chart-target-ring").setAttribute("cx", point.x);
+  target.querySelector(".chart-target-ring").setAttribute("cy", point.y);
+  target.querySelector(".chart-target-dot").setAttribute("cx", point.x);
+  target.querySelector(".chart-target-dot").setAttribute("cy", point.y);
+  target.querySelector(".chart-target-label--y rect").setAttribute("y", point.y - 10);
+  target.querySelector(".chart-target-label--y text").setAttribute("y", point.y + 4);
+  target.querySelector(".chart-target-label--y text").textContent = formatCursorValue(point.value);
+  target.querySelector(".chart-target-label--x rect").setAttribute("x", point.x - 17);
+  target.querySelector(".chart-target-label--x text").setAttribute("x", point.x);
+  target.querySelector(".chart-target-label--x text").textContent = CHART_DATES[point.activeIndex];
+}
+
+function formatCursorValue(value) {
+  return Number(value).toLocaleString("ru-RU", {
+    maximumFractionDigits: value >= 100 ? 0 : 1,
+  });
+}
+
+function positionChartPopup(element, point, width, height) {
+  const offset = 14;
+  const rect = elements.chart.getBoundingClientRect();
+  const visibleRight = Math.min(CHART_WIDTH, ((window.innerWidth - rect.left - 8) * CHART_WIDTH) / rect.width);
+  const visibleBottom = Math.min(CHART_HEIGHT, ((window.innerHeight - rect.top - 8) * CHART_HEIGHT) / rect.height);
+  const maxLeft = Math.max(8, visibleRight - width);
+  const maxTop = Math.max(8, visibleBottom - height);
+  const left = Math.min(maxLeft, point.x + offset);
+  const top = Math.min(maxTop, point.y + offset);
+  element.style.setProperty("--chart-popup-left", `${Math.max(8, left)}px`);
+  element.style.setProperty("--chart-popup-top", `${Math.max(8, top)}px`);
+}
+
+function scheduleChartHint() {
+  window.clearTimeout(chartHintTimer);
+  elements.chartHoverHint.classList.remove("is-visible");
+  chartHintTimer = window.setTimeout(() => {
+    if (!selectedProducts().length) return;
+    positionChartPopup(elements.chartHoverHint, chartPointer, 276, 54);
+    elements.chartHoverHint.classList.add("is-visible");
+  }, 2000);
+}
+
+function renderChartSummary(point) {
+  const selected = selectedProducts();
+  if (!selected.length) return;
+
+  chartSummaryLocked = true;
+  const date = CHART_DATES[point.activeIndex];
+  const rows = selected
+    .map((product) => {
+      const color = product.color || categoryColors[product.category];
+      const value = product.history[point.activeIndex] ?? product.price;
+      return `
+        <div class="chart-summary__row">
+          <span class="chart-summary__dot" style="background:${color}"></span>
+          <span class="chart-summary__name">${product.name}</span>
+          <span class="chart-summary__price">${formatPrice(value)}</span>
+        </div>
+      `;
+    })
+    .join("");
+
+  elements.chartSummary.innerHTML = `
+    <div class="chart-summary__date">${date}</div>
+    <div class="chart-summary__body">${rows}</div>
+  `;
+  positionChartPopup(elements.chartSummary, point, 338, Math.min(300, 50 + selected.length * 34));
+  elements.chartSummary.hidden = false;
 }
 
 function updateToast() {
@@ -428,7 +621,7 @@ async function loadStoreCatalog(storeId) {
     externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
     state.dataNotice = externalNoticeByStore[storeId];
   } catch (error) {
-    state.loadError = "Не удалось загрузить сохраненный каталог. Проверьте, что файл данных доступен.";
+    state.loadError = "Каталог сейчас недоступен. Попробуйте обновить данные позже.";
     console.error(error);
   } finally {
     state.loadingStoreId = null;
@@ -437,7 +630,7 @@ async function loadStoreCatalog(storeId) {
 }
 
 async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
-  if (storeId !== "auchan" || state.refreshingStoreId) return;
+  if (storeId !== "auchan" || state.refreshingStoreId || !hasServerApi) return;
 
   state.loadError = "";
   state.refreshingStoreId = storeId;
@@ -453,7 +646,7 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
       method: "POST",
       cache: "no-store",
     });
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
     let fallbackApplied = false;
 
     if (!response.ok) {
@@ -461,7 +654,7 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
         externalCatalogByStore[storeId] = normalizeExternalProducts(payload.fallback.products, storeId);
         externalNoticeByStore[storeId] = payload.fallback.notice || "Ашан: показан последний сохраненный каталог.";
         externalUpdatedAtByStore[storeId] = payload.fallback.updatedAt || "";
-        state.dataNotice = "Не удалось обновить каталог Ашана. Показываем последний сохраненный список.";
+        state.dataNotice = "Не удалось обновить каталог Ашана, попробуйте<br />еще раз. Показываем последний сохраненный список.";
         fallbackApplied = true;
       }
       const error = new Error(payload.details || payload.error || "Не удалось обновить каталог Ашана.");
@@ -475,7 +668,12 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
     state.dataNotice = externalNoticeByStore[storeId];
   } catch (error) {
     if (!error.fallbackApplied) {
-      state.loadError = "Не удалось обновить каталог Ашана. Оставили последний сохраненный список.";
+      if (currentCatalog().some((product) => product.storeId === storeId)) {
+        state.dataNotice = "Не удалось обновить каталог Ашана, попробуйте<br />еще раз. Показываем последний сохраненный список.";
+      } else {
+        state.dataNotice = "";
+        state.loadError = "Не удалось обновить каталог Ашана, попробуйте еще раз.";
+      }
     }
     console.error(error);
   } finally {
@@ -486,6 +684,16 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
 
 function wait(milliseconds) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function readJsonResponse(response) {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    const contentType = response.headers.get("content-type") || "неизвестный тип ответа";
+    throw new Error(`Сервер вернул не JSON (${contentType}).`);
+  }
 }
 
 function normalizeExternalProducts(products, storeId) {
@@ -510,10 +718,9 @@ function normalizeExternalProducts(products, storeId) {
 function updateRefreshUi() {
   const isAuchan = state.storeId === "auchan";
   const isLoading = state.loadingStoreId === state.storeId || state.refreshingStoreId === state.storeId;
-  const updatedAt = externalUpdatedAtByStore[state.storeId];
 
-  elements.refreshButton.hidden = !isAuchan;
-  elements.refreshButton.disabled = !isAuchan || isLoading;
+  elements.refreshButton.hidden = !isAuchan || !hasServerApi;
+  elements.refreshButton.disabled = !isAuchan || !hasServerApi || isLoading;
   elements.refreshButton.classList.toggle("is-loading", state.refreshingStoreId === state.storeId);
 
   if (!isAuchan) {
@@ -526,23 +733,22 @@ function updateRefreshUi() {
     return;
   }
 
-  if (updatedAt) {
-    elements.dataStatus.textContent = `Последнее обновление: ${formatDateTime(updatedAt)}`;
+  if (state.dataNotice) {
+    elements.dataStatus.innerHTML = state.dataNotice;
+    return;
+  }
+
+  if (externalNoticeByStore[state.storeId]) {
+    elements.dataStatus.textContent = externalNoticeByStore[state.storeId];
+    return;
+  }
+
+  if (!hasServerApi) {
+    elements.dataStatus.textContent = "Публичная версия показывает последний сохраненный каталог.";
     return;
   }
 
   elements.dataStatus.textContent = "Данные будут обновляться вручную или раз в 2 часа при открытой странице.";
-}
-
-function formatDateTime(value) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "неизвестно";
-  return date.toLocaleString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 elements.storeSwitcher.addEventListener("click", (event) => {
@@ -588,17 +794,70 @@ elements.rows.addEventListener("change", (event) => {
   drawChart();
 });
 
+elements.chart.addEventListener("pointermove", (event) => {
+  if (!selectedProducts().length || !chartScale || chartSummaryLocked) return;
+  const point = getChartPointer(event);
+  chartPointer.x = point.x;
+  chartPointer.y = point.y;
+  chartPointer.activeIndex = point.activeIndex;
+  moveChartTarget(point);
+  scheduleChartHint();
+});
+
+elements.chart.addEventListener("pointerleave", () => {
+  window.clearTimeout(chartHintTimer);
+  elements.chartHoverHint.classList.remove("is-visible");
+  if (chartSummaryLocked) return;
+  const target = elements.chart.querySelector("#chartTarget");
+  if (target) target.classList.remove("is-visible");
+});
+
+elements.chart.addEventListener("click", (event) => {
+  if (!selectedProducts().length || !chartScale) return;
+  event.stopPropagation();
+  if (chartIgnoreNextClick) {
+    chartIgnoreNextClick = false;
+    return;
+  }
+
+  if (chartSummaryLocked) {
+    closeChartSummary();
+    return;
+  }
+
+  const point = getChartPointer(event);
+  chartPointer.x = point.x;
+  chartPointer.y = point.y;
+  chartPointer.activeIndex = point.activeIndex;
+  elements.chartHoverHint.classList.remove("is-visible");
+  moveChartTarget(point);
+  renderChartSummary(point);
+});
+
+elements.chartSummary.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+function handleChartOutsidePress(event) {
+  if (!chartSummaryLocked || elements.chartSummary.contains(event.target)) return;
+  closeChartSummary();
+  chartIgnoreNextClick = elements.chart.contains(event.target);
+}
+
+document.addEventListener("pointerdown", handleChartOutsidePress, true);
+document.addEventListener("mousedown", handleChartOutsidePress, true);
+
 rerender();
 loadStoreCatalog(state.storeId);
 
 window.setInterval(() => {
-  if (state.storeId === "auchan") {
+  if (hasServerApi && state.storeId === "auchan") {
     refreshStoreCatalog("auchan", { onlyIfStale: true });
   }
 }, REFRESH_INTERVAL_MS);
 
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden && state.storeId === "auchan") {
+  if (hasServerApi && !document.hidden && state.storeId === "auchan") {
     refreshStoreCatalog("auchan", { onlyIfStale: true });
   }
 });

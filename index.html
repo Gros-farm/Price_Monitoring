@@ -14,20 +14,20 @@
         </a>
 
         <nav class="main-menu">
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--home"></span><span>Главная</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--focus"></span><span>Показатели</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--file"></span><span>Техкарты</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--calendar"></span><span>Таск-трекер</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--tool"></span><span>Оборудование</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--climate"></span><span>Климат</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--sun"></span><span>Освещение</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--irrigation"></span><span>Ирригация</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--table"></span><span>Таблица мониторинга</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--journal"></span><span>Журнал СЗР</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--grid"></span><span>Реестр объекта</span></a>
-          <a class="menu-item" href="#"><span class="menu-icon menu-icon--chart"></span><span>Аналитика</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Home_Big.svg" alt="" /><span>Главная</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Data_Big.svg" alt="" /><span>Показатели</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/TechMap_Big.svg" alt="" /><span>Техкарты</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Task_Big.svg" alt="" /><span>Таск-трекер</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Equipment_Big.svg" alt="" /><span>Оборудование</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Snowflake_Big.svg" alt="" /><span>Климат</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Lighting_Big.svg" alt="" /><span>Освещение</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Watering_Big.svg" alt="" /><span>Ирригация</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Registry_Big.svg" alt="" /><span>Таблица мониторинга</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/SZR_Big.svg" alt="" /><span>Журнал СЗР</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Registry_Big.svg" alt="" /><span>Реестр объекта</span></a>
+          <a class="menu-item" href="#"><img class="menu-icon" src="./assets/icons/big-stroke/Analytic_Big.svg" alt="" /><span>Аналитика</span></a>
           <a class="menu-item is-active" href="#" aria-current="page">
-            <span class="menu-icon menu-icon--percent"></span>
+            <img class="menu-icon" src="./assets/icons/medium/Comparison_Medium.svg" alt="" />
             <span>Мониторинг цен</span>
           </a>
         </nav>
@@ -62,6 +62,10 @@
 
           <section class="chart-panel" aria-label="График цен">
             <svg id="priceChart" viewBox="0 0 1080 402" role="img" aria-label="График динамики цен"></svg>
+            <div class="chart-hover-hint" id="chartHoverHint" aria-hidden="true">
+              Нажмите на график, чтобы увидеть сводную таблицу
+            </div>
+            <div class="chart-summary" id="chartSummary" hidden></div>
             <div class="chart-empty" id="chartEmpty">
               <strong>Выберите нужный город, сеть и товары</strong>
               <span>Отметьте товары в таблице ниже, чтобы увидеть динамику цен.</span>
@@ -76,7 +80,7 @@
                 <input id="searchInput" type="search" placeholder="Найти товар" autocomplete="off" />
               </label>
               <button class="refresh-button" id="refreshButton" type="button">
-                <span class="refresh-button__icon" aria-hidden="true"></span>
+                <img class="refresh-button__icon" src="./assets/icons/medium/Refresh_Medium.svg" alt="" />
                 <span>Обновить</span>
               </button>
               <p id="averageNote">Приблизительная закупочная цена<br />~ на 30% ниже розничной</p>

@@ -28,6 +28,65 @@ http://127.0.0.1:4173/
 
 Сервер отдает статический интерфейс и локальные API для обновления кеша данных.
 
+## Как выложить сайт с работающей кнопкой обновления
+
+Для кнопки **Обновить** нужен не статический хостинг, а web service: сервер должен принять `POST /api/stores/auchan/refresh`, запустить Python-сборщик и записать свежий `data/auchan-products.json`.
+
+Самый простой вариант без покупки домена — Render или Railway. Оба дадут бесплатный технический адрес вида `*.onrender.com` или `*.up.railway.app`.
+
+### Render
+
+1. Отправьте актуальную версию проекта в GitHub:
+
+```bash
+git add .
+git commit -m "Prepare server deployment"
+git push origin main
+```
+
+2. В Render создайте **New → Web Service**.
+3. Подключите репозиторий `Gros-farm/Price_Monitoring`.
+4. В настройках сервиса выберите:
+
+```text
+Runtime: Docker
+Branch: main
+Health Check Path: /health
+```
+
+5. Если Render не подтянет `render.yaml` автоматически, добавьте переменные:
+
+```text
+HOST=0.0.0.0
+DATA_DIR=/app/data
+```
+
+6. Нажмите **Deploy Web Service**.
+
+После деплоя сайт будет доступен по адресу Render, например:
+
+```text
+https://grosfarm-price-monitor.onrender.com/
+```
+
+### Railway
+
+1. Создайте новый Railway project из GitHub-репозитория.
+2. Railway найдет `Dockerfile` и соберет контейнер.
+3. В **Variables** можно добавить:
+
+```text
+HOST=0.0.0.0
+```
+
+4. В **Networking** включите публичный домен.
+
+Адрес будет вида:
+
+```text
+https://price-monitoring-production.up.railway.app/
+```
+
 ## Как обновляются данные Ашана
 
 Интерфейс не парсит сайт Ашана напрямую из браузера. Он читает последний сохраненный кеш:

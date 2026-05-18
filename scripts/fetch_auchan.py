@@ -26,6 +26,7 @@ from urllib.request import Request, build_opener
 
 
 TARGET_CATEGORIES = ("Фрукты", "Овощи", "Ягоды", "Зелень", "Грибы")
+CATEGORY_PRIORITY = ("Ягоды", "Зелень", "Грибы", "Овощи", "Фрукты")
 
 SEARCH_QUERIES = (
     "томаты",
@@ -40,6 +41,14 @@ SEARCH_QUERIES = (
     "петрушка",
     "шампиньоны",
     "вешенки",
+)
+
+CATALOG_URLS = (
+    "https://www.auchan.ru/catalog/ovoschi-frukty-zelen-griby-yagody/ovoschi/",
+    "https://www.auchan.ru/catalog/ovoschi-frukty-zelen-griby-yagody/frukty-yagody/",
+    "https://www.auchan.ru/catalog/ovoschi-frukty-zelen-griby-yagody/yagody/",
+    "https://www.auchan.ru/catalog/ovoschi-frukty-zelen-griby-yagody/zelen-salaty-griby/",
+    "https://www.auchan.ru/catalog/ovoschi-frukty-zelen-griby-yagody/griby/",
 )
 
 PRODUCT_KEYWORDS = {
@@ -116,6 +125,7 @@ PRODUCT_KEYWORDS = {
         "укроп",
         "петруш",
         "кинз",
+        "лук зелен",
         "зеленый лук",
         "зелёный лук",
         "базилик",
@@ -161,6 +171,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", default="data/auchan-products.json", help="Output JSON path.")
     parser.add_argument("--limit", type=int, default=120, help="Maximum products in the final JSON.")
     parser.add_argument("--query-delay", type=float, default=0.6, help="Delay between search requests.")
+    parser.add_argument("--headless", action="store_true", default=True, help="Run browser fallback in headless mode.")
+    parser.add_argument("--no-browser-fallback", action="store_true", help="Disable Camoufox fallback after QRator/HTTP failure.")
+    parser.add_argument("--debug-dir", default="", help="Optional directory for browser fallback HTML and screenshots.")
     return parser.parse_args()
 
 
@@ -168,7 +181,13 @@ def main() -> int:
     args = parse_args()
 
     try:
-        products = fetch_products(args.query_delay)
+        products = fetch_products(
+            args.query_delay,
+            limit=args.limit,
+            browser_fallback=not args.no_browser_fallback,
+            headless=args.headless,
+            debug_dir=Path(args.debug_dir) if args.debug_dir else None,
+        )
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         return 1
@@ -194,20 +213,30 @@ def main() -> int:
     return 0
 
 
-def fetch_products(query_delay: float) -> list[dict[str, Any]]:
+def fetch_products(
+    query_delay: float,
+    *,
+    limit: int,
+    browser_fallback: bool,
+    headless: bool,
+    debug_dir: Optional[Path],
+) -> list[dict[str, Any]]:
     opener = build_opener()
     products: list[dict[str, Any]] = []
     seen: set[str] = set()
 
-    for query in SEARCH_QUERIES:
-        page = fetch_search_page(opener, query)
-        for product in extract_products(page):
-            product_id = str(product.get("id") or product.get("url") or product.get("name"))
-            if product_id in seen:
-                continue
-            seen.add(product_id)
-            products.append(product)
-        time.sleep(query_delay)
+    try:
+        for query in SEARCH_QUERIES:
+            page = fetch_search_page(opener, query)
+            collect_products_from_page(page, products, seen)
+            if len(products) >= limit:
+                break
+            time.sleep(query_delay)
+    except RuntimeError as exc:
+        if not browser_fallback or not is_qrator_or_http_block(exc):
+            raise
+        print(f"HTTP fetch failed ({exc}). Trying Camoufox browser fallback...", file=sys.stderr)
+        return fetch_products_with_browser(query_delay, limit=limit, headless=headless, debug_dir=debug_dir)
 
     if not products:
         raise RuntimeError(
@@ -217,6 +246,101 @@ def fetch_products(query_delay: float) -> list[dict[str, Any]]:
         )
 
     return products
+
+
+def collect_products_from_page(page: str, products: list[dict[str, Any]], seen: set[str]) -> None:
+    for product in extract_products(page):
+        product_id = str(product.get("id") or product.get("url") or product.get("name"))
+        if product_id in seen:
+            continue
+        seen.add(product_id)
+        products.append(product)
+
+
+def is_qrator_or_http_block(error: RuntimeError) -> bool:
+    message = str(error).lower()
+    return any(marker in message for marker in ("qrator", "qauth", "http 401", "http 403", "no product data"))
+
+
+def fetch_products_with_browser(
+    query_delay: float,
+    *,
+    limit: int,
+    headless: bool,
+    debug_dir: Optional[Path],
+) -> list[dict[str, Any]]:
+    try:
+        from camoufox.sync_api import Camoufox
+    except ImportError as exc:
+        raise RuntimeError(
+            "Camoufox is not installed. Run:\n"
+            "  python3.12 -m pip install camoufox\n"
+            "  python3.12 -m camoufox fetch"
+        ) from exc
+
+    products: list[dict[str, Any]] = []
+    seen: set[str] = set()
+
+    with Camoufox(headless=headless, locale="ru-RU") as browser:
+        page = browser.new_page()
+        page.set_default_timeout(12000)
+
+        for catalog_url in CATALOG_URLS:
+            try:
+                page.goto(catalog_url, wait_until="commit", timeout=20000)
+                wait_for_browser_page(page)
+                body = page.content()
+                save_browser_debug(debug_dir, catalog_url, body, page)
+            except Exception as exc:
+                print(f"Skipped Auchan category {catalog_url!r}: {exc}", file=sys.stderr)
+                continue
+
+            if "qauth.js" in body or "__qrator" in body:
+                raise RuntimeError("Auchan returned QRator qauth challenge in browser fallback.")
+
+            collect_products_from_page(body, products, seen)
+            print(f"Auchan browser category {catalog_url!r}: {len(products)} raw products total", file=sys.stderr)
+            if len(products) >= limit:
+                break
+            time.sleep(query_delay)
+
+    if not products:
+        raise RuntimeError("Camoufox opened Auchan pages, but no product data was detected.")
+
+    return products
+
+
+def save_browser_debug(debug_dir: Optional[Path], label: str, body: str, page: Any) -> None:
+    if not debug_dir:
+        return
+
+    debug_dir.mkdir(parents=True, exist_ok=True)
+    slug = slugify(label.rstrip("/").split("/")[-1]) or "page"
+    (debug_dir / f"{slug}.html").write_text(body, encoding="utf-8")
+    try:
+        page.screenshot(path=str(debug_dir / f"{slug}.png"), full_page=False)
+    except Exception as exc:
+        print(f"Could not save screenshot for {label!r}: {exc}", file=sys.stderr)
+
+
+def wait_for_browser_page(page: Any) -> None:
+    try:
+        page.wait_for_load_state("networkidle", timeout=12000)
+    except Exception:
+        pass
+
+    selectors = (
+        "article",
+        "[data-testid*='product']",
+        "[class*='product']",
+        "script#__NEXT_DATA__",
+    )
+    for selector in selectors:
+        try:
+            page.wait_for_selector(selector, timeout=5000)
+            return
+        except Exception:
+            continue
 
 
 def fetch_search_page(opener: Any, query: str) -> str:
@@ -292,6 +416,26 @@ def extract_next_data_products(page: str) -> list[dict[str, Any]]:
 
 def extract_card_products(page: str) -> list[dict[str, Any]]:
     result = []
+    card_pattern = re.compile(
+        r"<a[^>]+class=[\"'][^\"']*productCardContentPanel_link[^\"']*[\"'][^>]+"
+        r"title=[\"'](?P<title>[^\"']+)[\"'][^>]+href=[\"'](?P<href>[^\"']+)[\"'][^>]*>\s*"
+        r"<p[^>]+class=[\"'][^\"']*productCardContentPanel_name[^\"']*[\"'][^>]*>"
+        r"(?P<name>.*?)</p>\s*</a>.*?"
+        r"<div[^>]+class=[\"'][^\"']*productCardContentPanel_price[^\"']*[\"'][^>]*>"
+        r"(?P<price>\d[\d\s]*(?:[,.]\d{1,2})?)",
+        re.S,
+    )
+    for match in card_pattern.finditer(page):
+        name = clean_text(match.group("name")) or clean_text(match.group("title"))
+        href = html.unescape(match.group("href"))
+        result.append(
+            {
+                "name": name,
+                "price": match.group("price"),
+                "url": f"https://www.auchan.ru{href}" if href.startswith("/") else href,
+            }
+        )
+
     for block in re.findall(r"(<article\b.*?</article>)", page, re.S):
         name_match = re.search(r'(?:aria-label|title)=["\']([^"\']{3,160})["\']', block)
         if not name_match:
@@ -342,7 +486,8 @@ def normalize_products(products: list[dict[str, Any]], limit: int) -> list[dict[
 
 def classify_product(name: str) -> Optional[str]:
     lowered = name.lower()
-    for category, keywords in PRODUCT_KEYWORDS.items():
+    for category in CATEGORY_PRIORITY:
+        keywords = PRODUCT_KEYWORDS[category]
         if any(keyword in lowered for keyword in keywords):
             return category
     return None
