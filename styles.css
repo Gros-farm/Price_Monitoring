@@ -471,10 +471,79 @@ input[type="search"] {
   font-size: 10px;
 }
 
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  appearance: none;
+  display: none;
+}
+
 input:focus,
 select:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(104, 101, 255, 0.12);
+}
+
+.search {
+  position: relative;
+  display: inline-flex;
+  width: 338px;
+  max-width: 100%;
+}
+
+.search input[type="search"] {
+  width: 100%;
+  height: 34px;
+  border: 1px solid #828282;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  padding: 8px 42px 8px 12px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.search input[type="search"]::placeholder {
+  color: #828282;
+}
+
+.search input[type="search"]:focus {
+  border-color: #000000;
+  box-shadow: none;
+  outline: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transform: translateY(-50%);
+}
+
+.search-clear[hidden] {
+  display: none;
+}
+
+.search-clear img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.search-clear:focus,
+.search-clear:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .store-switcher {
@@ -855,6 +924,10 @@ td {
   }
 
   input[type="search"] {
+    width: min(100%, 340px);
+  }
+
+  .search {
     width: min(100%, 340px);
   }
 
@@ -1347,20 +1420,31 @@ body {
   margin: 0 0 8px;
 }
 
-.monitor-card input[type="search"] {
+.monitor-card .search {
   width: 338px;
+}
+
+.monitor-card input[type="search"] {
+  width: 100%;
   height: 34px;
   border: 1px solid #828282;
   border-radius: 8px;
-  background: #fdfdfd;
+  background: #ffffff;
   color: #000000;
-  padding: 8px 12px;
+  padding: 8px 42px 8px 12px;
   font-size: 14px;
   font-weight: 300;
+  line-height: 1;
 }
 
 .monitor-card input[type="search"]::placeholder {
   color: #828282;
+}
+
+.monitor-card input[type="search"]:focus {
+  border-color: #000000;
+  box-shadow: none;
+  outline: none;
 }
 
 .monitor-card .catalog-toolbar p {

@@ -190,6 +190,7 @@ const elements = {
   storeSwitcher: document.querySelector("#storeSwitcher"),
   categoryRow: document.querySelector("#categoryRow"),
   searchInput: document.querySelector("#searchInput"),
+  searchClearButton: document.querySelector("#searchClearButton"),
   rows: document.querySelector("#productRows"),
   chart: document.querySelector("#priceChart"),
   chartEmpty: document.querySelector("#chartEmpty"),
@@ -779,6 +780,15 @@ elements.categoryRow.addEventListener("click", (event) => {
 
 elements.searchInput.addEventListener("input", (event) => {
   state.query = event.target.value;
+  elements.searchClearButton.hidden = !state.query;
+  renderRows();
+});
+
+elements.searchClearButton.addEventListener("click", () => {
+  elements.searchInput.value = "";
+  state.query = "";
+  elements.searchClearButton.hidden = true;
+  elements.searchInput.focus();
   renderRows();
 });
 
