@@ -9,6 +9,7 @@ const SEED_DATA_DIR = path.join(ROOT, "data");
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "0.0.0.0";
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
+const REFRESH_TIMEOUT_MS = Number(process.env.REFRESH_TIMEOUT_MS || 45000);
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -75,9 +76,16 @@ function refreshAuchan(response) {
 
   let stdout = "";
   let stderr = "";
+  let responded = false;
   const timeout = setTimeout(() => {
+    responded = true;
     child.kill("SIGTERM");
-  }, 90000);
+    return sendJson(response, 504, {
+      error: "Обновление каталога Ашана заняло слишком много времени",
+      details: `Сборщик остановлен по таймауту ${Math.round(REFRESH_TIMEOUT_MS / 1000)} секунд.`,
+      fallback: readJson(output),
+    });
+  }, REFRESH_TIMEOUT_MS);
 
   child.stdout.on("data", (chunk) => {
     stdout += chunk.toString();
@@ -89,6 +97,9 @@ function refreshAuchan(response) {
 
   child.on("close", (code) => {
     clearTimeout(timeout);
+    if (responded) return;
+    responded = true;
+
     if (code === 0) {
       return sendJsonFile(response, output);
     }
