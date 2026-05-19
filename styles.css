@@ -665,9 +665,29 @@ td {
 }
 
 .product-check {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--accent);
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 1px solid #323232;
+  border-radius: 0;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.product-check:checked {
+  border-color: #323232;
+  background:
+    #ffffff
+    url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 9.2L7.35 12.5L14 5.5' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 18px 18px
+    no-repeat;
+}
+
+.product-check:focus,
+.product-check:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .product-dot {
@@ -1461,29 +1481,30 @@ body {
 
 .monitor-card .product-check {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   margin: 0;
-  border: 1px solid #828282;
-  border-radius: 4px;
-  background: #fdfdfd;
+  border: 1px solid #323232;
+  border-radius: 0;
+  background: #ffffff;
   display: grid;
   place-items: center;
   cursor: pointer;
 }
 
 .monitor-card .product-check:checked {
-  border-color: #000000;
+  border-color: #323232;
   background:
-    #fdfdfd
-    url("./assets/icons/medium/Ok_Medium.svg")
-    center / 14px 14px
+    #ffffff
+    url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 9.2L7.35 12.5L14 5.5' stroke='%23323232' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 18px 18px
     no-repeat;
 }
 
+.monitor-card .product-check:focus,
 .monitor-card .product-check:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.18);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: none;
 }
 
 .monitor-card .product-dot {
