@@ -229,6 +229,10 @@ const storeDataSources = {
   auchan: hasServerApi ? "/api/stores/auchan/products" : "./data/auchan-products.json",
 };
 
+const storeRefreshSources = {
+  auchan: hasServerApi ? "/api/stores/auchan/refresh" : "./data/auchan-products.json",
+};
+
 let chartScale = null;
 let chartHintTimer = null;
 let chartSummaryLocked = false;
@@ -631,16 +635,23 @@ async function loadStoreCatalog(storeId) {
 }
 
 async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
-  if (storeId !== "auchan" || state.refreshingStoreId || !hasServerApi) return;
+  if (!storeRefreshSources[storeId] || state.refreshingStoreId) return;
 
   state.loadError = "";
   state.refreshingStoreId = storeId;
-  state.dataNotice = onlyIfStale ? "Проверяем актуальность данных Ашана..." : "Обновляем каталог Ашана...";
+  state.dataNotice = onlyIfStale ? "Проверяем сохраненный каталог..." : "Подтягиваем последний успешный каталог...";
   renderRows();
 
-  const endpoint = onlyIfStale
-    ? "/api/stores/auchan/refresh-if-stale"
-    : "/api/stores/auchan/refresh";
+  if (!hasServerApi) {
+    state.dataNotice = `Показан последний сохраненный каталог. Для нового сбора запустите агента: npm run agent:${storeId}.`;
+    state.refreshingStoreId = null;
+    rerender();
+    return;
+  }
+
+  const endpoint = hasServerApi && onlyIfStale
+    ? storeRefreshSources[storeId].replace(/\/refresh$/, "/refresh-if-stale")
+    : storeRefreshSources[storeId];
 
   try {
     const response = await fetch(endpoint, {
@@ -658,22 +669,22 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
         state.dataNotice = "Не удалось обновить каталог Ашана, попробуйте<br />еще раз. Показываем последний сохраненный список.";
         fallbackApplied = true;
       }
-      const error = new Error(payload.details || payload.error || "Не удалось обновить каталог Ашана.");
+      const error = new Error(payload.details || payload.error || "Не удалось подтянуть каталог.");
       error.fallbackApplied = fallbackApplied;
       throw error;
     }
 
     externalCatalogByStore[storeId] = normalizeExternalProducts(payload.products || [], storeId);
-    externalNoticeByStore[storeId] = payload.notice || "Ашан: каталог обновлен.";
+    externalNoticeByStore[storeId] = payload.notice || "Показан последний сохраненный каталог.";
     externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
     state.dataNotice = externalNoticeByStore[storeId];
   } catch (error) {
     if (!error.fallbackApplied) {
       if (currentCatalog().some((product) => product.storeId === storeId)) {
-        state.dataNotice = "Не удалось обновить каталог Ашана, попробуйте<br />еще раз. Показываем последний сохраненный список.";
+        state.dataNotice = "Не удалось подтянуть каталог. Показываем последний сохраненный список.";
       } else {
         state.dataNotice = "";
-        state.loadError = "Не удалось обновить каталог Ашана, попробуйте еще раз.";
+        state.loadError = "Не удалось загрузить каталог. Попробуйте открыть через локальный сервер или запустить агента.";
       }
     }
     console.error(error);
@@ -717,20 +728,20 @@ function normalizeExternalProducts(products, storeId) {
 }
 
 function updateRefreshUi() {
-  const isAuchan = state.storeId === "auchan";
+  const hasRefreshSource = Boolean(storeRefreshSources[state.storeId]);
   const isLoading = state.loadingStoreId === state.storeId || state.refreshingStoreId === state.storeId;
 
-  elements.refreshButton.hidden = !isAuchan || !hasServerApi;
-  elements.refreshButton.disabled = !isAuchan || !hasServerApi || isLoading;
+  elements.refreshButton.hidden = !hasRefreshSource;
+  elements.refreshButton.disabled = !hasRefreshSource || isLoading;
   elements.refreshButton.classList.toggle("is-loading", state.refreshingStoreId === state.storeId);
 
-  if (!isAuchan) {
+  if (!hasRefreshSource) {
     elements.dataStatus.textContent = "";
     return;
   }
 
   if (state.refreshingStoreId === state.storeId) {
-    elements.dataStatus.textContent = "Запрашиваем свежие данные с сайта Ашана...";
+    elements.dataStatus.textContent = "Проверяем последний сохраненный каталог...";
     return;
   }
 
@@ -745,11 +756,11 @@ function updateRefreshUi() {
   }
 
   if (!hasServerApi) {
-    elements.dataStatus.textContent = "Публичная версия показывает последний сохраненный каталог.";
+    elements.dataStatus.textContent = "Локальный файл показывает последний сохраненный каталог. Новый сбор запускается агентом.";
     return;
   }
 
-  elements.dataStatus.textContent = "Данные будут обновляться вручную или раз в 2 часа при открытой странице.";
+  elements.dataStatus.textContent = "Данные обновляет отдельный агент. Сайт показывает последний успешный каталог.";
 }
 
 elements.storeSwitcher.addEventListener("click", (event) => {
@@ -861,13 +872,13 @@ rerender();
 loadStoreCatalog(state.storeId);
 
 window.setInterval(() => {
-  if (hasServerApi && state.storeId === "auchan") {
-    refreshStoreCatalog("auchan", { onlyIfStale: true });
+  if (hasServerApi && storeRefreshSources[state.storeId]) {
+    refreshStoreCatalog(state.storeId, { onlyIfStale: true });
   }
 }, REFRESH_INTERVAL_MS);
 
 document.addEventListener("visibilitychange", () => {
-  if (hasServerApi && !document.hidden && state.storeId === "auchan") {
-    refreshStoreCatalog("auchan", { onlyIfStale: true });
+  if (hasServerApi && !document.hidden && storeRefreshSources[state.storeId]) {
+    refreshStoreCatalog(state.storeId, { onlyIfStale: true });
   }
 });

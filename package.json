@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "agent:auchan": "python3 scripts/agents/run.py --store auchan",
+    "agent:all": "python3 scripts/agents/run.py --all"
   },
   "engines": {
     "node": ">=20"

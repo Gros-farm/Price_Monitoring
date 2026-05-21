@@ -1,0 +1,8 @@
+{
+  "auchan": {
+    "name": "Ашан",
+    "source": "auchan.ru",
+    "dataFile": "auchan-products.json",
+    "command": ["scripts/fetch_auchan.py", "--limit", "120"]
+  }
+}

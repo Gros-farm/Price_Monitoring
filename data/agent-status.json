@@ -1,0 +1,12 @@
+{
+  "updatedAt": null,
+  "stores": {
+    "auchan": {
+      "status": "not-run",
+      "name": "Ашан",
+      "source": "auchan.ru",
+      "checkedAt": null,
+      "message": "Агент еще не запускался. Для обновления данных выполните npm run agent:auchan."
+    }
+  }
+}

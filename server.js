@@ -1,4 +1,3 @@
-const childProcess = require("node:child_process");
 const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
@@ -9,7 +8,8 @@ const SEED_DATA_DIR = path.join(ROOT, "data");
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "0.0.0.0";
 const TWO_HOURS_MS = 2 * 60 * 60 * 1000;
-const REFRESH_TIMEOUT_MS = Number(process.env.REFRESH_TIMEOUT_MS || 45000);
+const AGENT_CONFIG = readJson(path.join(ROOT, "scripts", "agents", "stores.json")) || {};
+const AGENT_STATUS_FILE = "agent-status.json";
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -28,21 +28,23 @@ const server = http.createServer((request, response) => {
     return sendJson(response, 200, { status: "ok" });
   }
 
-  if (parsedUrl.pathname === "/api/stores/auchan/products" && request.method === "GET") {
-    return sendJsonFile(response, dataPath("auchan-products.json"));
-  }
-
-  if (parsedUrl.pathname === "/api/stores/auchan/refresh" && request.method === "POST") {
-    return refreshAuchan(response);
-  }
-
-  if (parsedUrl.pathname === "/api/stores/auchan/refresh-if-stale" && request.method === "POST") {
-    const outputPath = dataPath("auchan-products.json");
-    const stat = safeStat(outputPath);
-    if (stat && Date.now() - stat.mtimeMs < TWO_HOURS_MS) {
-      return sendJsonFile(response, outputPath);
+  const storeMatch = parsedUrl.pathname.match(/^\/api\/stores\/([^/]+)\/(products|refresh|refresh-if-stale)$/);
+  if (storeMatch) {
+    const [, storeId, action] = storeMatch;
+    if (!AGENT_CONFIG[storeId]) {
+      return sendJson(response, 404, { error: "Магазин не настроен" });
     }
-    return refreshAuchan(response);
+
+    if (action === "products" && request.method === "GET") {
+      return sendStoreSnapshot(response, storeId);
+    }
+
+    if ((action === "refresh" || action === "refresh-if-stale") && request.method === "POST") {
+      return sendStoreSnapshot(response, storeId, {
+        refreshRequested: true,
+        onlyIfStale: action === "refresh-if-stale",
+      });
+    }
   }
 
   if (request.method !== "GET" && request.method !== "HEAD") {
@@ -57,76 +59,39 @@ server.listen(PORT, HOST, () => {
   console.log(`Price monitor server: http://${visibleHost}:${PORT}/`);
 });
 
-function refreshAuchan(response) {
-  const script = path.join(ROOT, "scripts", "fetch_auchan.py");
-  const output = dataPath("auchan-products.json");
-  const python = findPython();
+function sendStoreSnapshot(response, storeId, options = {}) {
+  const store = AGENT_CONFIG[storeId];
+  const outputPath = dataPath(store.dataFile);
+  const payload = readJson(outputPath);
 
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!payload) {
+    return sendJson(response, 404, { error: "Файл данных не найден" });
+  }
 
-  const child = childProcess.spawn(
-    python,
-    [script, "--output", output, "--limit", "120"],
-    {
-      cwd: ROOT,
-      env: process.env,
-      stdio: ["ignore", "pipe", "pipe"],
+  const status = readJson(dataPath(AGENT_STATUS_FILE))?.stores?.[storeId] || null;
+  const stat = safeStat(outputPath);
+  const isFresh = stat ? Date.now() - stat.mtimeMs < TWO_HOURS_MS : false;
+
+  return sendJson(response, 200, {
+    ...payload,
+    notice: buildSnapshotNotice(payload, store, { ...options, isFresh, status }),
+    agent: {
+      mode: "external",
+      status,
+      command: `npm run agent:${storeId}`,
+      message: "Данные обновляет отдельный агент. Сайт читает последний успешный каталог.",
     },
-  );
-
-  let stdout = "";
-  let stderr = "";
-  let responded = false;
-  const timeout = setTimeout(() => {
-    responded = true;
-    child.kill("SIGTERM");
-    return sendJson(response, 504, {
-      error: "Обновление каталога Ашана заняло слишком много времени",
-      details: `Сборщик остановлен по таймауту ${Math.round(REFRESH_TIMEOUT_MS / 1000)} секунд.`,
-      fallback: readJson(output),
-    });
-  }, REFRESH_TIMEOUT_MS);
-
-  child.stdout.on("data", (chunk) => {
-    stdout += chunk.toString();
-  });
-
-  child.stderr.on("data", (chunk) => {
-    stderr += chunk.toString();
-  });
-
-  child.on("close", (code) => {
-    clearTimeout(timeout);
-    if (responded) return;
-    responded = true;
-
-    if (code === 0) {
-      return sendJsonFile(response, output);
-    }
-
-    return sendJson(response, 502, {
-      error: "Не удалось обновить каталог Ашана",
-      details: stderr.trim() || stdout.trim() || `Сборщик завершился с кодом ${code}`,
-      fallback: readJson(output),
-    });
   });
 }
 
-function findPython() {
-  if (process.env.PYTHON) return process.env.PYTHON;
-
-  const candidates = [
-    path.join(ROOT, ".venv", "bin", "python3"),
-    path.join(ROOT, ".venv", "bin", "python"),
-    "/private/tmp/price-monitor-venv/bin/python",
-    "python3.12",
-    "python3",
-  ];
-
-  return candidates.find((candidate) => {
-    if (!candidate.startsWith("/")) return true;
-    return fs.existsSync(candidate);
-  }) || "python3";
+function buildSnapshotNotice(payload, store, { refreshRequested = false, onlyIfStale = false, isFresh = false, status = null } = {}) {
+  const base = payload.notice || `${store.name}: загружен последний сохраненный каталог.`;
+  if (!refreshRequested) return base;
+  if (onlyIfStale && isFresh) return `${base} Каталог свежий, повторный запуск агента не нужен.`;
+  if (status?.status === "failed") {
+    return `${base} Последний запуск агента не обновил данные, показан сохраненный каталог.`;
+  }
+  return `${base} Показан последний успешный каталог. Для нового сбора запустите агента.`;
 }
 
 function dataPath(fileName) {
