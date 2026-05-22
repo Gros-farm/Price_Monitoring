@@ -132,7 +132,7 @@ data/agent-status.json
 
 ### Автообновление Ашана 4 раза в день
 
-На macOS расписание ставится через LaunchAgent. Агент запускается в локальном времени компьютера:
+Расписание живет в Render Cron Job и не зависит от конкретного компьютера. Cron запускается 4 раза в день:
 
 ```text
 06:10
@@ -141,31 +141,34 @@ data/agent-status.json
 23:10
 ```
 
-Установка расписания:
+Файл расписания:
 
-```bash
-scripts/agents/install_auchan_schedule.sh
+```text
+render.yaml
 ```
 
 Что делает запуск по расписанию:
 
-1. подтягивает свежий `main` из GitHub;
+1. клонирует свежий `main` из GitHub;
 2. запускает сбор Ашана через Camoufox;
 3. обновляет `data/auchan-products.json` и `data/agent-status.json`;
 4. коммитит изменения;
 5. пушит в GitHub, после чего Render может задеплоить свежий кеш.
 
-Логи расписания:
+Для Cron Job нужно добавить в Render переменную окружения `GITHUB_TOKEN` с правом push в репозиторий. Сам токен не хранится в `render.yaml`.
+
+Render использует UTC, поэтому расписание `10 3,9,15,20 * * *` соответствует московскому времени 06:10, 12:10, 18:10 и 23:10.
+
+Разовый запуск того же процесса без ожидания расписания можно сделать в Render:
 
 ```text
-logs/auchan-agent.out.log
-logs/auchan-agent.err.log
+grosfarm-auchan-agent -> Trigger Run
 ```
 
-Разовый запуск того же процесса без ожидания расписания:
+Локально тот же процесс можно проверить командой:
 
 ```bash
-scripts/agents/update_auchan_and_push.sh
+scripts/agents/update_auchan_remote.sh
 ```
 
 ### Как добавить следующий магазин

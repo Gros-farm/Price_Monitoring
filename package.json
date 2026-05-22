@@ -6,8 +6,7 @@
     "start": "node server.js",
     "agent:auchan": "python3 scripts/agents/run.py --store auchan",
     "agent:all": "python3 scripts/agents/run.py --all",
-    "agent:auchan:push": "scripts/agents/update_auchan_and_push.sh",
-    "agent:auchan:schedule": "scripts/agents/install_auchan_schedule.sh"
+    "agent:auchan:push": "scripts/agents/update_auchan_remote.sh"
   },
   "engines": {
     "node": ">=20"
