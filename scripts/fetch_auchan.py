@@ -171,7 +171,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", default="data/auchan-products.json", help="Output JSON path.")
     parser.add_argument("--limit", type=int, default=120, help="Maximum products in the final JSON.")
     parser.add_argument("--query-delay", type=float, default=0.6, help="Delay between search requests.")
-    parser.add_argument("--headless", action="store_true", default=True, help="Run browser fallback in headless mode.")
+    parser.add_argument("--headed", action="store_true", help="Run browser fallback with a visible browser window.")
     parser.add_argument("--no-browser-fallback", action="store_true", help="Disable Camoufox fallback after QRator/HTTP failure.")
     parser.add_argument("--debug-dir", default="", help="Optional directory for browser fallback HTML and screenshots.")
     return parser.parse_args()
@@ -185,7 +185,7 @@ def main() -> int:
             args.query_delay,
             limit=args.limit,
             browser_fallback=not args.no_browser_fallback,
-            headless=args.headless,
+            headless=not args.headed,
             debug_dir=Path(args.debug_dir) if args.debug_dir else None,
         )
     except RuntimeError as exc:
@@ -283,11 +283,11 @@ def fetch_products_with_browser(
 
     with Camoufox(headless=headless, locale="ru-RU") as browser:
         page = browser.new_page()
-        page.set_default_timeout(12000)
+        page.set_default_timeout(8000)
 
         for catalog_url in CATALOG_URLS:
             try:
-                page.goto(catalog_url, wait_until="commit", timeout=20000)
+                page.goto(catalog_url, wait_until="domcontentloaded", timeout=15000)
                 wait_for_browser_page(page)
                 body = page.content()
                 save_browser_debug(debug_dir, catalog_url, body, page)

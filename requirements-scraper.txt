@@ -1,2 +1,3 @@
 camoufox==0.4.11
+playwright==1.55.0
 pyaterochka_api==0.2.2

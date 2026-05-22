@@ -1,12 +1,15 @@
 {
-  "updatedAt": null,
+  "updatedAt": "2026-05-22T12:21:46.675582+00:00",
   "stores": {
     "auchan": {
-      "status": "not-run",
+      "status": "success",
+      "checkedAt": "2026-05-22T12:21:46.675529+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
-      "checkedAt": null,
-      "message": "Агент еще не запускался. Для обновления данных выполните npm run agent:auchan."
+      "started_at": "2026-05-22T12:21:07.223756+00:00",
+      "output_file": "data/auchan-products.json",
+      "product_count": 120,
+      "source_updated_at": "2026-05-22T12:21:46.619644+00:00"
     }
   }
 }

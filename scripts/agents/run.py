@@ -68,18 +68,33 @@ def main() -> int:
 
 def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str, Any]:
     output_path = data_dir / store["dataFile"]
+    output_label = relative_label(output_path)
     command = [sys.executable, *store["command"], "--output", str(output_path)]
+    timeout_seconds = int(store.get("timeoutSeconds", 180))
     started_at = now_iso()
 
     print(f"[{store_id}] updating {store['name']} -> {output_path}")
-    completed = subprocess.run(
-        command,
-        cwd=ROOT,
-        env=os.environ.copy(),
-        text=True,
-        capture_output=True,
-        check=False,
-    )
+    try:
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            env=os.environ.copy(),
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=timeout_seconds,
+        )
+    except subprocess.TimeoutExpired as exc:
+        output = "\n".join(normalize_process_text(part) for part in (exc.stderr, exc.stdout) if part)
+        return build_status(
+            "failed",
+            started_at=started_at,
+            finished_at=now_iso(),
+            store=store,
+            error=f"Store agent timed out after {timeout_seconds}s." + (f"\n{output}" if output else ""),
+            output_file=output_label,
+            return_code=124,
+        )
 
     if completed.returncode != 0:
         print(completed.stderr or completed.stdout, file=sys.stderr)
@@ -89,7 +104,7 @@ def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str,
             finished_at=now_iso(),
             store=store,
             error=(completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip(),
-            output_file=str(output_path),
+            output_file=output_label,
             return_code=completed.returncode,
         )
 
@@ -100,7 +115,7 @@ def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str,
         started_at=started_at,
         finished_at=now_iso(),
         store=store,
-        output_file=str(output_path),
+        output_file=output_label,
         product_count=product_count,
         source_updated_at=payload.get("updatedAt"),
     )
@@ -126,6 +141,19 @@ def read_json(path: Path, default: Any = None) -> Any:
         if default is not None:
             return default
         raise
+
+
+def normalize_process_text(value: str | bytes) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
+def relative_label(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
 
 
 def now_iso() -> str:

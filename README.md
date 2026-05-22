@@ -103,6 +103,12 @@ data/auchan-products.json
 npm run agent:auchan
 ```
 
+Для Ашана агент использует видимый браузер Camoufox (`--headed`), потому что прямой HTTP-запрос получает QRator-челлендж, а headless-браузер может падать в локальном окружении macOS. Если `npm` недоступен, можно запустить тот же агент напрямую:
+
+```bash
+/private/tmp/price-monitor-venv/bin/python scripts/agents/run.py --store auchan
+```
+
 Агент описан в:
 
 ```text
@@ -147,7 +153,7 @@ data/agent-status.json
 Агент внутри вызывает существующий сборщик:
 
 ```bash
-python3 scripts/fetch_auchan.py --output data/auchan-products.json --limit 120
+python3 scripts/fetch_auchan.py --output data/auchan-products.json --limit 120 --headed
 ```
 
 Если Ашан отдает QRator-челлендж вместо каталога, сборщик завершится с ошибкой, а предыдущий `data/auchan-products.json` останется на месте.
