@@ -9,21 +9,3 @@ services:
         value: 0.0.0.0
       - key: DATA_DIR
         value: /app/data
-
-  - type: cron
-    name: grosfarm-auchan-agent
-    runtime: docker
-    plan: starter
-    schedule: "10 3,9,15,20 * * *"
-    dockerCommand: scripts/agents/update_auchan_remote.sh
-    envVars:
-      - key: PRICE_MONITOR_PYTHON
-        value: /app/.venv/bin/python
-      - key: PRICE_MONITOR_BRANCH
-        value: main
-      - key: GITHUB_REPOSITORY
-        value: Gros-farm/Price_Monitoring
-      - key: REMOTE_AGENT_CLONE
-        value: "1"
-      - key: GITHUB_TOKEN
-        sync: false

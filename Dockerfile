@@ -13,9 +13,6 @@ RUN apt-get update \
     python3-venv \
     python3-pip \
     ca-certificates \
-    git \
-    xvfb \
-    xauth \
     libasound2 \
     libatk-bridge2.0-0 \
     libatk1.0-0 \
