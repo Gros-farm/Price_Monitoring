@@ -7,7 +7,23 @@ const REFRESH_INTERVAL_MS = 2 * 60 * 60 * 1000;
 const CHART_WIDTH = 1080;
 const CHART_HEIGHT = 402;
 const CHART_PADDING = { top: 16, right: 38, bottom: 42, left: 42 };
-const CHART_DATES = ["24.03", "25.03", "26.03", "27.03", "28.03", "29.03", "30.03"];
+const PERIODS = {
+  week: {
+    points: 7,
+    labels: ["24.03", "25.03", "26.03", "27.03", "28.03", "29.03", "30.03"],
+  },
+  month: {
+    points: 30,
+    labelEvery: 5,
+    startDay: 1,
+    month: "03",
+  },
+  quarter: {
+    points: 13,
+    labelEvery: 2,
+    labels: ["06.01", "13.01", "20.01", "27.01", "03.02", "10.02", "17.02", "24.02", "03.03", "10.03", "17.03", "24.03", "31.03"],
+  },
+};
 
 const categories = [
   "Фрукты",
@@ -177,6 +193,7 @@ const storeNameAdditions = {
 
 const state = {
   storeId: "auchan",
+  period: "week",
   query: "",
   categories: new Set(categories),
   selectedIds: new Set(),
@@ -188,6 +205,7 @@ const state = {
 
 const elements = {
   storeSwitcher: document.querySelector("#storeSwitcher"),
+  periodSelect: document.querySelector("#periodSelect"),
   categoryRow: document.querySelector("#categoryRow"),
   searchInput: document.querySelector("#searchInput"),
   searchClearButton: document.querySelector("#searchClearButton"),
@@ -257,6 +275,73 @@ function makeHistory(price, index, storeId) {
     const drift = (point - 3) * ((index % 4) - 1.5) * 3;
     return Math.max(25, Math.round(price + wave + drift + storeShift));
   });
+}
+
+function getPeriodLabels(period = state.period) {
+  const config = PERIODS[period] || PERIODS.week;
+  if (config.labels) return config.labels;
+
+  return Array.from({ length: config.points }, (_, index) => {
+    return `${String(config.startDay + index).padStart(2, "0")}.${config.month}`;
+  });
+}
+
+function getPeriodPointCount(period = state.period) {
+  return (PERIODS[period] || PERIODS.week).points;
+}
+
+function shouldShowAxisDate(index, dates, period = state.period) {
+  const config = PERIODS[period] || PERIODS.week;
+  return index === 0 || index === dates.length - 1 || !config.labelEvery || index % config.labelEvery === 0;
+}
+
+function getProductHistory(product, period = state.period) {
+  const pointCount = getPeriodPointCount(period);
+  const baseHistory = Array.isArray(product.history) && product.history.length
+    ? product.history.map(Number).filter(Number.isFinite)
+    : [];
+
+  if (period === "week" && baseHistory.length) {
+    return normalizeHistoryLength(baseHistory, pointCount, product.price);
+  }
+
+  return makePeriodHistory(product, period, pointCount, baseHistory);
+}
+
+function normalizeHistoryLength(history, pointCount, fallbackPrice) {
+  if (history.length === pointCount) return history;
+  if (history.length > pointCount) return history.slice(history.length - pointCount);
+
+  const firstValue = history[0] ?? fallbackPrice;
+  return [
+    ...Array.from({ length: pointCount - history.length }, () => firstValue),
+    ...history,
+  ];
+}
+
+function makePeriodHistory(product, period, pointCount, baseHistory) {
+  const seed = stringHash(product.id || product.name);
+  const price = Number(product.price) || baseHistory.at(-1) || 0;
+  const amplitude = period === "quarter" ? 0.13 : 0.08;
+  const driftPower = period === "quarter" ? 0.12 : 0.07;
+  const driftDirection = ((seed % 7) - 3) / 3;
+  const phase = (seed % 360) * (Math.PI / 180);
+  const storeOffset = stores.findIndex((store) => store.id === product.storeId) * 3;
+
+  return Array.from({ length: pointCount }, (_, index) => {
+    const progress = pointCount === 1 ? 1 : index / (pointCount - 1);
+    const wave = Math.sin(progress * Math.PI * 3 + phase) * price * amplitude;
+    const shorterWave = Math.cos(index * 0.73 + phase / 2) * price * amplitude * 0.28;
+    const drift = (progress - 0.5) * price * driftPower * driftDirection;
+    const anchor = price - Math.sin(Math.PI * 3 + phase) * price * amplitude - price * driftPower * driftDirection * 0.5;
+    return Math.max(25, Math.round(anchor + wave + shorterWave + drift + storeOffset));
+  });
+}
+
+function stringHash(value) {
+  return String(value).split("").reduce((hash, char) => {
+    return (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }, 0);
 }
 
 function renderStores() {
@@ -363,18 +448,19 @@ function drawChart() {
   const width = CHART_WIDTH;
   const height = CHART_HEIGHT;
   const padding = CHART_PADDING;
-  const values = selected.flatMap((product) => product.history);
+  const dates = getPeriodLabels();
+  const histories = new Map(selected.map((product) => [product.id, getProductHistory(product)]));
+  const values = selected.flatMap((product) => histories.get(product.id));
   const domain = getChartDomain(values);
   const minValue = domain.min;
   const maxValue = domain.max;
   const range = Math.max(1, maxValue - minValue);
-  const dates = CHART_DATES;
 
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const x = (index) => padding.left + (index * plotWidth) / (dates.length - 1);
   const y = (value) => padding.top + ((maxValue - value) * plotHeight) / range;
-  chartScale = { x, y, plotWidth, plotHeight, minValue, maxValue };
+  chartScale = { x, y, plotWidth, plotHeight, minValue, maxValue, dates };
 
   let markup = "";
   for (let i = 0; i <= 8; i += 1) {
@@ -387,12 +473,14 @@ function drawChart() {
   dates.forEach((date, index) => {
     const lineX = x(index);
     markup += `<line class="grid-line-vertical" x1="${lineX}" y1="${padding.top}" x2="${lineX}" y2="${height - padding.bottom}" />`;
-    markup += `<text class="axis-text axis-text--x" text-anchor="middle" x="${lineX}" y="${height - 13}">${date}</text>`;
+    if (shouldShowAxisDate(index, dates)) {
+      markup += `<text class="axis-text axis-text--x" text-anchor="middle" x="${lineX}" y="${height - 13}">${date}</text>`;
+    }
   });
 
   selected.forEach((product) => {
     const color = product.color || categoryColors[product.category];
-    const points = product.history.map((value, index) => ({ x: x(index), y: y(value) }));
+    const points = histories.get(product.id).map((value, index) => ({ x: x(index), y: y(value) }));
     const path = buildSmoothPath(points);
     markup += `<path class="chart-path" d="${path}" stroke="${color}" />`;
   });
@@ -492,8 +580,8 @@ function getChartPointer(event) {
     ? chartScale.maxValue - ((y - plotTop) / (plotBottom - plotTop)) * (chartScale.maxValue - chartScale.minValue)
     : 0;
   const activeIndex = Math.min(
-    CHART_DATES.length - 1,
-    Math.max(0, Math.round(((x - plotLeft) / (plotRight - plotLeft)) * (CHART_DATES.length - 1))),
+    chartScale.dates.length - 1,
+    Math.max(0, Math.round(((x - plotLeft) / (plotRight - plotLeft)) * (chartScale.dates.length - 1))),
   );
 
   return { x, y, value, activeIndex };
@@ -517,7 +605,7 @@ function moveChartTarget(point) {
   target.querySelector(".chart-target-label--y text").textContent = formatCursorValue(point.value);
   target.querySelector(".chart-target-label--x rect").setAttribute("x", point.x - 17);
   target.querySelector(".chart-target-label--x text").setAttribute("x", point.x);
-  target.querySelector(".chart-target-label--x text").textContent = CHART_DATES[point.activeIndex];
+  target.querySelector(".chart-target-label--x text").textContent = chartScale.dates[point.activeIndex];
 }
 
 function formatCursorValue(value) {
@@ -554,11 +642,12 @@ function renderChartSummary(point) {
   if (!selected.length) return;
 
   chartSummaryLocked = true;
-  const date = CHART_DATES[point.activeIndex];
+  const dates = chartScale?.dates || getPeriodLabels();
+  const date = dates[point.activeIndex];
   const rows = selected
     .map((product) => {
       const color = product.color || categoryColors[product.category];
-      const value = product.history[point.activeIndex] ?? product.price;
+      const value = getProductHistory(product)[point.activeIndex] ?? product.price;
       return `
         <div class="chart-summary__row">
           <span class="chart-summary__dot" style="background:${color}"></span>
@@ -592,6 +681,7 @@ function formatPrice(value) {
 }
 
 function rerender() {
+  elements.periodSelect.value = state.period;
   renderStores();
   renderCategories();
   renderRows();
@@ -624,7 +714,6 @@ async function loadStoreCatalog(storeId) {
     externalCatalogByStore[storeId] = normalizeExternalProducts(payload.products || [], storeId);
     externalNoticeByStore[storeId] = payload.notice || `Данные загружены для сети ${stores.find((store) => store.id === storeId).name}`;
     externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
-    state.dataNotice = externalNoticeByStore[storeId];
   } catch (error) {
     state.loadError = "Каталог сейчас недоступен. Попробуйте обновить данные позже.";
     console.error(error);
@@ -639,25 +728,18 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
 
   state.loadError = "";
   state.refreshingStoreId = storeId;
-  state.dataNotice = onlyIfStale ? "Проверяем сохраненный каталог..." : "Подтягиваем последний успешный каталог...";
+  state.dataNotice = "";
   renderRows();
-
-  if (!hasServerApi) {
-    state.dataNotice = `Показан последний сохраненный каталог. Для нового сбора запустите агента: npm run agent:${storeId}.`;
-    state.refreshingStoreId = null;
-    rerender();
-    return;
-  }
+  const refreshStartedAt = Date.now();
 
   const endpoint = hasServerApi && onlyIfStale
     ? storeRefreshSources[storeId].replace(/\/refresh$/, "/refresh-if-stale")
     : storeRefreshSources[storeId];
 
   try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      cache: "no-store",
-    });
+    const response = await fetch(endpoint, hasServerApi
+      ? { method: "POST", cache: "no-store" }
+      : { cache: "no-store" });
     const payload = await readJsonResponse(response);
     let fallbackApplied = false;
 
@@ -666,7 +748,6 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
         externalCatalogByStore[storeId] = normalizeExternalProducts(payload.fallback.products, storeId);
         externalNoticeByStore[storeId] = payload.fallback.notice || "Ашан: показан последний сохраненный каталог.";
         externalUpdatedAtByStore[storeId] = payload.fallback.updatedAt || "";
-        state.dataNotice = "Не удалось обновить каталог Ашана, попробуйте<br />еще раз. Показываем последний сохраненный список.";
         fallbackApplied = true;
       }
       const error = new Error(payload.details || payload.error || "Не удалось подтянуть каталог.");
@@ -677,11 +758,12 @@ async function refreshStoreCatalog(storeId, { onlyIfStale = false } = {}) {
     externalCatalogByStore[storeId] = normalizeExternalProducts(payload.products || [], storeId);
     externalNoticeByStore[storeId] = payload.notice || "Показан последний сохраненный каталог.";
     externalUpdatedAtByStore[storeId] = payload.updatedAt || "";
-    state.dataNotice = externalNoticeByStore[storeId];
+    await wait(Math.max(0, 500 - (Date.now() - refreshStartedAt)));
   } catch (error) {
+    await wait(Math.max(0, 500 - (Date.now() - refreshStartedAt)));
     if (!error.fallbackApplied) {
       if (currentCatalog().some((product) => product.storeId === storeId)) {
-        state.dataNotice = "Не удалось подтянуть каталог. Показываем последний сохраненный список.";
+        state.dataNotice = "";
       } else {
         state.dataNotice = "";
         state.loadError = "Не удалось загрузить каталог. Попробуйте открыть через локальный сервер или запустить агента.";
@@ -729,38 +811,13 @@ function normalizeExternalProducts(products, storeId) {
 
 function updateRefreshUi() {
   const hasRefreshSource = Boolean(storeRefreshSources[state.storeId]);
-  const isLoading = state.loadingStoreId === state.storeId || state.refreshingStoreId === state.storeId;
+  const isLoadingCatalog = state.loadingStoreId === state.storeId;
+  const isRefreshingCatalog = state.refreshingStoreId === state.storeId;
 
   elements.refreshButton.hidden = !hasRefreshSource;
-  elements.refreshButton.disabled = !hasRefreshSource || isLoading;
-  elements.refreshButton.classList.toggle("is-loading", state.refreshingStoreId === state.storeId);
-
-  if (!hasRefreshSource) {
-    elements.dataStatus.textContent = "";
-    return;
-  }
-
-  if (state.refreshingStoreId === state.storeId) {
-    elements.dataStatus.textContent = "Проверяем последний сохраненный каталог...";
-    return;
-  }
-
-  if (state.dataNotice) {
-    elements.dataStatus.innerHTML = state.dataNotice;
-    return;
-  }
-
-  if (externalNoticeByStore[state.storeId]) {
-    elements.dataStatus.textContent = externalNoticeByStore[state.storeId];
-    return;
-  }
-
-  if (!hasServerApi) {
-    elements.dataStatus.textContent = "Локальный файл показывает последний сохраненный каталог. Новый сбор запускается агентом.";
-    return;
-  }
-
-  elements.dataStatus.textContent = "Данные обновляет отдельный агент. Сайт показывает последний успешный каталог.";
+  elements.refreshButton.disabled = !hasRefreshSource || isLoadingCatalog || isRefreshingCatalog;
+  elements.refreshButton.classList.toggle("is-loading", isRefreshingCatalog);
+  elements.dataStatus.textContent = "";
 }
 
 elements.storeSwitcher.addEventListener("click", (event) => {
@@ -774,6 +831,11 @@ elements.storeSwitcher.addEventListener("click", (event) => {
 
 elements.refreshButton.addEventListener("click", () => {
   refreshStoreCatalog(state.storeId);
+});
+
+elements.periodSelect.addEventListener("change", (event) => {
+  state.period = PERIODS[event.target.value] ? event.target.value : "week";
+  drawChart();
 });
 
 elements.categoryRow.addEventListener("click", (event) => {
