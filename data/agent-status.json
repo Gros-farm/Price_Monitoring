@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-05-22T21:23:36.920208+00:00",
+  "updatedAt": "2026-05-23T06:19:30.277339+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-05-22T21:23:36.920161+00:00",
+      "checkedAt": "2026-05-23T06:19:30.277288+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
-      "started_at": "2026-05-22T21:22:47.256508+00:00",
+      "started_at": "2026-05-23T06:18:39.771222+00:00",
       "output_file": "data/auchan-products.json",
-      "product_count": 118,
-      "source_updated_at": "2026-05-22T21:23:36.840114+00:00"
+      "product_count": 120,
+      "source_updated_at": "2026-05-23T06:19:30.195183+00:00"
     }
   }
 }
