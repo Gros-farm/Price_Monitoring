@@ -40,6 +40,8 @@ RUN python3 -m venv /app/.venv \
 
 COPY . .
 
+RUN chmod +x start.sh
+
 EXPOSE 4173
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]

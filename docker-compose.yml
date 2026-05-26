@@ -1,0 +1,12 @@
+services:
+  price-monitor:
+    image: grosfarm-price-monitor:latest
+    container_name: price-monitor
+    ports:
+      - "4173:4173"
+    volumes:
+      - price-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  price-data:

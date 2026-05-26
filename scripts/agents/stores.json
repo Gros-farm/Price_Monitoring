@@ -4,6 +4,6 @@
     "source": "auchan.ru",
     "dataFile": "auchan-products.json",
     "timeoutSeconds": 180,
-    "command": ["scripts/fetch_auchan.py", "--limit", "120", "--headed"]
+    "command": ["scripts/fetch_auchan.py", "--limit", "120"]
   }
 }
