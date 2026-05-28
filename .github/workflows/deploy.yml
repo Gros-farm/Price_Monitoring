@@ -20,7 +20,10 @@ jobs:
           docker run -d \
             --name price-monitor \
             --restart unless-stopped \
-            -p 4173:4173 \
+            --network host \
+            -e HTTPS_PROXY=http://127.0.0.1:8118 \
+            -e HTTP_PROXY=http://127.0.0.1:8118 \
+            -e NO_PROXY=localhost,127.0.0.1 \
             -v price-data:/app/data \
             grosfarm-price-monitor:latest
 

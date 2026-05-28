@@ -14,6 +14,7 @@ import argparse
 import html
 import json
 import math
+import os
 import re
 import sys
 import time
@@ -281,7 +282,9 @@ def fetch_products_with_browser(
     products: list[dict[str, Any]] = []
     seen: set[str] = set()
 
-    with Camoufox(headless=headless, locale="ru-RU") as browser:
+    proxy_url = os.environ.get("HTTPS_PROXY") or os.environ.get("HTTP_PROXY")
+    proxy_config = {"server": proxy_url} if proxy_url else None
+    with Camoufox(headless=headless, locale="ru-RU", proxy=proxy_config) as browser:
         page = browser.new_page()
         page.set_default_timeout(8000)
 
