@@ -5,5 +5,19 @@
     "dataFile": "auchan-products.json",
     "timeoutSeconds": 180,
     "command": ["scripts/fetch_auchan.py", "--limit", "120"]
+  },
+  "metro": {
+    "name": "Metro",
+    "source": "online.metro-cc.ru",
+    "dataFile": "metro-products.json",
+    "timeoutSeconds": 120,
+    "command": ["scripts/fetch_metro.py", "--limit", "120"]
+  },
+  "pyaterochka": {
+    "name": "Пятерочка",
+    "source": "5ka.ru",
+    "dataFile": "pyaterochka-products.json",
+    "timeoutSeconds": 180,
+    "command": ["scripts/fetch_pyaterochka.py", "--limit", "120", "--headless", "--timeout-ms", "45000", "--use-env-proxy"]
   }
 }

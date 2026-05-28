@@ -13,10 +13,14 @@ import argparse
 import asyncio
 import json
 import math
+import os
 import sys
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
+from urllib.error import HTTPError, URLError
+from urllib.request import ProxyHandler, Request, build_opener, urlopen
 
 
 TARGET_CATEGORIES = ("Фрукты", "Овощи", "Ягоды", "Зелень", "Грибы")
@@ -142,6 +146,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--category-limit", type=int, default=120, help="Maximum products requested per catalog category.")
     parser.add_argument("--sap-code", default="", help="Known Pyaterochka SAP store code. If omitted, the selected delivery store is used.")
     parser.add_argument("--headless", action="store_true", help="Run Camoufox in headless mode.")
+    parser.add_argument("--timeout-ms", type=float, default=45000, help="Browser and API timeout in milliseconds.")
+    parser.add_argument("--proxy", default="", help="Optional explicit proxy URL. By default no proxy is used.")
+    parser.add_argument("--use-env-proxy", action="store_true", help="Use HTTPS_PROXY/https_proxy from the environment.")
+    parser.add_argument("--skip-preflight", action="store_true", help="Skip the fast 5ka.ru block-page check.")
+    parser.add_argument("--latitude", type=float, default=55.7558, help="Fallback latitude for detecting a Pyaterochka store.")
+    parser.add_argument("--longitude", type=float, default=37.6173, help="Fallback longitude for detecting a Pyaterochka store.")
     return parser.parse_args()
 
 
@@ -149,8 +159,16 @@ async def main() -> int:
     args = parse_args()
     ensure_supported_python()
 
+    proxy = resolve_proxy(args)
+
+    if not args.skip_preflight:
+        preflight_error = check_site_access(proxy)
+        if preflight_error:
+            print(preflight_error, file=sys.stderr)
+            return 1
+
     try:
-        from pyaterochka_api import PyaterochkaAPI
+        from pyaterochka_api import PyaterochkaAPI as BasePyaterochkaAPI
     except ImportError:
         print(
             "pyaterochka_api is not installed. Run:\n"
@@ -160,9 +178,15 @@ async def main() -> int:
         )
         return 2
 
+    PyaterochkaAPI = build_resilient_pyaterochka_api(BasePyaterochkaAPI)
+
     try:
-        async with PyaterochkaAPI(headless=args.headless, timeout_ms=30000) as api:
-            sap_code = args.sap_code or await selected_sap_code(api)
+        async with PyaterochkaAPI(
+            headless=args.headless,
+            timeout_ms=args.timeout_ms,
+            proxy=proxy,
+        ) as api:
+            sap_code = args.sap_code or await selected_sap_code(api, args.longitude, args.latitude)
             print(f"Using Pyaterochka SAP store code: {sap_code}")
 
             categories = await fetch_categories(api, sap_code)
@@ -200,13 +224,212 @@ def ensure_supported_python() -> None:
         raise RuntimeError("pyaterochka_api requires Python 3.10+. Install Python 3.12 and run this script with python3.12.")
 
 
-async def selected_sap_code(api: Any) -> str:
-    store_info = await api.delivery_panel_store()
+def resolve_proxy(args: argparse.Namespace) -> str | None:
+    if args.proxy:
+        return args.proxy
+    if args.use_env_proxy:
+        return (
+            os.getenv("HTTPS_PROXY")
+            or os.getenv("https_proxy")
+            or os.getenv("HTTP_PROXY")
+            or os.getenv("http_proxy")
+        )
+    return None
+
+
+def check_site_access(proxy: str | None = None) -> str:
+    request = Request(
+        "https://5ka.ru",
+        headers={
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+            ),
+        },
+    )
+    try:
+        opener = build_opener(ProxyHandler({"http": proxy, "https": proxy})) if proxy else None
+        open_request = opener.open if opener else urlopen
+        with open_request(request, timeout=20) as response:
+            response.read(1024)
+        return ""
+    except HTTPError as exc:
+        body = exc.read().decode("utf-8", errors="replace")
+        if exc.code == 403 and "Проверьте настройки интернета и VPN" in body:
+            return (
+                "Could not fetch Pyaterochka data.\n"
+                "5ka.ru returned a network/VPN block page before the browser collector started.\n"
+                "Disable VPN/proxy or switch to an IP accepted by 5ka.ru, then run the script again.\n"
+                f"Original HTTP status: {exc.code}."
+            )
+        return f"Could not reach 5ka.ru before starting the browser collector: HTTP {exc.code}."
+    except (TimeoutError, URLError) as exc:
+        return f"Could not reach 5ka.ru before starting the browser collector: {exc}."
+
+
+def build_resilient_pyaterochka_api(base_class: type[Any]) -> type[Any]:
+    class ResilientPyaterochkaAPI(base_class):
+        async def _warmup(self) -> None:
+            from camoufox.async_api import AsyncCamoufox
+            from human_requests import HumanBrowser
+            from human_requests.abstraction import FetchResponse, Proxy
+            from human_requests.network_analyzer.anomaly_sniffer import (
+                HeaderAnomalySniffer,
+                WaitHeader,
+                WaitSource,
+            )
+            from playwright.async_api import Error as PlaywrightError
+            from playwright.async_api import TimeoutError as PlaywrightTimeoutError
+
+            br = await AsyncCamoufox(
+                locale="ru-RU",
+                headless=self.headless,
+                proxy=Proxy(self.proxy).as_dict() if self.proxy else None,
+                block_images=False,
+                **self.browser_opts,
+            ).start()
+
+            self.session = HumanBrowser.replace(br)
+            self.ctx = await self.session.new_context()
+            self.page = await self.ctx.new_page()
+
+            sniffer = HeaderAnomalySniffer(
+                include_subresources=True,
+                url_filter=lambda url: url.startswith(self.CATALOG_URL),
+            )
+            await sniffer.start(self.ctx)
+
+            await self._warmup_page(PlaywrightError, PlaywrightTimeoutError)
+            try:
+                await asyncio.wait_for(
+                    sniffer.wait(
+                        tasks=[
+                            WaitHeader(
+                                source=WaitSource.REQUEST,
+                                headers=["x-app-version", "x-device-id", "x-platform"],
+                            )
+                        ],
+                        timeout_ms=min(self.timeout_ms, 20000),
+                    ),
+                    timeout=25,
+                )
+            except Exception:
+                pass
+
+            result_sniffer = await sniffer.complete()
+            headers: dict[str, set[str]] = {}
+            for response_headers in result_sniffer["request"].values():
+                for header, values in response_headers.items():
+                    headers.setdefault(header, set()).update(values)
+
+            self.unstandard_headers = {key: next(iter(values)) for key, values in headers.items() if values}
+            await self._ensure_fallback_headers()
+
+        async def _warmup_page(self, playwright_error: type[Exception], playwright_timeout: type[Exception]) -> None:
+            last_error: Exception | None = None
+            for _attempt in range(3):
+                try:
+                    await self.page.goto(self.MAIN_SITE_URL, wait_until="domcontentloaded", timeout=self.timeout_ms)
+                    await self._click_robot_if_present(playwright_error, playwright_timeout)
+                    try:
+                        await self.page.wait_for_load_state("networkidle", timeout=min(self.timeout_ms, 15000))
+                    except Exception:
+                        pass
+                    try:
+                        await self.page.wait_for_timeout(5000)
+                    except AttributeError:
+                        await asyncio.sleep(5)
+                    return
+                except Exception as exc:
+                    last_error = exc
+                    try:
+                        await self.page.reload(wait_until="domcontentloaded", timeout=min(self.timeout_ms, 15000))
+                    except Exception:
+                        pass
+
+            raise RuntimeError(f"Pyaterochka warmup failed after retries: {last_error}")
+
+        async def _ensure_fallback_headers(self) -> None:
+            storage = await self.page.local_storage()
+            self.unstandard_headers.setdefault("x-platform", "web")
+            self.unstandard_headers.setdefault("x-device-id", storage.get("deviceId") or str(uuid.uuid4()))
+            self.unstandard_headers.setdefault("x-app-version", "0.1.1.dev")
+
+        async def _click_robot_if_present(
+            self,
+            playwright_error: type[Exception],
+            playwright_timeout: type[Exception],
+        ) -> None:
+            try:
+                await self.page.locator('label[for="is-robot"].captcha-label').click(timeout=self.timeout_ms)
+            except (playwright_error, playwright_timeout):
+                return
+
+        async def _request(
+            self,
+            method: Any,
+            url: str,
+            *,
+            json_body: Any | None = None,
+            add_unstandard_headers: bool = True,
+            credentials: bool = True,
+        ) -> FetchResponse:
+            headers = {"Accept": "application/json, text/plain, */*"}
+            if add_unstandard_headers:
+                headers.update(self.unstandard_headers)
+            return await self.page.fetch(
+                url=url,
+                method=method,
+                body=json_body,
+                mode="cors",
+                credentials="include" if credentials else "omit",
+                timeout_ms=self.timeout_ms,
+                referrer=self.MAIN_SITE_URL,
+                headers=headers,
+            )
+
+    return ResilientPyaterochkaAPI
+
+
+async def selected_sap_code(api: Any, longitude: float, latitude: float) -> str:
+    try:
+        store_info = await api.delivery_panel_store()
+    except Exception:
+        store_info = {}
+
     selected_store = store_info.get("selectedStore") or {}
     sap_code = selected_store.get("sapCode")
+    if sap_code:
+        return str(sap_code)
+
+    response = await api.Geolocation.find_store(longitude=longitude, latitude=latitude)
+    data = response.json()
+    fallback_store = first_store_with_sap_code(data)
+    sap_code = fallback_store.get("sapCode") or fallback_store.get("sap_code")
     if not sap_code:
-        raise RuntimeError("Could not detect selected Pyaterochka store. Try opening 5ka.ru in the browser and selecting a city/address first.")
+        raise RuntimeError(
+            "Could not detect selected Pyaterochka store and geolocation fallback returned no SAP store code."
+        )
+
     return str(sap_code)
+
+
+def first_store_with_sap_code(value: Any) -> dict[str, Any]:
+    if isinstance(value, dict):
+        if value.get("sapCode") or value.get("sap_code"):
+            return value
+        for nested in value.values():
+            result = first_store_with_sap_code(nested)
+            if result:
+                return result
+    elif isinstance(value, list):
+        for nested in value:
+            result = first_store_with_sap_code(nested)
+            if result:
+                return result
+    return {}
 
 
 async def fetch_categories(api: Any, sap_code: str) -> list[dict[str, Any]]:
