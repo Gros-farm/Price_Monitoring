@@ -2,11 +2,27 @@ services:
   price-monitor:
     image: grosfarm-price-monitor:latest
     container_name: price-monitor
-    ports:
-      - "4173:4173"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - HTTPS_PROXY=http://host.docker.internal:8118
+      - HTTP_PROXY=http://host.docker.internal:8118
+      - NO_PROXY=localhost,127.0.0.1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.price-monitor.rule=Host(`prices.grosdev.ru`)"
+      - "traefik.http.routers.price-monitor.entrypoints=websecure"
+      - "traefik.http.routers.price-monitor.tls.certresolver=letsencrypt"
+      - "traefik.http.services.price-monitor.loadbalancer.server.port=4173"
+    networks:
+      - traefik-public
     volumes:
       - price-data:/app/data
     restart: unless-stopped
+
+networks:
+  traefik-public:
+    external: true
 
 volumes:
   price-data:

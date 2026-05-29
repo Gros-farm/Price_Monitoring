@@ -14,20 +14,13 @@ jobs:
       - name: Build Docker image
         run: docker build -t grosfarm-price-monitor:latest .
 
-      - name: Restart container
+      - name: Deploy container
         run: |
           docker rm -f price-monitor || true
-          docker run -d \
-            --name price-monitor \
-            --restart unless-stopped \
-            --network host \
-            -e HTTPS_PROXY=http://127.0.0.1:8118 \
-            -e HTTP_PROXY=http://127.0.0.1:8118 \
-            -e NO_PROXY=localhost,127.0.0.1 \
-            -v price-data:/app/data \
-            grosfarm-price-monitor:latest
+          docker compose up -d
 
       - name: Verify
         run: |
           sleep 5
           docker ps | grep price-monitor
+          curl -sf http://localhost:4173/health || true
