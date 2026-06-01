@@ -250,6 +250,11 @@ def fetch_products(args: argparse.Namespace, store_id: str) -> list[dict[str, An
         time.sleep(args.request_delay)
 
     if not products:
+        if not errors:
+            errors.append(
+                "public pages loaded, but no product candidates matched; "
+                "the aggregator may have returned a block page or changed its markup"
+            )
         raise RuntimeError(
             f"Could not fetch {store_id} data from aggregator {args.provider}. "
             f"Tried public storefront pages; last errors: {errors[-3:]}"
