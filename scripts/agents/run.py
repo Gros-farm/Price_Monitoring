@@ -168,7 +168,7 @@ def run_provider(store: dict[str, Any], provider: dict[str, Any], output_path: P
         "return_code": completed.returncode,
     }
     if completed.returncode != 0:
-        result["error"] = (completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip()
+        result["error"] = truncate_text((completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip())
     return result
 
 
@@ -180,8 +180,14 @@ def provider_result_summary(provider: dict[str, Any], result: dict[str, Any]) ->
         "return_code": result.get("return_code"),
     }
     if result.get("error"):
-        summary["error"] = result["error"]
+        summary["error"] = truncate_text(str(result["error"]))
     return {key: value for key, value in summary.items() if value is not None}
+
+
+def truncate_text(value: str, limit: int = 2500) -> str:
+    if len(value) <= limit:
+        return value
+    return value[:limit].rstrip() + "\n... truncated ..."
 
 
 def build_status(status: str, **extra: Any) -> dict[str, Any]:

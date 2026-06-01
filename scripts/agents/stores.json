@@ -9,7 +9,49 @@
         "name": "Ашан напрямую",
         "source": "auchan.ru",
         "timeoutSeconds": 180,
-        "command": ["scripts/fetch_auchan.py", "--limit", "120"]
+        "command": [
+          "scripts/fetch_auchan.py",
+          "--limit",
+          "120"
+        ]
+      },
+      {
+        "id": "aggregator-kuper",
+        "name": "Ашан через Купер",
+        "source": "kuper.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "kuper",
+          "--store",
+          "auchan",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
+      },
+      {
+        "id": "aggregator-yandex",
+        "name": "Ашан через Яндекс Еду",
+        "source": "eda.yandex.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "yandex",
+          "--store",
+          "auchan",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
       }
     ]
   },
@@ -23,7 +65,49 @@
         "name": "Metro напрямую",
         "source": "online.metro-cc.ru",
         "timeoutSeconds": 120,
-        "command": ["scripts/fetch_metro.py", "--limit", "120"]
+        "command": [
+          "scripts/fetch_metro.py",
+          "--limit",
+          "120"
+        ]
+      },
+      {
+        "id": "aggregator-kuper",
+        "name": "Metro через Купер",
+        "source": "kuper.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "kuper",
+          "--store",
+          "metro",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
+      },
+      {
+        "id": "aggregator-yandex",
+        "name": "Metro через Яндекс Еду",
+        "source": "eda.yandex.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "yandex",
+          "--store",
+          "metro",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
       }
     ]
   },
@@ -37,7 +121,53 @@
         "name": "Пятерочка напрямую",
         "source": "5ka.ru",
         "timeoutSeconds": 180,
-        "command": ["scripts/fetch_pyaterochka.py", "--limit", "120", "--headless", "--timeout-ms", "45000", "--use-env-proxy"]
+        "command": [
+          "scripts/fetch_pyaterochka.py",
+          "--limit",
+          "120",
+          "--headless",
+          "--timeout-ms",
+          "45000",
+          "--use-env-proxy"
+        ]
+      },
+      {
+        "id": "aggregator-kuper",
+        "name": "Пятерочка через Купер",
+        "source": "kuper.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "kuper",
+          "--store",
+          "pyaterochka",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
+      },
+      {
+        "id": "aggregator-yandex",
+        "name": "Пятерочка через Яндекс Еду",
+        "source": "eda.yandex.ru",
+        "timeoutSeconds": 220,
+        "command": [
+          "scripts/fetch_aggregator.py",
+          "--provider",
+          "yandex",
+          "--store",
+          "pyaterochka",
+          "--limit",
+          "120",
+          "--query-limit",
+          "8",
+          "--browser-fallback",
+          "--headless"
+        ]
       }
     ]
   }
