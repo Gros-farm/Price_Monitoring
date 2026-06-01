@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node server.js",
     "agent:auchan": "python3 scripts/agents/run.py --store auchan",
+    "agent:metro": "python3 scripts/agents/run.py --store metro",
+    "agent:pyaterochka": "python3 scripts/agents/run.py --store pyaterochka",
+    "agent:pyaterochka:headed": "/private/tmp/price-monitor-venv/bin/python scripts/fetch_pyaterochka.py --output data/pyaterochka-products.json --limit 120 --timeout-ms 60000",
     "agent:all": "python3 scripts/agents/run.py --all"
   },
   "engines": {

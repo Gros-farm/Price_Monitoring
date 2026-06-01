@@ -201,7 +201,44 @@ python3 scripts/fetch_auchan.py --output data/auchan-products.json --limit 120 -
 
 GitHub Pages не умеет парсить сайт магазина в момент клика. Поэтому данные Пятерочки обновляются отдельным локальным сборщиком, который записывает результат в `data/pyaterochka-products.json`.
 
-Пошагово:
+### Лучший бесплатный режим
+
+Для Пятерочки и похожих сетей самый устойчивый бесплатный вариант — запускать сборщик на локальном Mac в обычной домашней/офисной сети без VPN и без прокси. Сборщик не удаляет последний успешный JSON, если сайт временно блокирует сессию.
+
+Первый запуск лучше делать видимым браузером:
+
+```bash
+npm run agent:pyaterochka:headed
+```
+
+Если сайт открывается, выберите город или адрес доставки в появившемся браузере и дайте сборщику завершиться. После этого обычный агент может запускаться в фоне:
+
+```bash
+npm run agent:pyaterochka
+```
+
+### Локальное расписание 4 раза в день
+
+В репозитории есть бесплатный macOS `launchd`-шаблон: `scripts/local-agent-launchd.plist`. Он запускает `npm run agent:all` в 00:15, 06:15, 12:15 и 18:15.
+
+Установка:
+
+```bash
+cp scripts/local-agent-launchd.plist ~/Library/LaunchAgents/ru.grosfarm.price-monitor.collector.plist
+launchctl unload ~/Library/LaunchAgents/ru.grosfarm.price-monitor.collector.plist 2>/dev/null || true
+launchctl load ~/Library/LaunchAgents/ru.grosfarm.price-monitor.collector.plist
+```
+
+Логи будут писаться в:
+
+```bash
+data/local-agent.out.log
+data/local-agent.err.log
+```
+
+### Ручная установка зависимостей
+
+Пошагово, если окружение нужно собрать заново:
 
 1. Откройте в обычном браузере сайт `https://5ka.ru/`.
 2. Выберите город или адрес доставки, например Москва.
@@ -216,7 +253,7 @@ python3.12 -m camoufox fetch
 5. Запустите сборщик:
 
 ```bash
-python3.12 scripts/fetch_pyaterochka.py --limit 120
+python3.12 scripts/fetch_pyaterochka.py --limit 120 --timeout-ms 60000
 ```
 
 Если появится ошибка вроде `NS_ERROR_NET_RESET`, `403`, `VPN` или `Проблемы со связью`, значит сайт Пятерочки сбрасывает или блокирует соединение из текущей сети. В этом случае:

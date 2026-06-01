@@ -69,7 +69,8 @@ def main() -> int:
 def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str, Any]:
     output_path = data_dir / store["dataFile"]
     output_label = relative_label(output_path)
-    command = [sys.executable, *store["command"], "--output", str(output_path)]
+    python_executable = store.get("python") or sys.executable
+    command = [python_executable, *store["command"], "--output", str(output_path)]
     timeout_seconds = int(store.get("timeoutSeconds", 180))
     started_at = now_iso()
 

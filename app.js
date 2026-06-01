@@ -1,5 +1,6 @@
 const stores = [
   { id: "auchan", name: "Ашан", logo: "./assets/figma/logo-auchan.png", color: "#ffffff", logoClass: "store-logo--auchan" },
+  { id: "pyaterochka", name: "Пятерочка", logo: "./assets/figma/logo-pyaterochka.png", color: "#ffffff", logoClass: "store-logo--pyaterochka" },
   { id: "metro", name: "Metro", short: "M", color: "#014171" },
 ];
 
@@ -245,10 +246,14 @@ const hasServerApi = window.location.protocol !== "file:" && !window.location.ho
 
 const storeDataSources = {
   auchan: hasServerApi ? "/api/stores/auchan/products" : "./data/auchan-products.json",
+  pyaterochka: hasServerApi ? "/api/stores/pyaterochka/products" : "./data/pyaterochka-products.json",
+  metro: hasServerApi ? "/api/stores/metro/products" : "./data/metro-products.json",
 };
 
 const storeRefreshSources = {
   auchan: hasServerApi ? "/api/stores/auchan/refresh" : "./data/auchan-products.json",
+  pyaterochka: hasServerApi ? "/api/stores/pyaterochka/refresh" : "./data/pyaterochka-products.json",
+  metro: hasServerApi ? "/api/stores/metro/refresh" : "./data/metro-products.json",
 };
 
 let chartScale = null;
