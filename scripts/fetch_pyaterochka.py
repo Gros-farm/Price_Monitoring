@@ -161,14 +161,6 @@ async def main() -> int:
     ensure_supported_python()
     ensure_typing_override()
 
-    proxy = resolve_proxy(args)
-
-    if not args.skip_preflight:
-        preflight_error = check_site_access(proxy)
-        if preflight_error:
-            print(preflight_error, file=sys.stderr)
-            return 1
-
     try:
         from pyaterochka_api import PyaterochkaAPI as BasePyaterochkaAPI
     except ImportError as exc:
@@ -184,17 +176,9 @@ async def main() -> int:
 
     PyaterochkaAPI = build_resilient_pyaterochka_api(BasePyaterochkaAPI)
 
+    proxy = resolve_proxy(args)
     try:
-        async with PyaterochkaAPI(
-            headless=args.headless,
-            timeout_ms=args.timeout_ms,
-            proxy=proxy,
-        ) as api:
-            sap_code = args.sap_code or await selected_sap_code(api, args.longitude, args.latitude)
-            print(f"Using Pyaterochka SAP store code: {sap_code}")
-
-            categories = await fetch_categories(api, sap_code)
-            products = await fetch_products(api, sap_code, categories, args.category_limit)
+        products = await fetch_with_proxy_fallback(args, PyaterochkaAPI, proxy)
     except Exception as exc:
         print(
             "Could not fetch Pyaterochka data.\n"
@@ -221,6 +205,38 @@ async def main() -> int:
     output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {len(normalized)} products to {output_path}")
     return 0
+
+
+async def fetch_with_proxy_fallback(args: argparse.Namespace, api_class: type[Any], proxy: str | None) -> list[dict[str, Any]]:
+    attempts = [proxy]
+    if proxy:
+        attempts.append(None)
+
+    errors: list[str] = []
+    for attempt_proxy in attempts:
+        label = "env proxy" if attempt_proxy else "direct connection"
+        try:
+            if not args.skip_preflight:
+                preflight_error = check_site_access(attempt_proxy)
+                if preflight_error:
+                    raise RuntimeError(preflight_error)
+
+            print(f"Trying Pyaterochka via {label}")
+            async with api_class(
+                headless=args.headless,
+                timeout_ms=args.timeout_ms,
+                proxy=attempt_proxy,
+            ) as api:
+                sap_code = args.sap_code or await selected_sap_code(api, args.longitude, args.latitude)
+                print(f"Using Pyaterochka SAP store code: {sap_code}")
+
+                categories = await fetch_categories(api, sap_code)
+                return await fetch_products(api, sap_code, categories, args.category_limit)
+        except Exception as exc:
+            errors.append(f"{label}: {exc}")
+            print(f"Pyaterochka attempt failed via {label}: {exc}", file=sys.stderr)
+
+    raise RuntimeError("; ".join(errors))
 
 
 def ensure_supported_python() -> None:
