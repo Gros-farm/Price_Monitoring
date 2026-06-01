@@ -282,6 +282,15 @@ def check_site_access(proxy: str | None = None) -> str:
         return f"Could not reach 5ka.ru before starting the browser collector: {exc}."
 
 
+class JsonResponse:
+    def __init__(self, body: str, url: str) -> None:
+        self.body = body
+        self.url = url
+
+    def json(self) -> Any:
+        return json.loads(self.body)
+
+
 def build_resilient_pyaterochka_api(base_class: type[Any]) -> type[Any]:
     class ResilientPyaterochkaAPI(base_class):
         async def _warmup(self) -> None:
@@ -393,16 +402,70 @@ def build_resilient_pyaterochka_api(base_class: type[Any]) -> type[Any]:
             headers = {"Accept": "application/json, text/plain, */*"}
             if add_unstandard_headers:
                 headers.update(self.unstandard_headers)
-            return await self.page.fetch(
-                url=url,
-                method=method,
-                body=json_body,
-                mode="cors",
-                credentials="include" if credentials else "omit",
-                timeout_ms=self.timeout_ms,
-                referrer=self.MAIN_SITE_URL,
-                headers=headers,
-            )
+            try:
+                return await self.page.fetch(
+                    url=url,
+                    method=method,
+                    body=json_body,
+                    mode="cors",
+                    credentials="include" if credentials else "omit",
+                    timeout_ms=self.timeout_ms,
+                    referrer=self.MAIN_SITE_URL,
+                    headers=headers,
+                )
+            except Exception as exc:
+                return await self._urllib_request(
+                    method,
+                    url,
+                    json_body=json_body,
+                    headers=headers,
+                    credentials=credentials,
+                    browser_error=exc,
+                )
+
+        async def _urllib_request(
+            self,
+            method: Any,
+            url: str,
+            *,
+            json_body: Any | None,
+            headers: dict[str, str],
+            credentials: bool,
+            browser_error: Exception,
+        ) -> JsonResponse:
+            request_headers = {
+                **headers,
+                "User-Agent": (
+                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+                ),
+                "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
+                "Origin": self.MAIN_SITE_URL,
+                "Referer": self.MAIN_SITE_URL + "/",
+            }
+            if credentials:
+                cookies = await self.ctx.cookies()
+                cookie_header = "; ".join(
+                    f"{cookie['name']}={cookie['value']}" for cookie in cookies if cookie.get("name")
+                )
+                if cookie_header:
+                    request_headers["Cookie"] = cookie_header
+
+            data = None
+            if json_body is not None:
+                data = json.dumps(json_body, ensure_ascii=False).encode("utf-8")
+                request_headers["Content-Type"] = "application/json"
+
+            method_value = getattr(method, "value", str(method))
+            proxy_handler = ProxyHandler({"http": self.proxy, "https": self.proxy}) if self.proxy else ProxyHandler({})
+            opener = build_opener(proxy_handler)
+            request = Request(url, data=data, headers=request_headers, method=method_value)
+            try:
+                with opener.open(request, timeout=max(int(self.timeout_ms / 1000), 20)) as response:
+                    body = response.read().decode("utf-8", errors="replace")
+                    return JsonResponse(body, url)
+            except (HTTPError, URLError, TimeoutError) as exc:
+                raise RuntimeError(f"browser fetch failed: {browser_error}; urllib fallback failed: {exc}") from exc
 
     return ResilientPyaterochkaAPI
 
