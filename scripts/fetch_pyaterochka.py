@@ -15,6 +15,7 @@ import json
 import math
 import os
 import sys
+import typing
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -158,6 +159,7 @@ def parse_args() -> argparse.Namespace:
 async def main() -> int:
     args = parse_args()
     ensure_supported_python()
+    ensure_typing_override()
 
     proxy = resolve_proxy(args)
 
@@ -224,6 +226,15 @@ async def main() -> int:
 def ensure_supported_python() -> None:
     if sys.version_info < (3, 10):
         raise RuntimeError("pyaterochka_api requires Python 3.10+. Install Python 3.12 and run this script with python3.12.")
+
+
+def ensure_typing_override() -> None:
+    if hasattr(typing, "override"):
+        return
+
+    from typing_extensions import override
+
+    typing.override = override  # type: ignore[attr-defined]
 
 
 def resolve_proxy(args: argparse.Namespace) -> str | None:
