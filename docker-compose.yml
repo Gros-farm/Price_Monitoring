@@ -8,6 +8,7 @@ services:
       - HTTPS_PROXY=http://host.docker.internal:8118
       - HTTP_PROXY=http://host.docker.internal:8118
       - NO_PROXY=localhost,127.0.0.1
+      - SCRAPER_RUNTIME_REV=2026-06-01-typing-override
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.price-monitor.rule=Host(`prices.grosdev.ru`)"
