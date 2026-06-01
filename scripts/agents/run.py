@@ -99,6 +99,26 @@ def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str,
 
     if completed.returncode != 0:
         print(completed.stderr or completed.stdout, file=sys.stderr)
+        cached_payload = read_json(output_path, default={})
+        cached_products = cached_payload.get("products") if isinstance(cached_payload, dict) else None
+        if isinstance(cached_products, list) and cached_products:
+            return build_status(
+                "success",
+                started_at=started_at,
+                finished_at=now_iso(),
+                store=store,
+                output_file=output_label,
+                product_count=len(cached_products),
+                source_updated_at=cached_payload.get("updatedAt"),
+                return_code=completed.returncode,
+                used_cached_data=True,
+                warning=(
+                    "Fresh store collection failed, so the agent kept the last saved catalog. "
+                    "See error for the original collector failure."
+                ),
+                error=(completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip(),
+            )
+
         return build_status(
             "failed",
             started_at=started_at,

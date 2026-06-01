@@ -88,6 +88,9 @@ function buildSnapshotNotice(payload, store, { refreshRequested = false, onlyIfS
   const base = payload.notice || `${store.name}: загружен последний сохраненный каталог.`;
   if (!refreshRequested) return base;
   if (onlyIfStale && isFresh) return `${base} Каталог свежий, повторный запуск агента не нужен.`;
+  if (status?.used_cached_data) {
+    return `${base} Свежий сбор не прошел, поэтому показан последний сохраненный каталог.`;
+  }
   if (status?.status === "failed") {
     return `${base} Последний запуск агента не обновил данные, показан сохраненный каталог.`;
   }
