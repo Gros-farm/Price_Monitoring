@@ -68,7 +68,8 @@ function sendStoreSnapshot(response, storeId, options = {}) {
     return sendJson(response, 404, { error: "Файл данных не найден" });
   }
 
-  const status = readJson(dataPath(AGENT_STATUS_FILE))?.stores?.[storeId] || null;
+  const agentStatus = readJson(dataPath(AGENT_STATUS_FILE));
+  const status = agentStatus?.stores?.[storeId] || null;
   const stat = safeStat(outputPath);
   const isFresh = stat ? Date.now() - stat.mtimeMs < TWO_HOURS_MS : false;
 
@@ -78,6 +79,7 @@ function sendStoreSnapshot(response, storeId, options = {}) {
     agent: {
       mode: "external",
       status,
+      egress: agentStatus?.egress || null,
       command: `npm run agent:${storeId}`,
       message: "Данные обновляет отдельный агент. Сайт читает последний успешный каталог.",
     },
