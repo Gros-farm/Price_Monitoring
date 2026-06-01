@@ -17,6 +17,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -47,6 +49,8 @@ def main() -> int:
     data_dir.mkdir(parents=True, exist_ok=True)
     status_path = data_dir / STATUS_FILE_NAME
     status = read_json(status_path, default={"stores": {}})
+    if os.environ.get("EGRESS_DIAGNOSTICS", "1") != "0":
+        status["egress"] = build_egress_status()
 
     exit_code = 0
     for store_id in stores:
@@ -208,6 +212,105 @@ def build_status(status: str, **extra: Any) -> dict[str, Any]:
         }
     payload.update({key: value for key, value in extra.items() if value is not None})
     return payload
+
+
+def build_egress_status() -> dict[str, Any]:
+    return {
+        "checkedAt": now_iso(),
+        "mode": os.environ.get("EGRESS_MODE") or "server",
+        "proxy": mask_proxy(os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or ""),
+        "httpProxy": mask_proxy(os.environ.get("HTTP_PROXY") or os.environ.get("http_proxy") or ""),
+        "noProxy": os.environ.get("NO_PROXY") or os.environ.get("no_proxy") or "",
+        "externalIp": probe_text("https://api.ipify.org", timeout=8),
+        "targets": {
+            "5ka": probe_target("https://5ka.ru/"),
+            "kuper": probe_target("https://kuper.ru/"),
+            "yandexEda": probe_target("https://eda.yandex.ru/"),
+            "auchan": probe_target("https://www.auchan.ru/"),
+        },
+    }
+
+
+def probe_text(url: str, timeout: int = 10) -> dict[str, Any]:
+    request = Request(url, headers=probe_headers())
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            text = response.read(256).decode("utf-8", errors="replace").strip()
+            return {"status": "ok", "httpStatus": response.status, "body": truncate_text(text, 200)}
+    except HTTPError as exc:
+        body = exc.read(256).decode("utf-8", errors="replace")
+        return {"status": "http_error", "httpStatus": exc.code, "body": truncate_text(body, 200)}
+    except (URLError, TimeoutError, ConnectionResetError) as exc:
+        return {"status": "error", "error": truncate_text(str(exc), 200)}
+
+
+def probe_target(url: str) -> dict[str, Any]:
+    request = Request(url, headers=probe_headers())
+    try:
+        with urlopen(request, timeout=12) as response:
+            body = response.read(2048).decode("utf-8", errors="replace")
+            return {
+                "status": "ok",
+                "httpStatus": response.status,
+                "title": extract_title(body),
+                "blockHint": detect_block_hint(body),
+            }
+    except HTTPError as exc:
+        body = exc.read(2048).decode("utf-8", errors="replace")
+        return {
+            "status": "http_error",
+            "httpStatus": exc.code,
+            "title": extract_title(body),
+            "blockHint": detect_block_hint(body),
+        }
+    except (URLError, TimeoutError, ConnectionResetError) as exc:
+        return {"status": "error", "error": truncate_text(str(exc), 200)}
+
+
+def probe_headers() -> dict[str, str]:
+    return {
+        "User-Agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "ru-RU,ru;q=0.9,en;q=0.8",
+    }
+
+
+def extract_title(body: str) -> str:
+    import re
+
+    match = re.search(r"<title[^>]*>(.*?)</title>", body, flags=re.IGNORECASE | re.DOTALL)
+    if not match:
+        return ""
+    return truncate_text(" ".join(match.group(1).split()), 120)
+
+
+def detect_block_hint(body: str) -> str:
+    lowered = body.lower()
+    hints = (
+        "vpn",
+        "captcha",
+        "qauth",
+        "qrator",
+        "доступ ограничен",
+        "проверьте настройки интернета",
+        "используете vpn",
+        "forbidden",
+    )
+    found = [hint for hint in hints if hint in lowered]
+    return ", ".join(found[:4])
+
+
+def mask_proxy(value: str) -> str:
+    if not value:
+        return ""
+    if "@" not in value:
+        return value
+    scheme, rest = value.split("://", 1) if "://" in value else ("", value)
+    host = rest.split("@", 1)[1]
+    return f"{scheme + '://' if scheme else ''}***:***@{host}"
 
 
 def read_json(path: Path, default: Any = None) -> Any:
