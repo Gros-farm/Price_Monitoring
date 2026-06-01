@@ -69,12 +69,84 @@ def main() -> int:
 def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str, Any]:
     output_path = data_dir / store["dataFile"]
     output_label = relative_label(output_path)
-    python_executable = store.get("python") or sys.executable
-    command = [python_executable, *store["command"], "--output", str(output_path)]
-    timeout_seconds = int(store.get("timeoutSeconds", 180))
     started_at = now_iso()
+    provider_errors: list[dict[str, Any]] = []
 
     print(f"[{store_id}] updating {store['name']} -> {output_path}")
+    for provider in store_providers(store):
+        result = run_provider(store, provider, output_path)
+        if result["return_code"] == 0:
+            payload = read_json(output_path, default={})
+            product_count = len(payload.get("products", [])) if isinstance(payload.get("products"), list) else 0
+            return build_status(
+                "success",
+                started_at=started_at,
+                finished_at=now_iso(),
+                store=store,
+                provider=provider,
+                output_file=output_label,
+                product_count=product_count,
+                source_updated_at=payload.get("updatedAt"),
+                providers_attempted=provider_errors + [provider_result_summary(provider, result)],
+            )
+
+        print(result["error"], file=sys.stderr)
+        provider_errors.append(provider_result_summary(provider, result))
+
+    cached_payload = read_json(output_path, default={})
+    cached_products = cached_payload.get("products") if isinstance(cached_payload, dict) else None
+    if isinstance(cached_products, list) and cached_products:
+        return build_status(
+            "success",
+            started_at=started_at,
+            finished_at=now_iso(),
+            store=store,
+            output_file=output_label,
+            product_count=len(cached_products),
+            source_updated_at=cached_payload.get("updatedAt"),
+            used_cached_data=True,
+            warning=(
+                "All store providers failed, so the agent kept the last saved catalog. "
+                "See providers_attempted for collector failures."
+            ),
+            error=provider_errors[-1]["error"] if provider_errors else None,
+            providers_attempted=provider_errors,
+        )
+
+    return build_status(
+        "failed",
+        started_at=started_at,
+        finished_at=now_iso(),
+        store=store,
+        error=provider_errors[-1]["error"] if provider_errors else "No provider returned data.",
+        output_file=output_label,
+        providers_attempted=provider_errors,
+    )
+
+
+def store_providers(store: dict[str, Any]) -> list[dict[str, Any]]:
+    providers = store.get("providers")
+    if isinstance(providers, list) and providers:
+        return providers
+
+    return [
+        {
+            "id": "direct",
+            "name": "Direct store collector",
+            "source": store.get("source"),
+            "python": store.get("python"),
+            "command": store.get("command", []),
+            "timeoutSeconds": store.get("timeoutSeconds", 180),
+        }
+    ]
+
+
+def run_provider(store: dict[str, Any], provider: dict[str, Any], output_path: Path) -> dict[str, Any]:
+    python_executable = provider.get("python") or store.get("python") or sys.executable
+    command = [python_executable, *provider["command"], "--output", str(output_path)]
+    timeout_seconds = int(provider.get("timeoutSeconds", store.get("timeoutSeconds", 180)))
+
+    print(f"  provider {provider.get('id', 'unknown')} ({provider.get('source', store.get('source', 'unknown'))})")
     try:
         completed = subprocess.run(
             command,
@@ -87,59 +159,29 @@ def run_store(store_id: str, store: dict[str, Any], data_dir: Path) -> dict[str,
         )
     except subprocess.TimeoutExpired as exc:
         output = "\n".join(normalize_process_text(part) for part in (exc.stderr, exc.stdout) if part)
-        return build_status(
-            "failed",
-            started_at=started_at,
-            finished_at=now_iso(),
-            store=store,
-            error=f"Store agent timed out after {timeout_seconds}s." + (f"\n{output}" if output else ""),
-            output_file=output_label,
-            return_code=124,
-        )
+        return {
+            "return_code": 124,
+            "error": f"Store provider timed out after {timeout_seconds}s." + (f"\n{output}" if output else ""),
+        }
 
+    result = {
+        "return_code": completed.returncode,
+    }
     if completed.returncode != 0:
-        print(completed.stderr or completed.stdout, file=sys.stderr)
-        cached_payload = read_json(output_path, default={})
-        cached_products = cached_payload.get("products") if isinstance(cached_payload, dict) else None
-        if isinstance(cached_products, list) and cached_products:
-            return build_status(
-                "success",
-                started_at=started_at,
-                finished_at=now_iso(),
-                store=store,
-                output_file=output_label,
-                product_count=len(cached_products),
-                source_updated_at=cached_payload.get("updatedAt"),
-                return_code=completed.returncode,
-                used_cached_data=True,
-                warning=(
-                    "Fresh store collection failed, so the agent kept the last saved catalog. "
-                    "See error for the original collector failure."
-                ),
-                error=(completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip(),
-            )
+        result["error"] = (completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip()
+    return result
 
-        return build_status(
-            "failed",
-            started_at=started_at,
-            finished_at=now_iso(),
-            store=store,
-            error=(completed.stderr or completed.stdout or f"exit code {completed.returncode}").strip(),
-            output_file=output_label,
-            return_code=completed.returncode,
-        )
 
-    payload = read_json(output_path, default={})
-    product_count = len(payload.get("products", [])) if isinstance(payload.get("products"), list) else 0
-    return build_status(
-        "success",
-        started_at=started_at,
-        finished_at=now_iso(),
-        store=store,
-        output_file=output_label,
-        product_count=product_count,
-        source_updated_at=payload.get("updatedAt"),
-    )
+def provider_result_summary(provider: dict[str, Any], result: dict[str, Any]) -> dict[str, Any]:
+    summary = {
+        "id": provider.get("id"),
+        "name": provider.get("name"),
+        "source": provider.get("source"),
+        "return_code": result.get("return_code"),
+    }
+    if result.get("error"):
+        summary["error"] = result["error"]
+    return {key: value for key, value in summary.items() if value is not None}
 
 
 def build_status(status: str, **extra: Any) -> dict[str, Any]:
@@ -151,6 +193,13 @@ def build_status(status: str, **extra: Any) -> dict[str, Any]:
     if store:
         payload["name"] = store.get("name")
         payload["source"] = store.get("source")
+    provider = extra.pop("provider", None)
+    if provider:
+        payload["provider"] = {
+            "id": provider.get("id"),
+            "name": provider.get("name"),
+            "source": provider.get("source"),
+        }
     payload.update({key: value for key, value in extra.items() if value is not None})
     return payload
 
