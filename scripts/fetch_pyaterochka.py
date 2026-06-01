@@ -169,9 +169,11 @@ async def main() -> int:
 
     try:
         from pyaterochka_api import PyaterochkaAPI as BasePyaterochkaAPI
-    except ImportError:
+    except ImportError as exc:
         print(
-            "pyaterochka_api is not installed. Run:\n"
+            "Could not import pyaterochka_api or one of its dependencies.\n"
+            f"Original import error: {exc}\n"
+            "Run:\n"
             "  python3.12 -m pip install -r requirements-scraper.txt\n"
             "  python3.12 -m camoufox fetch",
             file=sys.stderr,
@@ -287,6 +289,7 @@ def build_resilient_pyaterochka_api(base_class: type[Any]) -> type[Any]:
                 locale="ru-RU",
                 headless=self.headless,
                 proxy=Proxy(self.proxy).as_dict() if self.proxy else None,
+                geoip=True if self.proxy else False,
                 block_images=False,
                 **self.browser_opts,
             ).start()

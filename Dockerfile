@@ -36,6 +36,7 @@ COPY requirements-scraper.txt ./
 RUN python3 -m venv /app/.venv \
   && /app/.venv/bin/pip install --no-cache-dir --upgrade pip \
   && /app/.venv/bin/pip install --no-cache-dir -r requirements-scraper.txt \
+  && /app/.venv/bin/python -c "import camoufox, human_requests, pyaterochka_api" \
   && /app/.venv/bin/python -m camoufox fetch
 
 COPY . .

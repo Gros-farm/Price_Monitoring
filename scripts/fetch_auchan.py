@@ -284,7 +284,15 @@ def fetch_products_with_browser(
 
     proxy_url = os.environ.get("HTTPS_PROXY") or os.environ.get("HTTP_PROXY")
     proxy_config = {"server": proxy_url} if proxy_url else None
-    with Camoufox(headless=headless, locale="ru-RU", proxy=proxy_config) as browser:
+    browser_options = {
+        "headless": headless,
+        "locale": "ru-RU",
+        "proxy": proxy_config,
+    }
+    if proxy_config:
+        browser_options["geoip"] = True
+
+    with Camoufox(**browser_options) as browser:
         page = browser.new_page()
         page.set_default_timeout(8000)
 
