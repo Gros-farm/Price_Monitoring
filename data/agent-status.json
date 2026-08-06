@@ -1,32 +1,45 @@
 {
-  "updatedAt": "2026-08-06T10:06:37.256538+00:00",
+  "updatedAt": "2026-08-06T22:16:06.135353+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-08-06T10:06:37.256481+00:00",
+      "checkedAt": "2026-08-06T22:16:06.135296+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
-      "provider": {
-        "id": "direct",
-        "name": "Ашан напрямую",
-        "source": "auchan.ru"
-      },
-      "started_at": "2026-08-06T10:05:44.787127+00:00",
+      "started_at": "2026-08-06T22:13:47.728138+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 120,
       "source_updated_at": "2026-08-06T10:06:37.181264+00:00",
+      "used_cached_data": true,
+      "warning": "All store providers failed, so the agent kept the last saved catalog. See providers_attempted for collector failures.",
+      "error": "Could not fetch auchan data from aggregator yandex. Tried public storefront pages; last errors: ['public pages loaded, but no product candidates matched; the aggregator may have returned a block page or changed its markup']",
       "providers_attempted": [
         {
           "id": "direct",
           "name": "Ашан напрямую",
           "source": "auchan.ru",
-          "return_code": 0
+          "return_code": 1,
+          "error": "HTTP fetch failed (Auchan returned QRator qauth challenge instead of search results.). Trying Camoufox browser fallback...\nAuchan returned QRator qauth challenge in browser fallback."
+        },
+        {
+          "id": "aggregator-kuper",
+          "name": "Ашан через Купер",
+          "source": "kuper.ru",
+          "return_code": 1,
+          "error": "Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x7f0cb138d300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f0cb138d300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f0cb138d300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/asyncio/unix_events.py\", line\n... truncated ..."
+        },
+        {
+          "id": "aggregator-yandex",
+          "name": "Ашан через Яндекс Еду",
+          "source": "eda.yandex.ru",
+          "return_code": 1,
+          "error": "Could not fetch auchan data from aggregator yandex. Tried public storefront pages; last errors: ['public pages loaded, but no product candidates matched; the aggregator may have returned a block page or changed its markup']"
         }
       ]
     }
   },
   "egress": {
-    "checkedAt": "2026-08-06T10:05:40.078755+00:00",
+    "checkedAt": "2026-08-06T22:13:45.045383+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,7 +47,7 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "20.171.125.137"
+      "body": "20.109.36.225"
     },
     "targets": {
       "5ka": {
