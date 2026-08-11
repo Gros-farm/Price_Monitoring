@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-08-11T09:33:30.411173+00:00",
+  "updatedAt": "2026-08-11T15:32:27.139882+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-08-11T09:33:30.411119+00:00",
+      "checkedAt": "2026-08-11T15:32:27.139758+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
       "provider": {
@@ -11,10 +11,10 @@
         "name": "Ашан напрямую",
         "source": "auchan.ru"
       },
-      "started_at": "2026-08-11T09:32:34.696154+00:00",
+      "started_at": "2026-08-11T15:31:45.057045+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 120,
-      "source_updated_at": "2026-08-11T09:33:30.336733+00:00",
+      "source_updated_at": "2026-08-11T15:32:27.044730+00:00",
       "providers_attempted": [
         {
           "id": "direct",
@@ -26,7 +26,7 @@
     }
   },
   "egress": {
-    "checkedAt": "2026-08-11T09:32:30.464702+00:00",
+    "checkedAt": "2026-08-11T15:31:18.927950+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,20 +34,16 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "20.55.162.198"
+      "body": "172.172.237.74"
     },
     "targets": {
       "5ka": {
-        "status": "ok",
-        "httpStatus": 200,
-        "title": "",
-        "blockHint": "captcha"
+        "status": "error",
+        "error": "<urlopen error timed out>"
       },
       "kuper": {
-        "status": "http_error",
-        "httpStatus": 403,
-        "title": "Купер",
-        "blockHint": ""
+        "status": "error",
+        "error": "<urlopen error timed out>"
       },
       "yandexEda": {
         "status": "ok",
