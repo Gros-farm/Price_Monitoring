@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-09-09T09:27:10.686768+00:00",
+  "updatedAt": "2026-09-09T15:23:35.451792+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-09-09T09:27:10.686712+00:00",
+      "checkedAt": "2026-09-09T15:23:35.451737+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
       "provider": {
@@ -11,10 +11,10 @@
         "name": "Ашан напрямую",
         "source": "auchan.ru"
       },
-      "started_at": "2026-09-09T09:26:19.694064+00:00",
+      "started_at": "2026-09-09T15:22:41.020889+00:00",
       "output_file": "data/auchan-products.json",
-      "product_count": 119,
-      "source_updated_at": "2026-09-09T09:27:10.615424+00:00",
+      "product_count": 118,
+      "source_updated_at": "2026-09-09T15:23:35.375367+00:00",
       "providers_attempted": [
         {
           "id": "direct",
@@ -26,7 +26,7 @@
     }
   },
   "egress": {
-    "checkedAt": "2026-09-09T09:26:15.378074+00:00",
+    "checkedAt": "2026-09-09T15:22:37.527911+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,7 +34,7 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "52.161.201.88"
+      "body": "52.165.101.29"
     },
     "targets": {
       "5ka": {
