@@ -1,32 +1,45 @@
 {
-  "updatedAt": "2026-09-28T20:25:12.925065+00:00",
+  "updatedAt": "2026-09-29T03:31:05.472451+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-09-28T20:25:12.925003+00:00",
+      "checkedAt": "2026-09-29T03:31:05.472397+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
-      "provider": {
-        "id": "direct",
-        "name": "Ашан напрямую",
-        "source": "auchan.ru"
-      },
-      "started_at": "2026-09-28T20:24:18.214330+00:00",
+      "started_at": "2026-09-29T03:30:22.835193+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 118,
       "source_updated_at": "2026-09-28T20:25:12.825600+00:00",
+      "used_cached_data": true,
+      "warning": "All store providers failed, so the agent kept the last saved catalog. See providers_attempted for collector failures.",
+      "error": "Could not fetch auchan data from aggregator yandex. Tried public storefront pages; last errors: ['public pages loaded, but no product candidates matched; the aggregator may have returned a block page or changed its markup']",
       "providers_attempted": [
         {
           "id": "direct",
           "name": "Ашан напрямую",
           "source": "auchan.ru",
-          "return_code": 0
+          "return_code": 1,
+          "error": "HTTP fetch failed (Auchan returned QRator qauth challenge instead of search results.). Trying Camoufox browser fallback...\nTraceback (most recent call last):\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 370, in fetch_search_page\n    with opener.open(request, timeout=30) as response:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 521, in open\n    response = meth(req, response)\n               ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 630, in http_response\n    response = self.parent.error(\n               ^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 559, in error\n    return self._call_chain(*args)\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 492, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/urllib/request.py\", line 639, in http_error_default\n    raise HTTPError(req.full_url, code, msg, hdrs, fp)\nurllib.error.HTTPError: HTTP Error 401: Unauthorized\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 231, in fetch_products\n    page = fetch_search_page(opener, query)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 375, in fetch_search_page\n    raise RuntimeError(\"Auchan returned QRator qauth challenge instead of search results.\")\nRuntimeError: Auchan returned QRator qauth challenge instead of search results.\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 591, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 185, in main\n    products = fetch_products(\n               ^^^^^^^^^^^^^^^\n  File \"/home/runner/work/Price_Monitoring/Price_Monitoring/scripts/fetch_auchan.py\", line 240, in fetch_products\n    return fetch_products_with_browser(query_delay, limit=limit, headless=headle\n... truncated ..."
+        },
+        {
+          "id": "aggregator-kuper",
+          "name": "Ашан через Купер",
+          "source": "kuper.ru",
+          "return_code": 1,
+          "error": "Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x7f545ea19300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f545ea19300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f545ea19300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line\n... truncated ..."
+        },
+        {
+          "id": "aggregator-yandex",
+          "name": "Ашан через Яндекс Еду",
+          "source": "eda.yandex.ru",
+          "return_code": 1,
+          "error": "Could not fetch auchan data from aggregator yandex. Tried public storefront pages; last errors: ['public pages loaded, but no product candidates matched; the aggregator may have returned a block page or changed its markup']"
         }
       ]
     }
   },
   "egress": {
-    "checkedAt": "2026-09-28T20:24:14.105284+00:00",
+    "checkedAt": "2026-09-29T03:30:19.215276+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,7 +47,7 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "128.24.163.81"
+      "body": "20.118.29.116"
     },
     "targets": {
       "5ka": {
