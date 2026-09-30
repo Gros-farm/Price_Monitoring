@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-30T09:29:10.983018+00:00",
+  "updatedAt": "2026-09-30T15:28:37.721066+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-09-30T09:29:10.982970+00:00",
+      "checkedAt": "2026-09-30T15:28:37.721016+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
-      "started_at": "2026-09-30T09:28:29.747062+00:00",
+      "started_at": "2026-09-30T15:27:50.261733+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 118,
       "source_updated_at": "2026-09-28T20:25:12.825600+00:00",
@@ -26,7 +26,7 @@
           "name": "Ашан через Купер",
           "source": "kuper.ru",
           "return_code": 1,
-          "error": "Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x7fb17b989300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7fb17b989300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7fb17b989300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line\n... truncated ..."
+          "error": "Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x7f7f67c85300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f7f67c85300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 767, in close\n    self.write_eof()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line 753, in write_eof\n    self._loop.call_soon(self._call_connection_lost, None)\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 799, in call_soon\n    self._check_closed()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_events.py\", line 545, in _check_closed\n    raise RuntimeError('Event loop is closed')\nRuntimeError: Event loop is closed\nException ignored in: <function BaseSubprocessTransport.__del__ at 0x7f7f67c85300>\nTraceback (most recent call last):\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 126, in __del__\n    self.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/base_subprocess.py\", line 104, in close\n    proto.pipe.close()\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/asyncio/unix_events.py\", line\n... truncated ..."
         },
         {
           "id": "aggregator-yandex",
@@ -39,7 +39,7 @@
     }
   },
   "egress": {
-    "checkedAt": "2026-09-30T09:28:25.743685+00:00",
+    "checkedAt": "2026-09-30T15:27:45.839810+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -47,7 +47,7 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "52.161.178.35"
+      "body": "20.169.38.51"
     },
     "targets": {
       "5ka": {
