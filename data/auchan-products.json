@@ -2,7 +2,7 @@
   "storeId": "auchan",
   "source": "auchan.ru",
   "sourceUrl": "https://www.auchan.ru/",
-  "updatedAt": "2026-10-16T09:26:51.731144+00:00",
+  "updatedAt": "2026-10-16T15:22:58.976953+00:00",
   "notice": "Ашан: загружено 120 позиций с сайта.",
   "products": [
     {
@@ -261,21 +261,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-baklazhany-otkrytyy-grunt-ves",
-      "name": "Баклажаны открытый грунт, вес",
-      "category": "Овощи",
-      "price": 119.99,
-      "history": [
-        124.79,
-        123.59,
-        121.19,
-        119.99,
-        118.79,
-        119.99,
-        119.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-morkov-mytaya-ves",
       "name": "Морковь мытая, вес",
       "category": "Овощи",
@@ -288,6 +273,21 @@
         59.39,
         59.99,
         59.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-baklazhany-otkrytyy-grunt-ves",
+      "name": "Баклажаны открытый грунт, вес",
+      "category": "Овощи",
+      "price": 119.99,
+      "history": [
+        124.79,
+        123.59,
+        121.19,
+        119.99,
+        118.79,
+        119.99,
+        119.99
       ]
     },
     {
@@ -516,21 +516,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-luk-krasnyy-chulok-500-gr",
-      "name": "Лук репчатый красный чулок, 500 г",
-      "category": "Овощи",
-      "price": 89.99,
-      "history": [
-        93.59,
-        92.69,
-        90.89,
-        89.99,
-        89.09,
-        89.99,
-        89.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-tomat-kokteylnyy-krasn-350gr",
       "name": "Томаты коктейльные красные на ветке, 350 г",
       "category": "Овощи",
@@ -543,6 +528,21 @@
         257.39,
         259.99,
         259.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-luk-krasnyy-chulok-500-gr",
+      "name": "Лук репчатый красный чулок, 500 г",
+      "category": "Овощи",
+      "price": 89.99,
+      "history": [
+        93.59,
+        92.69,
+        90.89,
+        89.99,
+        89.09,
+        89.99,
+        89.99
       ]
     },
     {
@@ -576,8 +576,8 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kp-svekla-ochishch-v-u-500-g",
-      "name": "Свекла очищенная АШАН Красная птица, 500 г",
+      "id": "auchan-https---www-auchan-ru-product-kp-morkov-ochishch-v-u-500g",
+      "name": "Морковь очищенная АШАН Красная птица, 500 г",
       "category": "Овощи",
       "price": 99.9,
       "history": [
@@ -1611,18 +1611,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-rukkola-mangold-shpinat-75gr",
-      "name": "Салатная смесь Руккола мангольд шпинат, 75 г",
+      "id": "auchan-https---www-auchan-ru-product-kd-ukrop-100g",
+      "name": "Укроп «Каждый день», 100 г",
       "category": "Зелень",
-      "price": 99.99,
+      "price": 109.99,
       "history": [
-        103.99,
-        102.99,
-        100.99,
-        99.99,
-        98.99,
-        99.99,
-        99.99
+        114.39,
+        113.29,
+        111.09,
+        109.99,
+        108.89,
+        109.99,
+        109.99
       ]
     },
     {
@@ -1686,21 +1686,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-k-p-kinza-puchok-100g",
-      "name": "Кинза АШАН Красная птица пучок, 100 г",
-      "category": "Зелень",
-      "price": 129.99,
-      "history": [
-        135.19,
-        133.89,
-        131.29,
-        129.99,
-        128.69,
-        129.99,
-        129.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-k-p-rozmarin-puchok-50g",
       "name": "Розмарин АШАН Красная птица пучок, 50 г",
       "category": "Зелень",
@@ -1728,6 +1713,21 @@
         148.49,
         149.99,
         149.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-k-p-kinza-puchok-100g",
+      "name": "Кинза АШАН Красная птица пучок, 100 г",
+      "category": "Зелень",
+      "price": 129.99,
+      "history": [
+        135.19,
+        133.89,
+        131.29,
+        129.99,
+        128.69,
+        129.99,
+        129.99
       ]
     },
     {
