@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-23T20:24:57.017886+00:00",
+  "updatedAt": "2026-10-24T03:27:05.006226+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-10-23T20:24:57.017832+00:00",
+      "checkedAt": "2026-10-24T03:27:05.006166+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
       "provider": {
@@ -11,10 +11,10 @@
         "name": "Ашан напрямую",
         "source": "auchan.ru"
       },
-      "started_at": "2026-10-23T20:24:08.758833+00:00",
+      "started_at": "2026-10-24T03:26:16.779963+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 120,
-      "source_updated_at": "2026-10-23T20:24:56.941775+00:00",
+      "source_updated_at": "2026-10-24T03:27:04.930361+00:00",
       "providers_attempted": [
         {
           "id": "direct",
@@ -26,7 +26,7 @@
     }
   },
   "egress": {
-    "checkedAt": "2026-10-23T20:24:05.981571+00:00",
+    "checkedAt": "2026-10-24T03:26:13.083918+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,7 +34,7 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "48.217.155.19"
+      "body": "52.182.171.88"
     },
     "targets": {
       "5ka": {
@@ -50,10 +50,10 @@
         "blockHint": ""
       },
       "yandexEda": {
-        "status": "http_error",
-        "httpStatus": 403,
-        "title": "",
-        "blockHint": ""
+        "status": "ok",
+        "httpStatus": 200,
+        "title": "Вы не робот?",
+        "blockHint": "captcha"
       },
       "auchan": {
         "status": "http_error",
