@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-10-30T20:15:54.966021+00:00",
+  "updatedAt": "2026-10-31T03:18:18.582979+00:00",
   "stores": {
     "auchan": {
       "status": "success",
-      "checkedAt": "2026-10-30T20:15:54.965915+00:00",
+      "checkedAt": "2026-10-31T03:18:18.582928+00:00",
       "name": "Ашан",
       "source": "auchan.ru",
       "provider": {
@@ -11,10 +11,10 @@
         "name": "Ашан напрямую",
         "source": "auchan.ru"
       },
-      "started_at": "2026-10-30T20:14:57.925845+00:00",
+      "started_at": "2026-10-31T03:17:18.489212+00:00",
       "output_file": "data/auchan-products.json",
       "product_count": 120,
-      "source_updated_at": "2026-10-30T20:15:54.889508+00:00",
+      "source_updated_at": "2026-10-31T03:18:18.501938+00:00",
       "providers_attempted": [
         {
           "id": "direct",
@@ -26,7 +26,7 @@
     }
   },
   "egress": {
-    "checkedAt": "2026-10-30T20:14:55.061315+00:00",
+    "checkedAt": "2026-10-31T03:17:13.540351+00:00",
     "mode": "server",
     "proxy": "",
     "httpProxy": "",
@@ -34,14 +34,14 @@
     "externalIp": {
       "status": "ok",
       "httpStatus": 200,
-      "body": "20.97.196.162"
+      "body": "4.242.197.81"
     },
     "targets": {
       "5ka": {
         "status": "ok",
         "httpStatus": 200,
         "title": "",
-        "blockHint": "vpn, captcha"
+        "blockHint": "captcha"
       },
       "kuper": {
         "status": "http_error",
