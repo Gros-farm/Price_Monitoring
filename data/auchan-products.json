@@ -2,7 +2,7 @@
   "storeId": "auchan",
   "source": "auchan.ru",
   "sourceUrl": "https://www.auchan.ru/",
-  "updatedAt": "2026-11-07T15:15:19.598521+00:00",
+  "updatedAt": "2026-11-07T20:15:16.465274+00:00",
   "notice": "Ашан: загружено 120 позиций с сайта.",
   "products": [
     {
@@ -231,8 +231,23 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-cherri-sya-tigrovye-200g",
-      "name": "Томаты черри «РОСТ» Сладкая ягода тигровые оранжево-фиолетовые круглые, 200 г",
+      "id": "auchan-https---www-auchan-ru-product-perec-krasnyy-ves",
+      "name": "Перец красный, вес",
+      "category": "Овощи",
+      "price": 199.99,
+      "history": [
+        207.99,
+        205.99,
+        201.99,
+        199.99,
+        197.99,
+        199.99,
+        199.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-cherri-sya-chernye-200g",
+      "name": "Томаты черри «РОСТ» Сладкая ягода черные круглые, 200 г",
       "category": "Овощи",
       "price": 139.9,
       "history": [
@@ -261,8 +276,8 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-cherri-sya-chernye-200g",
-      "name": "Томаты черри «РОСТ» Сладкая ягода черные круглые, 200 г",
+      "id": "auchan-https---www-auchan-ru-product-cherri-sya-tigrovye-200g",
+      "name": "Томаты черри «РОСТ» Сладкая ягода тигровые оранжево-фиолетовые круглые, 200 г",
       "category": "Овощи",
       "price": 139.9,
       "history": [
@@ -336,21 +351,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kabachki-svezhie-ves",
-      "name": "Кабачки грунтовые, вес",
-      "category": "Овощи",
-      "price": 119.0,
-      "history": [
-        123.76,
-        122.57,
-        120.19,
-        119.0,
-        117.81,
-        119.0,
-        119.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-tykva-batternat-kg",
       "name": "Тыква Баттернат, вес",
       "category": "Овощи",
@@ -363,6 +363,21 @@
         53.45,
         53.99,
         53.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-kabachki-svezhie-ves",
+      "name": "Кабачки грунтовые, вес",
+      "category": "Овощи",
+      "price": 119.0,
+      "history": [
+        123.76,
+        122.57,
+        120.19,
+        119.0,
+        117.81,
+        119.0,
+        119.0
       ]
     },
     {
@@ -483,21 +498,6 @@
         296.99,
         299.99,
         299.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-tomat--ves",
-      "name": "Томаты круглые красные, вес",
-      "category": "Овощи",
-      "price": 149.99,
-      "history": [
-        155.99,
-        154.49,
-        151.49,
-        149.99,
-        148.49,
-        149.99,
-        149.99
       ]
     },
     {
@@ -1086,6 +1086,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-yabloki-red-chif-ves",
+      "name": "Яблоки Ред Чиф, вес",
+      "category": "Фрукты",
+      "price": 79.99,
+      "history": [
+        83.19,
+        82.39,
+        80.79,
+        79.99,
+        79.19,
+        79.99,
+        79.99
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-avokado-hass-1sht",
       "name": "Авокадо Хасс Кения, 1 шт",
       "category": "Фрукты",
@@ -1113,21 +1128,6 @@
         178.19,
         179.99,
         179.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-yabloki-red-chif-ves",
-      "name": "Яблоки Ред Чиф, вес",
-      "category": "Фрукты",
-      "price": 79.0,
-      "history": [
-        82.16,
-        81.37,
-        79.79,
-        79.0,
-        78.21,
-        79.0,
-        79.0
       ]
     },
     {
@@ -1161,21 +1161,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-hurma-romashka-ves",
-      "name": "Хурма Ромашка, вес",
-      "category": "Фрукты",
-      "price": 149.99,
-      "history": [
-        155.99,
-        154.49,
-        151.49,
-        149.99,
-        148.49,
-        149.99,
-        149.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-hurma-svecha-ves",
       "name": "Хурма Свеча, вес",
       "category": "Фрукты",
@@ -1188,6 +1173,21 @@
         148.4,
         149.9,
         149.9
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-hurma-romashka-ves",
+      "name": "Хурма Ромашка, вес",
+      "category": "Фрукты",
+      "price": 149.99,
+      "history": [
+        155.99,
+        154.49,
+        151.49,
+        149.99,
+        148.49,
+        149.99,
+        149.99
       ]
     },
     {
@@ -1206,18 +1206,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-limony-pc",
-      "name": "Лимоны с тонкой кожурой, вес",
+      "id": "auchan-https---www-auchan-ru-product-yabloko-sezonnoe-rossiya",
+      "name": "Яблоки сезонные, вес",
       "category": "Фрукты",
-      "price": 179.99,
+      "price": 79.99,
       "history": [
-        187.19,
-        185.39,
-        181.79,
-        179.99,
-        178.19,
-        179.99,
-        179.99
+        83.19,
+        82.39,
+        80.79,
+        79.99,
+        79.19,
+        79.99,
+        79.99
       ]
     },
     {
@@ -1416,21 +1416,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-yagod-miks-golubikafizalis-sht",
-      "name": "Ягодный микс голубика физалис Марокко, 150 г",
-      "category": "Ягоды",
-      "price": 309.99,
-      "history": [
-        322.39,
-        319.29,
-        313.09,
-        309.99,
-        306.89,
-        309.99,
-        309.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-yagodnyy-miks-golubika-malina-sht-1",
       "name": "Ягодный микс голубика малина, 170 г",
       "category": "Ягоды",
@@ -1443,6 +1428,21 @@
         386.09,
         389.99,
         389.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-yagod-miks-golubikafizalis-sht",
+      "name": "Ягодный микс голубика физалис Марокко, 150 г",
+      "category": "Ягоды",
+      "price": 309.99,
+      "history": [
+        322.39,
+        319.29,
+        313.09,
+        309.99,
+        306.89,
+        309.99,
+        309.99
       ]
     },
     {
@@ -1476,18 +1476,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
-      "name": "Голубика, 125 г",
+      "id": "auchan-https---www-auchan-ru-product-golubika-ves-fas",
+      "name": "Голубика, вес",
       "category": "Ягоды",
-      "price": 319.99,
+      "price": 1699.99,
       "history": [
-        332.79,
-        329.59,
-        323.19,
-        319.99,
-        316.79,
-        319.99,
-        319.99
+        1767.99,
+        1750.99,
+        1716.99,
+        1699.99,
+        1682.99,
+        1699.99,
+        1699.99
       ]
     },
     {
@@ -1506,33 +1506,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-golubika-upakovka-500-g",
-      "name": "Голубика, 500 г",
+      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
+      "name": "Голубика, 125 г",
       "category": "Ягоды",
-      "price": 1199.99,
+      "price": 319.99,
       "history": [
-        1247.99,
-        1235.99,
-        1211.99,
-        1199.99,
-        1187.99,
-        1199.99,
-        1199.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-golubika-ves-fas",
-      "name": "Голубика, вес",
-      "category": "Ягоды",
-      "price": 1699.99,
-      "history": [
-        1767.99,
-        1750.99,
-        1716.99,
-        1699.99,
-        1682.99,
-        1699.99,
-        1699.99
+        332.79,
+        329.59,
+        323.19,
+        319.99,
+        316.79,
+        319.99,
+        319.99
       ]
     },
     {
@@ -1803,6 +1788,21 @@
         98.99,
         99.99,
         99.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-zp-bazilik-zelenyy-50g",
+      "name": "Базилик АШАН Золотая птица зеленый, 50 г",
+      "category": "Зелень",
+      "price": 169.99,
+      "history": [
+        176.79,
+        175.09,
+        171.69,
+        169.99,
+        168.29,
+        169.99,
+        169.99
       ]
     }
   ]
