@@ -2,7 +2,7 @@
   "storeId": "auchan",
   "source": "auchan.ru",
   "sourceUrl": "https://www.auchan.ru/",
-  "updatedAt": "2026-11-09T15:18:07.576215+00:00",
+  "updatedAt": "2026-11-09T20:17:33.585640+00:00",
   "notice": "Ашан: загружено 120 позиций с сайта.",
   "products": [
     {
@@ -21,21 +21,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-tykva-fonarik-ves",
-      "name": "Тыква Фонарик, вес",
-      "category": "Овощи",
-      "price": 59.0,
-      "history": [
-        61.36,
-        60.77,
-        59.59,
-        59.0,
-        58.41,
-        59.0,
-        59.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-kapusta-bryusselskaya-300-g",
       "name": "Капуста Брюссельская, 300 г",
       "category": "Овощи",
@@ -48,6 +33,21 @@
         138.5,
         139.9,
         139.9
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tykva-fonarik-ves",
+      "name": "Тыква Фонарик, вес",
+      "category": "Овощи",
+      "price": 59.0,
+      "history": [
+        61.36,
+        60.77,
+        59.59,
+        59.0,
+        58.41,
+        59.0,
+        59.0
       ]
     },
     {
@@ -249,30 +249,15 @@
       "id": "auchan-https---www-auchan-ru-product-tykva-batternat-kg",
       "name": "Тыква Баттернат, вес",
       "category": "Овощи",
-      "price": 59.99,
+      "price": 53.99,
       "history": [
-        62.39,
-        61.79,
-        60.59,
-        59.99,
-        59.39,
-        59.99,
-        59.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-tykva-oranzhevaya-kruglaya-ves",
-      "name": "Тыква Оранжевая круглая, вес",
-      "category": "Овощи",
-      "price": 99.99,
-      "history": [
-        103.99,
-        102.99,
-        100.99,
-        99.99,
-        98.99,
-        99.99,
-        99.99
+        56.15,
+        55.61,
+        54.53,
+        53.99,
+        53.45,
+        53.99,
+        53.99
       ]
     },
     {
@@ -441,6 +426,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-redka-zelenaya-ves",
+      "name": "Редька зеленая, вес",
+      "category": "Овощи",
+      "price": 59.99,
+      "history": [
+        62.39,
+        61.79,
+        60.59,
+        59.99,
+        59.39,
+        59.99,
+        59.99
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-kapusta-cvetnaya-ves",
       "name": "Капуста цветная, вес",
       "category": "Овощи",
@@ -531,6 +531,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-tykva-oranzhevaya-kruglaya-ves",
+      "name": "Тыква Оранжевая круглая, вес",
+      "category": "Овощи",
+      "price": 99.0,
+      "history": [
+        102.96,
+        101.97,
+        99.99,
+        99.0,
+        98.01,
+        99.0,
+        99.0
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-kartofel-sladkiybatat-ves",
       "name": "Картофель сладкий батат, вес",
       "category": "Овощи",
@@ -573,21 +588,6 @@
         168.29,
         169.99,
         169.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-kartofel-belyy-fruttauer-3-kg",
-      "name": "Социальный товар Картофель, ~ 5 кг",
-      "category": "Овощи",
-      "price": 28.99,
-      "history": [
-        30.15,
-        29.86,
-        29.28,
-        28.99,
-        28.7,
-        28.99,
-        28.99
       ]
     },
     {
@@ -922,21 +922,6 @@
     },
     {
       "id": "auchan-https---www-auchan-ru-product-sliva-sinyaya-ves",
-      "name": "Слива синяя, вес",
-      "category": "Фрукты",
-      "price": 219.99,
-      "history": [
-        228.79,
-        226.59,
-        222.19,
-        219.99,
-        217.79,
-        219.99,
-        219.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-sliva-sinyaya-ves",
       "name": "Слива синяя, ~ 1 кг",
       "category": "Фрукты",
       "price": 349.99,
@@ -948,6 +933,21 @@
         346.49,
         349.99,
         349.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-sliva-sinyaya-ves",
+      "name": "Слива синяя, вес",
+      "category": "Фрукты",
+      "price": 219.99,
+      "history": [
+        228.79,
+        226.59,
+        222.19,
+        219.99,
+        217.79,
+        219.99,
+        219.99
       ]
     },
     {
@@ -1371,6 +1371,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-brusnika-125g",
+      "name": "Брусника, 125 г",
+      "category": "Ягоды",
+      "price": 199.0,
+      "history": [
+        206.96,
+        204.97,
+        200.99,
+        199.0,
+        197.01,
+        199.0,
+        199.0
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-klyukva-yagody-karelii-svezhaya-250-g",
       "name": "Клюква садовая, 250 г",
       "category": "Ягоды",
@@ -1428,21 +1443,6 @@
         277.19,
         279.99,
         279.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-klyukva-ves",
-      "name": "Клюква, вес",
-      "category": "Ягоды",
-      "price": 699.99,
-      "history": [
-        727.99,
-        720.99,
-        706.99,
-        699.99,
-        692.99,
-        699.99,
-        699.99
       ]
     },
     {
@@ -1521,18 +1521,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
+      "id": "auchan-https---www-auchan-ru-product-golubika-125g--artfrut",
       "name": "Голубика, 125 г",
       "category": "Ягоды",
-      "price": 319.99,
+      "price": 329.99,
       "history": [
-        332.79,
-        329.59,
-        323.19,
-        319.99,
-        316.79,
-        319.99,
-        319.99
+        343.19,
+        339.89,
+        333.29,
+        329.99,
+        326.69,
+        329.99,
+        329.99
       ]
     },
     {
@@ -1551,18 +1551,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-golubika-125g--artfrut",
+      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
       "name": "Голубика, 125 г",
       "category": "Ягоды",
-      "price": 329.99,
+      "price": 319.99,
       "history": [
-        343.19,
-        339.89,
-        333.29,
-        329.99,
-        326.69,
-        329.99,
-        329.99
+        332.79,
+        329.59,
+        323.19,
+        319.99,
+        316.79,
+        319.99,
+        319.99
       ]
     },
     {
@@ -1596,18 +1596,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-brusnika-125g",
-      "name": "Брусника, 125 г",
+      "id": "auchan-https---www-auchan-ru-product-klyukva-ves",
+      "name": "Клюква, вес",
       "category": "Ягоды",
-      "price": 199.0,
+      "price": 699.99,
       "history": [
-        206.96,
-        204.97,
-        200.99,
-        199.0,
-        197.01,
-        199.0,
-        199.0
+        727.99,
+        720.99,
+        706.99,
+        699.99,
+        692.99,
+        699.99,
+        699.99
       ]
     },
     {
