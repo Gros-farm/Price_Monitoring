@@ -2,7 +2,7 @@
   "storeId": "auchan",
   "source": "auchan.ru",
   "sourceUrl": "https://www.auchan.ru/",
-  "updatedAt": "2026-11-11T15:19:05.321270+00:00",
+  "updatedAt": "2026-11-11T20:17:06.078623+00:00",
   "notice": "Ашан: загружено 120 позиций с сайта.",
   "products": [
     {
@@ -36,21 +36,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-tykva-fonarik-ves",
-      "name": "Тыква Фонарик, вес",
-      "category": "Овощи",
-      "price": 59.0,
-      "history": [
-        61.36,
-        60.77,
-        59.59,
-        59.0,
-        58.41,
-        59.0,
-        59.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-kapusta-bryusselskaya-300-g",
       "name": "Капуста Брюссельская, 300 г",
       "category": "Овощи",
@@ -63,6 +48,21 @@
         138.5,
         139.9,
         139.9
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tykva-fonarik-ves",
+      "name": "Тыква Фонарик, вес",
+      "category": "Овощи",
+      "price": 59.0,
+      "history": [
+        61.36,
+        60.77,
+        59.59,
+        59.0,
+        58.41,
+        59.0,
+        59.0
       ]
     },
     {
@@ -81,21 +81,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-tykva-vitaminka-ves",
-      "name": "Тыква Витаминка, вес",
-      "category": "Овощи",
-      "price": 39.0,
-      "history": [
-        40.56,
-        40.17,
-        39.39,
-        39.0,
-        38.61,
-        39.0,
-        39.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-kapusta-cvetnaya-300gr-up",
       "name": "Капуста цветная, 300 г",
       "category": "Овощи",
@@ -108,6 +93,21 @@
         127.71,
         129.0,
         129.0
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tykva-vitaminka-ves",
+      "name": "Тыква Витаминка, вес",
+      "category": "Овощи",
+      "price": 39.0,
+      "history": [
+        40.56,
+        40.17,
+        39.39,
+        39.0,
+        38.61,
+        39.0,
+        39.0
       ]
     },
     {
@@ -186,21 +186,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kabachki-cukkini-ves",
-      "name": "Кабачки Цукини, вес",
-      "category": "Овощи",
-      "price": 129.97,
-      "history": [
-        135.17,
-        133.87,
-        131.27,
-        129.97,
-        128.67,
-        129.97,
-        129.97
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-ogurec-pupyrchatyy-sredneplodnyy",
       "name": "Огурцы пупырчатые среднеплодные, вес",
       "category": "Овощи",
@@ -213,6 +198,21 @@
         123.72,
         124.97,
         124.97
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-kabachki-cukkini-ves",
+      "name": "Кабачки Цукини, вес",
+      "category": "Овощи",
+      "price": 129.97,
+      "history": [
+        135.17,
+        133.87,
+        131.27,
+        129.97,
+        128.67,
+        129.97,
+        129.97
       ]
     },
     {
@@ -276,21 +276,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-tomaty-rozovye-otbornye-1-kg",
-      "name": "Томаты розовые отборные Парадайз, вес",
-      "category": "Овощи",
-      "price": 259.0,
-      "history": [
-        269.36,
-        266.77,
-        261.59,
-        259.0,
-        256.41,
-        259.0,
-        259.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-tykva-dekorativnaya-ves",
       "name": "Тыква декоративная, вес",
       "category": "Овощи",
@@ -321,21 +306,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kartofel-sladkiybatat-ves",
-      "name": "Картофель сладкий батат, вес",
-      "category": "Овощи",
-      "price": 149.9,
-      "history": [
-        155.9,
-        154.4,
-        151.4,
-        149.9,
-        148.4,
-        149.9,
-        149.9
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-cherri-sya-limonnye-200g",
       "name": "Томаты черри «РОСТ» Сладкая ягода лимонные круглые, 200 г",
       "category": "Овощи",
@@ -363,6 +333,21 @@
         108.8,
         109.9,
         109.9
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tomaty-rozovye-otbornye-1-kg",
+      "name": "Томаты розовые отборные Парадайз, вес",
+      "category": "Овощи",
+      "price": 279.9,
+      "history": [
+        291.1,
+        288.3,
+        282.7,
+        279.9,
+        277.1,
+        279.9,
+        279.9
       ]
     },
     {
@@ -426,21 +411,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-ogurcy-botanika-ves",
-      "name": "Огурцы Ботаника, вес",
-      "category": "Овощи",
-      "price": 155.0,
-      "history": [
-        161.2,
-        159.65,
-        156.55,
-        155.0,
-        153.45,
-        155.0,
-        155.0
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-tykva-batternat-kg",
       "name": "Тыква Баттернат, вес",
       "category": "Овощи",
@@ -453,21 +423,6 @@
         53.45,
         53.99,
         53.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-ogurcy-otkrytyy-grunt-ves",
-      "name": "Огурцы грунтовые, вес",
-      "category": "Овощи",
-      "price": 138.0,
-      "history": [
-        143.52,
-        142.14,
-        139.38,
-        138.0,
-        136.62,
-        138.0,
-        138.0
       ]
     },
     {
@@ -606,6 +561,51 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-kartofel-3kg-setka",
+      "name": "Картофель Барышня Крестьянка, 3 кг",
+      "category": "Овощи",
+      "price": 170.0,
+      "history": [
+        176.8,
+        175.1,
+        171.7,
+        170.0,
+        168.3,
+        170.0,
+        170.0
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tomat-na-vetke-ves",
+      "name": "Томаты на ветке, вес",
+      "category": "Овощи",
+      "price": 249.99,
+      "history": [
+        259.99,
+        257.49,
+        252.49,
+        249.99,
+        247.49,
+        249.99,
+        249.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-tykva-muskatnaya-ves",
+      "name": "Тыква Мускатная, вес",
+      "category": "Овощи",
+      "price": 89.9,
+      "history": [
+        93.5,
+        92.6,
+        90.8,
+        89.9,
+        89.0,
+        89.9,
+        89.9
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-limonnyy-pirog-s-sochnym-limono",
       "name": "Пирог сладкий сдобный «Штрудель&КО» Лимонный с сочным лимоном без дрожжей охлажденный, 320 г",
       "category": "Фрукты",
@@ -729,15 +729,15 @@
       "id": "auchan-https---www-auchan-ru-product-arbuz-ves",
       "name": "Арбуз, вес",
       "category": "Ягоды",
-      "price": 39.99,
+      "price": 44.99,
       "history": [
-        41.59,
-        41.19,
-        40.39,
-        39.99,
-        39.59,
-        39.99,
-        39.99
+        46.79,
+        46.34,
+        45.44,
+        44.99,
+        44.54,
+        44.99,
+        44.99
       ]
     },
     {
@@ -846,21 +846,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-nektarin-uzbekistan-ves",
-      "name": "Нектарины Узбекистан, вес",
-      "category": "Фрукты",
-      "price": 199.99,
-      "history": [
-        207.99,
-        205.99,
-        201.99,
-        199.99,
-        197.99,
-        199.99,
-        199.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-dynya-torpedo-ves",
       "name": "Дыня Торпеда ~ 5 кг",
       "category": "Ягоды",
@@ -873,6 +858,21 @@
         89.09,
         89.99,
         89.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-nektarin-uzbekistan-ves",
+      "name": "Нектарины Узбекистан, вес",
+      "category": "Фрукты",
+      "price": 199.99,
+      "history": [
+        207.99,
+        205.99,
+        201.99,
+        199.99,
+        197.99,
+        199.99,
+        199.99
       ]
     },
     {
@@ -1086,21 +1086,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-mandarin-ves-mk",
-      "name": "Мандарины мини Турция, вес",
-      "category": "Фрукты",
-      "price": 239.99,
-      "history": [
-        249.59,
-        247.19,
-        242.39,
-        239.99,
-        237.59,
-        239.99,
-        239.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-grusha-abbat-vesovaya",
       "name": "Груша Аббат, вес",
       "category": "Фрукты",
@@ -1116,21 +1101,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-avokado-hass-1sht",
-      "name": "Авокадо Хасс Кения, 1 шт",
-      "category": "Фрукты",
-      "price": 49.9,
-      "history": [
-        51.9,
-        51.4,
-        50.4,
-        49.9,
-        49.4,
-        49.9,
-        49.9
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-hurma-romashka-ves",
       "name": "Хурма Ромашка, вес",
       "category": "Фрукты",
@@ -1143,6 +1113,21 @@
         118.77,
         119.97,
         119.97
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-avokado-hass-1sht",
+      "name": "Авокадо Хасс Кения, 1 шт",
+      "category": "Фрукты",
+      "price": 49.9,
+      "history": [
+        51.9,
+        51.4,
+        50.4,
+        49.9,
+        49.4,
+        49.9,
+        49.9
       ]
     },
     {
@@ -1206,21 +1191,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-yabloki-dzhonagored-ves",
-      "name": "Яблоки Лебедянские, вес",
-      "category": "Фрукты",
-      "price": 99.9,
-      "history": [
-        103.9,
-        102.9,
-        100.9,
-        99.9,
-        98.9,
-        99.9,
-        99.9
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-limon-sraziya-ves",
       "name": "Лимон Азия, вес",
       "category": "Фрукты",
@@ -1233,6 +1203,21 @@
         331.65,
         335.0,
         335.0
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-yabloki-dzhonagored-ves",
+      "name": "Яблоки Лебедянские, вес",
+      "category": "Фрукты",
+      "price": 99.9,
+      "history": [
+        103.9,
+        102.9,
+        100.9,
+        99.9,
+        98.9,
+        99.9,
+        99.9
       ]
     },
     {
@@ -1296,6 +1281,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-laym-1-up-2-sht",
+      "name": "Лайм, 2 шт",
+      "category": "Фрукты",
+      "price": 89.99,
+      "history": [
+        93.59,
+        92.69,
+        90.89,
+        89.99,
+        89.09,
+        89.99,
+        89.99
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-golubika-importnaya-upakovka-sht",
       "name": "Голубика импортная Перу, 125 г",
       "category": "Ягоды",
@@ -1314,15 +1314,15 @@
       "id": "auchan-https---www-auchan-ru-product-golubika-importnaya-upakovka-300-g",
       "name": "Голубика, 300 г",
       "category": "Ягоды",
-      "price": 299.9,
+      "price": 469.9,
       "history": [
-        311.9,
-        308.9,
-        302.9,
-        299.9,
-        296.9,
-        299.9,
-        299.9
+        488.7,
+        484.0,
+        474.6,
+        469.9,
+        465.2,
+        469.9,
+        469.9
       ]
     },
     {
@@ -1476,18 +1476,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-yagod-miks-golubikafizalis-sht",
-      "name": "Ягодный микс голубика физалис Марокко, 150 г",
+      "id": "auchan-https---www-auchan-ru-product-golubika-upakovka-200-g",
+      "name": "Голубика Сердце, 200 г",
       "category": "Ягоды",
-      "price": 309.99,
+      "price": 469.99,
       "history": [
-        322.39,
-        319.29,
-        313.09,
-        309.99,
-        306.89,
-        309.99,
-        309.99
+        488.79,
+        484.09,
+        474.69,
+        469.99,
+        465.29,
+        469.99,
+        469.99
       ]
     },
     {
@@ -1506,18 +1506,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-golubika-upakovka-200-g",
-      "name": "Голубика Сердце, 200 г",
+      "id": "auchan-https---www-auchan-ru-product-yagod-miks-golubikafizalis-sht",
+      "name": "Ягодный микс голубика физалис Марокко, 150 г",
       "category": "Ягоды",
-      "price": 469.99,
+      "price": 309.99,
       "history": [
-        488.79,
-        484.09,
-        474.69,
-        469.99,
-        465.29,
-        469.99,
-        469.99
+        322.39,
+        319.29,
+        313.09,
+        309.99,
+        306.89,
+        309.99,
+        309.99
       ]
     },
     {
