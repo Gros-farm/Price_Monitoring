@@ -2,7 +2,7 @@
   "storeId": "auchan",
   "source": "auchan.ru",
   "sourceUrl": "https://www.auchan.ru/",
-  "updatedAt": "2026-11-27T15:17:35.290311+00:00",
+  "updatedAt": "2026-11-27T20:17:35.612030+00:00",
   "notice": "Ашан: загружено 120 позиций с сайта.",
   "products": [
     {
@@ -141,21 +141,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kartofel-sladkiybatat-ves",
-      "name": "Картофель сладкий батат, вес",
-      "category": "Овощи",
-      "price": 149.99,
-      "history": [
-        155.99,
-        154.49,
-        151.49,
-        149.99,
-        148.49,
-        149.99,
-        149.99
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-luk-serebristyy-kg-ves",
       "name": "Лук репчатый серебристый белый, вес",
       "category": "Овощи",
@@ -168,6 +153,21 @@
         49.49,
         49.99,
         49.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-kartofel-sladkiybatat-ves",
+      "name": "Картофель сладкий батат, вес",
+      "category": "Овощи",
+      "price": 149.99,
+      "history": [
+        155.99,
+        154.49,
+        151.49,
+        149.99,
+        148.49,
+        149.99,
+        149.99
       ]
     },
     {
@@ -411,21 +411,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-kapusta-brok-cvet-300gr-up",
-      "name": "Капуста брокколи, цветная капуста, 300 г",
-      "category": "Овощи",
-      "price": 207.97,
-      "history": [
-        216.29,
-        214.21,
-        210.05,
-        207.97,
-        205.89,
-        207.97,
-        207.97
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-tomaty-cherri-krasnye-250-g",
       "name": "Томаты Черри красные, 250 г",
       "category": "Овощи",
@@ -441,6 +426,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-kapusta-brok-cvet-300gr-up",
+      "name": "Капуста брокколи, цветная капуста, 300 г",
+      "category": "Овощи",
+      "price": 207.97,
+      "history": [
+        216.29,
+        214.21,
+        210.05,
+        207.97,
+        205.89,
+        207.97,
+        207.97
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-perec-miks-sht",
       "name": "Перец микс, 2 шт",
       "category": "Овощи",
@@ -453,21 +453,6 @@
         158.37,
         159.97,
         159.97
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-perec-krasnyy-ves",
-      "name": "Перец красный, вес",
-      "category": "Овощи",
-      "price": 199.97,
-      "history": [
-        207.97,
-        205.97,
-        201.97,
-        199.97,
-        197.97,
-        199.97,
-        199.97
       ]
     },
     {
@@ -501,6 +486,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-perec-krasnyy-ves",
+      "name": "Перец красный, вес",
+      "category": "Овощи",
+      "price": 199.97,
+      "history": [
+        207.97,
+        205.97,
+        201.97,
+        199.97,
+        197.97,
+        199.97,
+        199.97
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-tomat-flamenko-slivovidn-450g",
       "name": "Томаты Фламенко сливовидные, 450 г",
       "category": "Овощи",
@@ -516,21 +516,6 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-perec-chili-krasnyy-100-g",
-      "name": "Перец Чили красный, 100 г",
-      "category": "Овощи",
-      "price": 135.97,
-      "history": [
-        141.41,
-        140.05,
-        137.33,
-        135.97,
-        134.61,
-        135.97,
-        135.97
-      ]
-    },
-    {
       "id": "auchan-https---www-auchan-ru-product-kukuruza-upakovka-sht",
       "name": "Кукуруза вареная, 500 г",
       "category": "Овощи",
@@ -543,6 +528,21 @@
         158.39,
         159.99,
         159.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-perec-chili-krasnyy-100-g",
+      "name": "Перец Чили красный, 100 г",
+      "category": "Овощи",
+      "price": 135.97,
+      "history": [
+        141.41,
+        140.05,
+        137.33,
+        135.97,
+        134.61,
+        135.97,
+        135.97
       ]
     },
     {
@@ -576,18 +576,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-redka-chernaya-ves",
-      "name": "Редька черная, вес",
+      "id": "auchan-https---www-auchan-ru-product-ogurec-korotkoplodnyy-glad-385",
+      "name": "Огурец короткоплодный гладкий, 385 г",
       "category": "Овощи",
-      "price": 79.97,
+      "price": 143.97,
       "history": [
-        83.17,
-        82.37,
-        80.77,
-        79.97,
-        79.17,
-        79.97,
-        79.97
+        149.73,
+        148.29,
+        145.41,
+        143.97,
+        142.53,
+        143.97,
+        143.97
       ]
     },
     {
@@ -1191,18 +1191,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-vinograd-b-k-belo-rozovyy-ves",
-      "name": "Виноград бело-розовый без косточек, вес",
+      "id": "auchan-https---www-auchan-ru-product-vinograd-damskiy-palchik-ves-kg",
+      "name": "Виноград Дамский пальчик, вес",
       "category": "Фрукты",
-      "price": 399.97,
+      "price": 239.97,
       "history": [
-        415.97,
-        411.97,
-        403.97,
-        399.97,
-        395.97,
-        399.97,
-        399.97
+        249.57,
+        247.17,
+        242.37,
+        239.97,
+        237.57,
+        239.97,
+        239.97
       ]
     },
     {
@@ -1248,21 +1248,6 @@
         584.09,
         589.99,
         589.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-zp-golubika-125gr",
-      "name": "Голубика АШАН Золотая птица, 125 г",
-      "category": "Ягоды",
-      "price": 279.99,
-      "history": [
-        291.19,
-        288.39,
-        282.79,
-        279.99,
-        277.19,
-        279.99,
-        279.99
       ]
     },
     {
@@ -1401,18 +1386,33 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-brusnika-125g",
-      "name": "Брусника, 125 г",
+      "id": "auchan-https---www-auchan-ru-product-zp-golubika-125gr",
+      "name": "Голубика АШАН Золотая птица, 125 г",
       "category": "Ягоды",
-      "price": 299.99,
+      "price": 279.99,
       "history": [
-        311.99,
-        308.99,
-        302.99,
-        299.99,
-        296.99,
-        299.99,
-        299.99
+        291.19,
+        288.39,
+        282.79,
+        279.99,
+        277.19,
+        279.99,
+        279.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-yagodnyy-miks-golubika-klubnika-malina-150-g",
+      "name": "Ягодный микс голубика клубника малина мини, 150 г",
+      "category": "Ягоды",
+      "price": 399.99,
+      "history": [
+        415.99,
+        411.99,
+        403.99,
+        399.99,
+        395.99,
+        399.99,
+        399.99
       ]
     },
     {
@@ -1431,18 +1431,18 @@
       ]
     },
     {
-      "id": "auchan-https---www-auchan-ru-product-yagodnyy-miks-golubika-klubnika-malina-150-g",
-      "name": "Ягодный микс голубика клубника малина мини, 150 г",
+      "id": "auchan-https---www-auchan-ru-product-brusnika-125g",
+      "name": "Брусника, 125 г",
       "category": "Ягоды",
-      "price": 399.99,
+      "price": 299.99,
       "history": [
-        415.99,
-        411.99,
-        403.99,
-        399.99,
-        395.99,
-        399.99,
-        399.99
+        311.99,
+        308.99,
+        302.99,
+        299.99,
+        296.99,
+        299.99,
+        299.99
       ]
     },
     {
@@ -1464,15 +1464,15 @@
       "id": "auchan-https---www-auchan-ru-product-golubika-200gr-tubus",
       "name": "Голубика, 200 г",
       "category": "Ягоды",
-      "price": 599.99,
+      "price": 529.99,
       "history": [
-        623.99,
-        617.99,
-        605.99,
-        599.99,
-        593.99,
-        599.99,
-        599.99
+        551.19,
+        545.89,
+        535.29,
+        529.99,
+        524.69,
+        529.99,
+        529.99
       ]
     },
     {
@@ -1488,51 +1488,6 @@
         494.99,
         499.99,
         499.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-yagod-miks-serd-klub-gol-200g",
-      "name": "Микс ягодный клубника голубика, 200 г",
-      "category": "Ягоды",
-      "price": 629.99,
-      "history": [
-        655.19,
-        648.89,
-        636.29,
-        629.99,
-        623.69,
-        629.99,
-        629.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
-      "name": "Голубика, 125 г",
-      "category": "Ягоды",
-      "price": 329.99,
-      "history": [
-        343.19,
-        339.89,
-        333.29,
-        329.99,
-        326.69,
-        329.99,
-        329.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-ezhevika-upakovka-sht",
-      "name": "Ежевика, 125 г",
-      "category": "Ягоды",
-      "price": 369.99,
-      "history": [
-        384.79,
-        381.09,
-        373.69,
-        369.99,
-        366.29,
-        369.99,
-        369.99
       ]
     },
     {
@@ -1563,6 +1518,51 @@
         574.19,
         579.99,
         579.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-ezhevika-upakovka-sht",
+      "name": "Ежевика, 125 г",
+      "category": "Ягоды",
+      "price": 369.99,
+      "history": [
+        384.79,
+        381.09,
+        373.69,
+        369.99,
+        366.29,
+        369.99,
+        369.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-golubika-serdce-125gr",
+      "name": "Голубика, 125 г",
+      "category": "Ягоды",
+      "price": 329.99,
+      "history": [
+        343.19,
+        339.89,
+        333.29,
+        329.99,
+        326.69,
+        329.99,
+        329.99
+      ]
+    },
+    {
+      "id": "auchan-https---www-auchan-ru-product-yagod-miks-serd-klub-gol-200g",
+      "name": "Микс ягодный клубника голубика, 200 г",
+      "category": "Ягоды",
+      "price": 629.99,
+      "history": [
+        655.19,
+        648.89,
+        636.29,
+        629.99,
+        623.69,
+        629.99,
+        629.99
       ]
     },
     {
@@ -1761,6 +1761,21 @@
       ]
     },
     {
+      "id": "auchan-https---www-auchan-ru-product-salat-miks-4-vida-75gr",
+      "name": "Смесь салатная «Мистер Грин» Микс рукола триплекс экспертайз мангольд, 75 г",
+      "category": "Зелень",
+      "price": 119.99,
+      "history": [
+        124.79,
+        123.59,
+        121.19,
+        119.99,
+        118.79,
+        119.99,
+        119.99
+      ]
+    },
+    {
       "id": "auchan-https---www-auchan-ru-product-rukkola-mangold-shpinat-75gr",
       "name": "Салатная смесь Руккола мангольд шпинат, 75 г",
       "category": "Зелень",
@@ -1788,21 +1803,6 @@
         98.99,
         99.99,
         99.99
-      ]
-    },
-    {
-      "id": "auchan-https---www-auchan-ru-product-zp-bazilik-zelenyy-50g",
-      "name": "Базилик АШАН Золотая птица зеленый, 50 г",
-      "category": "Зелень",
-      "price": 169.99,
-      "history": [
-        176.79,
-        175.09,
-        171.69,
-        169.99,
-        168.29,
-        169.99,
-        169.99
       ]
     }
   ]
